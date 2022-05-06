@@ -25,6 +25,7 @@ const settings = ['Login', 'Sing up'];
 
 const Header = () => {
   const location = useLocation();
+  console.log(location);
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
