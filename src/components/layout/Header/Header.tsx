@@ -21,11 +21,15 @@ const pages: Record<string, string> = {
   'Edit Profile': '/edit-profile',
 };
 
-const settings = ['Login', 'Sing up'];
+const settings: Record<string, string> = {
+  Login: '/login',
+  Signup: '/singup',
+};
+
+// const settings = ['Login', 'Sing up'];
 
 const Header = () => {
   const location = useLocation();
-  console.log(location);
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
@@ -142,9 +146,14 @@ const Header = () => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+              {Object.entries(settings).map(([page, pageLink]) => (
+                <MenuItem
+                  key={page}
+                  onClick={handleCloseUserMenu}
+                  component={NavLink}
+                  to={pageLink}
+                >
+                  <Typography textAlign="center">{page}</Typography>
                 </MenuItem>
               ))}
             </Menu>
