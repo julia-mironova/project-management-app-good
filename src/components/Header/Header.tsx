@@ -15,18 +15,16 @@ import {
 import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
-const pages: Record<string, string> = {
-  About: '/',
-  Boards: '/boards',
-  'Edit Profile': '/edit-profile',
-};
+const pages = [
+  { page: 'About', path: '/' },
+  { page: 'Board', path: '/boards' },
+  { page: 'Edit Profile', path: '/edit-profile' },
+];
 
-const settings: Record<string, string> = {
-  Login: '/login',
-  Signup: '/singup',
-};
-
-// const settings = ['Login', 'Sing up'];
+const settings = [
+  { page: 'Login', path: '/login' },
+  { page: 'Signup', path: '/singup' },
+];
 
 const Header = () => {
   const location = useLocation();
@@ -90,8 +88,8 @@ const Header = () => {
                 display: { xs: 'block', md: 'none' },
               }}
             >
-              {Object.entries(pages).map(([page, pageLink]) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu} component={NavLink} to={pageLink}>
+              {pages.map(({ page, path }) => (
+                <MenuItem key={page} onClick={handleCloseNavMenu} component={NavLink} to={path}>
                   <Typography textAlign="center">{page}</Typography>
                 </MenuItem>
               ))}
@@ -106,7 +104,7 @@ const Header = () => {
             RSS-trello
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {Object.entries(pages).map(([page, pageLink]) => (
+            {pages.map(({ page, path }) => (
               <Button
                 key={page}
                 onClick={handleCloseNavMenu}
@@ -114,10 +112,10 @@ const Header = () => {
                   my: 2,
                   color: 'white',
                   display: 'block',
-                  textDecoration: location.pathname === pageLink ? 'underline' : '',
+                  textDecoration: location.pathname === path ? 'underline' : '',
                 }}
                 component={NavLink}
-                to={pageLink}
+                to={path}
               >
                 {page}
               </Button>
@@ -146,13 +144,8 @@ const Header = () => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {Object.entries(settings).map(([page, pageLink]) => (
-                <MenuItem
-                  key={page}
-                  onClick={handleCloseUserMenu}
-                  component={NavLink}
-                  to={pageLink}
-                >
+              {settings.map(({ page, path }) => (
+                <MenuItem key={page} onClick={handleCloseUserMenu} component={NavLink} to={path}>
                   <Typography textAlign="center">{page}</Typography>
                 </MenuItem>
               ))}
