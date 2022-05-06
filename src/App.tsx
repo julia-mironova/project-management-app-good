@@ -1,14 +1,19 @@
-import React from 'react';
-import './App.css';
-import Header from './components/layout/Header';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import Layout from './components/layout/Layout/Layout';
+import { MainPage, EditProfile, Page404, BoardsPage, SingleBoardPage } from './components/pages';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <Header />
-      </header>
-    </div>
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        <Route index element={<MainPage />} />
+        <Route path="edit-profile" element={<EditProfile />} />
+        <Route path="edit" element={<Navigate to="/edit-profile" replace />} />
+        <Route path="boards" element={<BoardsPage />} />
+        <Route path="boards/:boardId" element={<SingleBoardPage />} />
+        <Route path="*" element={<Page404 />} />
+      </Route>
+    </Routes>
   );
 }
 

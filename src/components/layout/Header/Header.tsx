@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { NavLink, useLocation } from 'react-router-dom';
 import {
   AppBar,
   Container,
@@ -14,10 +15,16 @@ import {
 import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
-const pages = ['About', 'Boards', 'Edit Profile'];
+const pages: Record<string, string> = {
+  About: '/',
+  Boards: '/boards',
+  'Edit Profile': '/edit-profile',
+};
+
 const settings = ['Login', 'Sing up'];
 
 const Header = () => {
+  const location = useLocation();
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
@@ -78,8 +85,8 @@ const Header = () => {
                 display: { xs: 'block', md: 'none' },
               }}
             >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
+              {Object.entries(pages).map(([page, pageLink]) => (
+                <MenuItem key={page} onClick={handleCloseNavMenu} component={NavLink} to={pageLink}>
                   <Typography textAlign="center">{page}</Typography>
                 </MenuItem>
               ))}
@@ -94,11 +101,18 @@ const Header = () => {
             RSS-trello
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
+            {Object.entries(pages).map(([page, pageLink]) => (
               <Button
                 key={page}
                 onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'white', display: 'block' }}
+                sx={{
+                  my: 2,
+                  color: 'white',
+                  display: 'block',
+                  textDecoration: location.pathname === pageLink ? 'underline' : '',
+                }}
+                component={NavLink}
+                to={pageLink}
               >
                 {page}
               </Button>
