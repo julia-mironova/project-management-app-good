@@ -11,9 +11,14 @@ import {
   MenuItem,
   Tooltip,
   IconButton,
+  Grid,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
+import LogoutIcon from '@mui/icons-material/Logout';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { useAppSelector, useAppDispatch } from '../../hooks/redux.hooks';
+import { setUser } from '../../store/auth/authSlice';
+import { generateUserInitials } from '../../utils/generateUserInitials';
 
 const pages = [
   { page: 'About', path: '/' },
@@ -30,6 +35,8 @@ const Header = () => {
   const location = useLocation();
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
+  const { isLoggedIn, userInfo } = useAppSelector((state) => state.auth);
+  const dispatch = useAppDispatch();
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -54,7 +61,7 @@ const Header = () => {
             variant="h6"
             noWrap
             component="div"
-            sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
+            sx={{ mr: 2, display: { xs: 'none', md: 'flex' }, color: 'white' }}
           >
             RSS-trello
           </Typography>
@@ -66,7 +73,7 @@ const Header = () => {
               aria-controls="menu-appbar"
               aria-haspopup="true"
               onClick={handleOpenNavMenu}
-              color="inherit"
+              sx={{ color: 'white' }}
             >
               <MenuIcon />
             </IconButton>
@@ -99,7 +106,7 @@ const Header = () => {
             variant="h6"
             noWrap
             component="div"
-            sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
+            sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' }, color: 'white' }}
           >
             RSS-trello
           </Typography>
@@ -125,9 +132,37 @@ const Header = () => {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <AccountCircleIcon sx={{ color: 'white' }} />
+                {isLoggedIn ? (
+                  <Box
+                    justifyContent="center"
+                    alignItems="center"
+                    sx={{
+                      display: 'flex',
+                      width: '50px',
+                      height: '50px',
+                      borderRadius: '50%',
+                      backgroundColor: 'white',
+                    }}
+                  >
+                    <Typography
+                      color="primary.contrastText"
+                      sx={{ fontWeight: '700', fontSize: '1.25rem' }}
+                    >
+                      {generateUserInitials(userInfo)}
+                    </Typography>
+                  </Box>
+                ) : (
+                  <AccountCircleIcon sx={{ color: 'white', width: '3rem', height: '3rem' }} />
+                )}
               </IconButton>
             </Tooltip>
+            <IconButton onClick={() => dispatch(setUser(false))} sx={{ p: 0 }}>
+              {isLoggedIn && (
+                <LogoutIcon
+                  sx={{ color: 'white', width: '3rem', height: '3rem', marginLeft: '1rem' }}
+                />
+              )}
+            </IconButton>
             <Menu
               sx={{ mt: '45px' }}
               id="menu-appbar"
