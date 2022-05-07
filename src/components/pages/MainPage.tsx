@@ -31,7 +31,12 @@ const MainPage = () => {
             <img
               src={bgImage}
               alt="main page bg"
-              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                // width: { sm: '50%', md: '70%' },
+              }}
             ></img>
           </Grid>
         </Grid>

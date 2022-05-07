@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import {
   AppBar,
@@ -35,8 +35,24 @@ const Header = () => {
   const location = useLocation();
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
+  const [isSticky, setIsSticky] = useState<boolean>(false);
   const { isLoggedIn, userInfo } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
+
+  const setStickyHeader = () => {
+    if (window.scrollY >= 60) {
+      setIsSticky(true);
+    } else {
+      setIsSticky(false);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', setStickyHeader);
+    return () => {
+      window.removeEventListener('scroll', setStickyHeader);
+    };
+  }, [isSticky]);
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -54,7 +70,15 @@ const Header = () => {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar
+      position="static"
+      sx={{
+        position: 'sticky',
+        top: 0,
+        height: isSticky ? '65px' : '',
+        backgroundColor: isSticky ? '#0F23F5' : '',
+      }}
+    >
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Typography
