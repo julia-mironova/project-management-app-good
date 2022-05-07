@@ -5,15 +5,19 @@ import {
   IconButton,
   TextField,
   Box,
-  Link,
   Container,
   Typography,
   Button,
   Avatar,
   CssBaseline,
 } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
+import SendIcon from '@mui/icons-material/Send';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux.hooks';
+import { createToken } from '../../store/slice/authSlice';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 
 export const Login = () => {
   const {
@@ -22,10 +26,23 @@ export const Login = () => {
     formState: { errors },
   } = useForm<propsSubmitLogin>({ mode: 'onSubmit' });
 
+  const state = useAppSelector((state) => state.auth);
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const path: string | unknown = useLocation().state;
   const [showPassword, setShowPassword] = useState(false);
 
-  const onSubmit = (data: propsSubmitLogin) => {
-    console.log(data);
+  const onSubmit = async (data: propsSubmitLogin) => {
+    const rename = {
+      login: data.email, // email это поле login на сервере
+      password: data.password,
+    };
+    await dispatch(createToken(rename));
+    if (path === 'string') {
+      navigate(path, { replace: true });
+    } else {
+      navigate('/');
+    }
   };
 
   return (
@@ -86,18 +103,24 @@ export const Login = () => {
               required: { value: true, message: 'this field is required' },
               minLength: {
                 value: 6,
-                message: 'Your password must be at least 6 characters long. Please try another.',
+                message: 'Your password must be at least 6 characters long',
               },
             })}
           />
-          <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+          <LoadingButton
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+            endIcon={<SendIcon />}
+            loading={state.pending}
+            loadingPosition="end"
+          >
             Login
+          </LoadingButton>
+          <Button component={NavLink} to={'/signup'}>
+            <Typography variant="subtitle2">{"Don't have an account? Sign Up"}</Typography>
           </Button>
-          <div>
-            <Link href="/signup" variant="body2">
-              {"Don't have an account? Sign Up"}
-            </Link>
-          </div>
         </Box>
       </Box>
     </Container>

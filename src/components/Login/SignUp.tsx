@@ -5,15 +5,19 @@ import {
   IconButton,
   TextField,
   Box,
-  Link,
   Container,
   Typography,
   Button,
   Avatar,
   CssBaseline,
 } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
+import SendIcon from '@mui/icons-material/Send';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import { createUser } from '../../store/slice/authSlice';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux.hooks';
+import { NavLink } from 'react-router-dom';
 
 export const SignUp = () => {
   const {
@@ -23,9 +27,16 @@ export const SignUp = () => {
   } = useForm<propsSubmitSignUp>({ mode: 'onSubmit' });
 
   const [showPassword, setShowPassword] = useState(false);
+  const state = useAppSelector((state) => state.auth);
+  const dispatch = useAppDispatch();
 
   const onSubmit = (data: propsSubmitSignUp) => {
-    console.log(data);
+    const rename = {
+      login: data.email, // email это поле login на сервере
+      password: data.password,
+      name: data.name,
+    };
+    dispatch(createUser(rename));
   };
 
   return (
@@ -106,14 +117,20 @@ export const SignUp = () => {
               },
             })}
           />
-          <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+          <LoadingButton
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+            endIcon={<SendIcon />}
+            loading={state.pending}
+            loadingPosition="end"
+          >
             Sign Up
+          </LoadingButton>
+          <Button component={NavLink} to={'/login'}>
+            <Typography variant="body2">{'You have an account? Login.'}</Typography>
           </Button>
-          <div>
-            <Link href="/login" variant="body2">
-              {'You have an account? Login.'}
-            </Link>
-          </div>
         </Box>
       </Box>
     </Container>
@@ -121,7 +138,7 @@ export const SignUp = () => {
 };
 
 type propsSubmitSignUp = {
-  email: string; // email это поле login на сервере
+  email: string;
   password: string;
   name: string;
 };

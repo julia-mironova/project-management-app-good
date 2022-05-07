@@ -1,13 +1,7 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Layout from './components/layout/Layout/Layout';
-import {
-  MainPage,
-  EditProfile,
-  Page404,
-  BoardsPage,
-  SingleBoardPage,
-  LoginPage,
-} from './components/pages';
+import { MainPage, EditProfile, Page404, BoardsPage, SingleBoardPage } from './components/pages';
+import { Login, SignUp } from './components';
 import RequireAuth from './hoc/RequireAuth';
 
 function App() {
@@ -33,7 +27,8 @@ function App() {
           }
         />
         <Route path="boards/:boardId" element={<SingleBoardPage />} />
-        <Route path="login" element={<LoginPage />} />
+        <Route path="login" element={<Login />} />
+        <Route path="signup" element={<SignUp />} />
         <Route path="*" element={<Page404 />} />
       </Route>
     </Routes>
