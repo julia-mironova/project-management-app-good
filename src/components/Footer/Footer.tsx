@@ -73,9 +73,9 @@ const Footer = () => {
               lg={4}
               columnSpacing={1}
               alignItems="center"
-              justifyContent="center"
+              justifyContent="end"
             >
-              <Grid item>
+              <Grid item lg={6}>
                 <BottomNavigationAction
                   icon={
                     <Link
@@ -89,8 +89,8 @@ const Footer = () => {
                   }
                 />
               </Grid>
-              <Grid item lg={1}>
-                <Typography>&copy;2022</Typography>
+              <Grid item lg={3}>
+                <Typography textAlign="end">&copy;2022</Typography>
               </Grid>
             </Grid>
           </Grid>

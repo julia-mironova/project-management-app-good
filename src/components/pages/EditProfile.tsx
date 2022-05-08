@@ -2,7 +2,11 @@ import { Container } from '@mui/material';
 
 const EditProfile = () => {
   return (
-    <Container maxWidth="md" sx={{ mt: '1rem' }} data-testid="not-found-page">
+    <Container
+      maxWidth="lg"
+      sx={{ mt: '1rem', pb: 3, height: 'calc(100vh - 148px)' }}
+      data-testid="not-found-page"
+    >
       EditProfile
     </Container>
   );

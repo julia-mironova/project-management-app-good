@@ -1,4 +1,5 @@
-import { Container, Typography, Grid, CardMedia, CardContent } from '@mui/material';
+import { Container, Typography, Grid, CardMedia, CardContent, Link } from '@mui/material';
+import GitHubIcon from '@mui/icons-material/GitHub';
 import bgImage from '../../assets/images/bg.jpg';
 
 const MainPage = () => {
@@ -35,7 +36,6 @@ const MainPage = () => {
                 width: '100%',
                 height: '100%',
                 objectFit: 'cover',
-                // width: { sm: '50%', md: '70%' },
               }}
             ></img>
           </Grid>
@@ -51,19 +51,27 @@ const MainPage = () => {
           columnSpacing={{ xs: 1, sm: 2, md: 3 }}
         >
           <Grid item md={4}>
-            <CardMedia
-              component="img"
-              height="140"
-              image="/static/images/cards/contemplative-reptile.jpg"
-              alt="team member picture"
-            />
+            <CardMedia component="img" height="250" image={bgImage} alt="team member picture" />
             <CardContent>
               <Typography gutterBottom variant="h5" component="div" color="primary.contrastText">
                 Victor
               </Typography>
-              <Typography variant="h6" color="text.secondary">
-                Team Lead
-              </Typography>
+              <Grid container>
+                <Typography variant="h6" color="text.secondary" mr={1}>
+                  Team Lead
+                </Typography>
+                <Link
+                  href="https://github.com/BlackHatMan"
+                  target="_blank"
+                  sx={{
+                    transition: '.4s',
+                    color: 'secondary.main',
+                    '&:hover': { color: 'primary.contrastText' },
+                  }}
+                >
+                  <GitHubIcon />
+                </Link>
+              </Grid>
               <Typography variant="body2" color="text.secondary">
                 Add some text about impact or in general som information about team member. Probably
                 a story of becoming of developer.
@@ -71,19 +79,27 @@ const MainPage = () => {
             </CardContent>
           </Grid>
           <Grid item md={4}>
-            <CardMedia
-              component="img"
-              height="140"
-              image="/static/images/cards/contemplative-reptile.jpg"
-              alt="team member picture"
-            />
+            <CardMedia component="img" height="250" image={bgImage} alt="team member picture" />
             <CardContent>
               <Typography gutterBottom variant="h5" component="div" color="primary.contrastText">
                 Olga
               </Typography>
-              <Typography variant="h6" color="text.secondary">
-                Developer
-              </Typography>
+              <Grid container>
+                <Typography variant="h6" color="text.secondary" mr={1}>
+                  Developer
+                </Typography>
+                <Link
+                  href="https://github.com/VolhaBukhal"
+                  target="_blank"
+                  sx={{
+                    transition: '.4s',
+                    color: 'secondary.main',
+                    '&:hover': { color: 'primary.contrastText' },
+                  }}
+                >
+                  <GitHubIcon />
+                </Link>
+              </Grid>
               <Typography variant="body2" color="text.secondary">
                 Add some text about impact or in general som information about team member. Probably
                 a story of becoming of developer.
@@ -91,19 +107,27 @@ const MainPage = () => {
             </CardContent>
           </Grid>
           <Grid item md={4}>
-            <CardMedia
-              component="img"
-              height="140"
-              image="/static/images/cards/contemplative-reptile.jpg"
-              alt="team member picture"
-            />
+            <CardMedia component="img" height="250" image={bgImage} alt="team member picture" />
             <CardContent>
               <Typography gutterBottom variant="h5" component="div" color="primary.contrastText">
                 Evgeniy
               </Typography>
-              <Typography variant="h6" color="text.secondary">
-                Developer
-              </Typography>
+              <Grid container>
+                <Typography variant="h6" color="text.secondary" mr={1}>
+                  Developer
+                </Typography>
+                <Link
+                  href="https://github.com/EVG777-prog"
+                  target="_blank"
+                  sx={{
+                    transition: '.4s',
+                    color: 'secondary.main',
+                    '&:hover': { color: 'primary.contrastText' },
+                  }}
+                >
+                  <GitHubIcon />
+                </Link>
+              </Grid>
               <Typography variant="body2" color="text.secondary">
                 Add some text about impact or in general som information about team member. Probably
                 a story of becoming of developer.
