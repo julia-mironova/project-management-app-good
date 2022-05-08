@@ -15,9 +15,9 @@ import { LoadingButton } from '@mui/lab';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import SendIcon from '@mui/icons-material/Send';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import { createUser } from '../../store/slice/authSlice';
+import { createToken, createUser } from '../../store/slice/authSlice';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux.hooks';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 
 export const SignUp = () => {
   const {
@@ -29,14 +29,20 @@ export const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
   const state = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
-  const onSubmit = (data: propsSubmitSignUp) => {
-    const rename = {
-      login: data.email, // email это поле login на сервере
-      password: data.password,
-      name: data.name,
-    };
-    dispatch(createUser(rename));
+  const onSubmit = async (data: propsSubmitSignUp) => {
+    await dispatch(
+      createUser({
+        login: data.email,
+        password: data.password,
+        name: data.name,
+      })
+    );
+    if (!state.rejectMsg) {
+      await dispatch(createToken({ login: data.email, password: data.password }));
+      navigate('/boards');
+    }
   };
 
   return (

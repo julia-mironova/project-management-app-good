@@ -67,6 +67,7 @@ export const createToken = createAsyncThunk(
 
 const pending = (state: AuthState) => {
   state.pending = true;
+  state.rejectMsg = '';
 };
 const reject = (state: AuthState, action: PayloadAction<string>) => {
   state.pending = false;
@@ -87,6 +88,7 @@ export const authSlice = createSlice({
     },
     setToken: (state, action: PayloadAction<ICreateTokenResponse>) => {
       state.token = action.payload.token;
+      state.isLoggedIn = true;
     },
   },
   extraReducers: {
