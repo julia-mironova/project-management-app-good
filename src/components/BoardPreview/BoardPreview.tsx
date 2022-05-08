@@ -3,48 +3,63 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import React from 'react';
 import dataPictures from '../../dataPictures';
-import BackAPI from '../../utils/backAPI';
+import { DeleteBoard } from '../../utils/backAPI';
 
 type IBoard = {
   id: string;
   title: string;
 };
 
-const BoardPreview = ({ board }: { board: IBoard }) => {
+const BoardPreview = ({
+  board,
+  dataBoards,
+  setDataBoards,
+}: {
+  board: IBoard;
+  dataBoards: IBoard[];
+  setDataBoards: React.Dispatch<React.SetStateAction<IBoard[]>>;
+}) => {
+  const [isEdit, setIsEdit] = React.useState(false);
+
   const handleDeleteBoard = async () => {
     console.log('Delete board', board);
-    await BackAPI.deleteBoard(board.id);
+    // const dataBoardsNew = dataBoards.filter((item) => item.id !== board.id);
+    // setDataBoards(dataBoardsNew);
+    await DeleteBoard(board.id);
   };
 
   const handleEditBoard = async () => {
     console.log('Edit board', board);
+    setIsEdit(false);
   };
 
   return (
     <Card sx={{ maxWidth: 495, border: 2 }}>
-      <CardActionArea>
+      <CardActionArea component="div">
         <CardMedia
           component="img"
           height="140"
           image={`pictures/${dataPictures[+board.title?.slice(0, 2)]}`}
           alt={board.id}
-          sx={{ pt: 5, pl: 0, pr: 5, pb: 0 }}
+          sx={{ pt: 2, pl: 2, pr: 2, pb: 0 }}
         />
-        <CardContent>
+        <CardContent sx={{ pt: 2, pl: 3, pr: 2, pb: 2 }}>
           <TextField
             defaultValue={board.title.slice(2)}
-            disabled
+            disabled={!isEdit}
+            autoFocus={isEdit}
             variant="standard"
             sx={{
               border: 0,
               textAlign: 'center',
               color: 'black',
             }}
+            onSubmit={handleEditBoard}
           />
           <IconButton aria-label="delete" onClick={handleDeleteBoard}>
             <DeleteIcon />
           </IconButton>
-          <IconButton aria-label="edit" onClick={handleEditBoard}>
+          <IconButton aria-label="edit" onClick={() => setIsEdit(true)}>
             <EditIcon />
           </IconButton>
         </CardContent>

@@ -3,106 +3,90 @@ type IBoard = {
   title: string;
 };
 
-class BackAPI {
-  static urlBackEnd = 'https://safe-refuge-49235.herokuapp.com/';
+const urlBackEnd = 'https://safe-refuge-49235.herokuapp.com/';
 
-  static member = {
-    name: 'Vasya2',
-    login: 'user002',
-    password: 'userpass@123',
-  };
-  static async signUp(data: typeof this.member) {
-    console.log('Данные для регистрации', data);
-    const response = await fetch(this.urlBackEnd + 'signup', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    });
+const CreateNewBoard = async (title: string) => {
+  console.log('Создание доски');
+
+  const token = localStorage.getItem('token');
+
+  const response = await fetch(urlBackEnd + 'boards', {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ title: title }),
+  });
+  if (response.status === 200) {
     const json = await response.json();
-    console.log(json);
-
-    if (json.statusCode === 409) {
-      this.signIn(data);
-    }
-  }
-
-  static async signIn(data: typeof this.member) {
-    const dataWithOutName = {
-      login: data.login,
-      password: data.password,
-    };
-
-    console.log('Данные для получения токена', data);
-    const response = await fetch(this.urlBackEnd + 'signin', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(dataWithOutName),
-    });
-    const json = await response.json();
-    console.log(json);
-    localStorage.setItem('token', json.token);
-  }
-
-  static async createNewBoard(title: string) {
-    console.log('Создание доски');
-    const response = await fetch(this.urlBackEnd + 'boards', {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ title: title }),
-    });
-    const json = await response.json();
-    console.log(json);
-  }
-
-  static async getBoards(): Promise<IBoard[]> {
-    console.log('Получение досок');
-    const response = await fetch(this.urlBackEnd + 'boards', {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-      },
-    });
+    console.log('Доска создана', json);
+    return json;
+  } else if (response.status === 404) {
     const result = await response.json();
-    console.log(result);
-    return result;
-  }
-
-  static async updateBoard(id: string, title: string): Promise<void> {
-    console.log('Переименование доски');
-    const response = await fetch(this.urlBackEnd + 'boards/' + id, {
-      method: 'PUT',
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ title: title }),
-    });
+    console.log('Ошибка', result.message);
+  } else if (response.status === 401) {
     const result = await response.json();
-    console.log(result);
+    console.log('Ошибка', result.message);
   }
+};
 
-  static async deleteBoard(id: string): Promise<void> {
-    console.log('Удаление доски');
-    const response = await fetch(this.urlBackEnd + 'boards/' + id, {
-      method: 'DELETE',
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-      },
-    });
-    if (response.status === 204) {
-      console.log('Доска удалена');
-    } else if (response.status === 404) {
-      const result = await response.json();
-      console.log('Ошибка. Доска не найдена', result.message);
-    }
+const DeleteBoard = async (id: string): Promise<void> => {
+  console.log('Удаление доски');
+
+  const token = localStorage.getItem('token');
+
+  const response = await fetch(urlBackEnd + 'boards/' + id, {
+    method: 'DELETE',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  if (response.status === 204) {
+    console.log('Доска удалена');
+  } else if (response.status === 404) {
+    const result = await response.json();
+    console.log('Ошибка. Доска не найдена', result.message);
   }
-}
+};
 
-export default BackAPI;
+const GetBoards = async (): Promise<IBoard[]> => {
+  console.log('Получение досок');
+
+  const token = localStorage.getItem('token');
+
+  const response = await fetch(urlBackEnd + 'boards', {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  if (response.status === 200) {
+    const json = await response.json();
+    console.log('Доски получены', json);
+    return json;
+  } else if (response.status === 404) {
+    const result = await response.json();
+    console.log('Ошибка', result.message);
+  }
+  return [];
+};
+
+const UpdateBoard = async (id: string, title: string): Promise<void> => {
+  console.log('Переименование доски');
+
+  const token = localStorage.getItem('token');
+
+  const response = await fetch(urlBackEnd + 'boards/' + id, {
+    method: 'PUT',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ title: title }),
+  });
+  const result = await response.json();
+  console.log(result);
+};
+
+export { CreateNewBoard, GetBoards, DeleteBoard, UpdateBoard };

@@ -11,6 +11,6 @@ const dataPictures = [
   'background9.jpg',
   'background10.jpg',
   'background11.jpg',
-]
+];
 
 export default dataPictures;
