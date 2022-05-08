@@ -144,6 +144,8 @@ const Header = () => {
                   color: 'white',
                   display: 'block',
                   textDecoration: location.pathname === path ? 'underline' : '',
+                  transition: '.4s',
+                  '&:hover': { color: 'primary.contrastText' },
                 }}
                 component={NavLink}
                 to={path}
@@ -165,25 +167,47 @@ const Header = () => {
                       width: '50px',
                       height: '50px',
                       borderRadius: '50%',
-                      backgroundColor: 'white',
+                      bgcolor: 'white',
+                      transition: '.4s',
+                      '&:hover': { bgcolor: 'primary.contrastText' },
                     }}
                   >
                     <Typography
                       color="primary.contrastText"
-                      sx={{ fontWeight: '700', fontSize: '1.25rem' }}
+                      sx={{
+                        fontWeight: '700',
+                        fontSize: '1.25rem',
+                        transition: '.4s',
+                        '&:hover': { color: 'white' },
+                      }}
                     >
                       {generateUserInitials(userInfo)}
                     </Typography>
                   </Box>
                 ) : (
-                  <AccountCircleIcon sx={{ color: 'white', width: '3rem', height: '3rem' }} />
+                  <AccountCircleIcon
+                    sx={{
+                      color: 'white',
+                      width: '3rem',
+                      height: '3rem',
+                      transition: '.4s',
+                      '&:hover': { color: 'primary.contrastText' },
+                    }}
+                  />
                 )}
               </IconButton>
             </Tooltip>
             <IconButton onClick={() => dispatch(setUser(false))} sx={{ p: 0 }}>
               {isLoggedIn && (
                 <LogoutIcon
-                  sx={{ color: 'white', width: '3rem', height: '3rem', marginLeft: '1rem' }}
+                  sx={{
+                    color: 'white',
+                    width: '3rem',
+                    height: '3rem',
+                    marginLeft: '1rem',
+                    transition: '.4s',
+                    '&:hover': { color: 'primary.contrastText' },
+                  }}
                 />
               )}
             </IconButton>
