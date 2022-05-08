@@ -2,7 +2,7 @@ import { Container, Typography, Grid, CardMedia, CardContent, Link } from '@mui/
 import GitHubIcon from '@mui/icons-material/GitHub';
 import bgImage from '../../assets/images/bg.jpg';
 
-const MainPage = () => {
+const WelcomePage = () => {
   return (
     <>
       <Container>
@@ -140,4 +140,4 @@ const MainPage = () => {
   );
 };
 
-export default MainPage;
+export default WelcomePage;

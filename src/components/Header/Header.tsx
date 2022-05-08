@@ -17,11 +17,10 @@ import MenuIcon from '@mui/icons-material/Menu';
 import LogoutIcon from '@mui/icons-material/Logout';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { useAppSelector, useAppDispatch } from '../../hooks/redux.hooks';
-import { setUser } from '../../store/auth/authSlice';
 import { generateUserInitials } from '../../utils/generateUserInitials';
 
 const pages = [
-  { page: 'About', path: '/' },
+  { page: 'Welcome', path: '/' },
   { page: 'Board', path: '/boards' },
   { page: 'Edit Profile', path: '/edit-profile' },
 ];
@@ -36,7 +35,7 @@ const Header = () => {
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
   const [isSticky, setIsSticky] = useState<boolean>(false);
-  const { isLoggedIn, userInfo } = useAppSelector((state) => state.auth);
+  const { isLoggedIn, name } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
 
   const setStickyHeader = () => {
@@ -181,7 +180,7 @@ const Header = () => {
                         '&:hover': { color: 'white' },
                       }}
                     >
-                      {generateUserInitials(userInfo)}
+                      {name && generateUserInitials(name)}
                     </Typography>
                   </Box>
                 ) : (
@@ -197,7 +196,7 @@ const Header = () => {
                 )}
               </IconButton>
             </Tooltip>
-            <IconButton onClick={() => dispatch(setUser(false))} sx={{ p: 0 }}>
+            <IconButton sx={{ p: 0 }}>
               {isLoggedIn && (
                 <LogoutIcon
                   sx={{
