@@ -2,8 +2,8 @@ import { Card, CardActionArea, CardContent, CardMedia, IconButton, TextField } f
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import React from 'react';
-import dataPictures from '../dataPictures';
-import BackAPI from '../backAPI';
+import dataPictures from '../../dataPictures';
+import BackAPI from '../../utils/backAPI';
 
 type IBoard = {
   id: string;
