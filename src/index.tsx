@@ -5,7 +5,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { ThemeProvider } from '@mui/material';
-import { theme } from './utils/theme';
+import { theme } from './utils';
 import './index.css';
 
 import { store } from './store/store';

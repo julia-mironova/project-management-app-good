@@ -22,8 +22,8 @@ const pages = [
 ];
 
 const settings = [
-  { page: 'Login', path: '/login' },
-  { page: 'Signup', path: '/singup' },
+  { page: 'Log In', path: '/login' },
+  { page: 'Sign Up', path: '/signup' },
 ];
 
 const Header = () => {
