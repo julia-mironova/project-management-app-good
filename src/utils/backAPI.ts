@@ -70,6 +70,10 @@ const UpdateBoard = async (id: string, title: string): Promise<void> => {
     },
     body: JSON.stringify({ title: title }),
   });
+  if (!response.ok) {
+    const result = await response.json();
+    console.error(result.message);
+  }
 };
 
 export { CreateNewBoard, GetBoards, DeleteBoard, UpdateBoard };
