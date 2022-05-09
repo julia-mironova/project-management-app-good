@@ -37,7 +37,7 @@ const FormNewBoard = ({
     formState: { errors },
   } = useForm<IFormInput>();
 
-  const [changedImg, setChangedImg] = useState('-1');
+  const [changedImg, setChangedImg] = useState(-1);
 
   const onSubmit = (data: IFormInput) => {
     data.title = changedImg + data.title;
@@ -47,24 +47,19 @@ const FormNewBoard = ({
     onClose();
   };
 
-  const handleClickImg = (e: React.MouseEvent) => {
-    const target = e.target as HTMLImageElement;
-    setChangedImg(+target.alt < 10 ? `0${target.alt}` : target.alt);
-  };
-
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <DialogTitle>Create new board</DialogTitle>
       <DialogContent>
         <ImageList sx={{ width: 500, height: 400, gap: 5 }} cols={4} rowHeight={130}>
           {dataPictures.map((item, i) => (
-            <ImageListItem key={item} onClick={handleClickImg}>
+            <ImageListItem key={item} onClick={() => setChangedImg(i)}>
               <img
-                src={`pictures/${item}`}
-                alt={String(i)}
+                src={item}
+                alt="background"
                 loading="lazy"
                 style={
-                  +changedImg > -1 && +changedImg === i
+                  changedImg === i
                     ? {
                         borderRadius: 10,
                         borderColor: 'primary.main',
