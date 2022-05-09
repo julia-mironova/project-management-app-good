@@ -4,6 +4,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import React from 'react';
 import dataPictures from '../../dataPictures';
 import { DeleteBoard } from '../../utils/backAPI';
+import { useNavigate } from 'react-router-dom';
 
 type IBoard = {
   id: string;
@@ -20,6 +21,7 @@ const BoardPreview = ({
   setDataBoards: React.Dispatch<React.SetStateAction<IBoard[]>>;
 }) => {
   const [isEdit, setIsEdit] = React.useState(false);
+  const navigate = useNavigate();
 
   const handleDeleteBoard = async () => {
     await DeleteBoard(board.id);
@@ -30,8 +32,17 @@ const BoardPreview = ({
     setIsEdit(false);
   };
 
+  // const path: string | unknown = useLocation().state;
+
+  //   if (path === 'string') {
+  //     navigate(path, { replace: true });
+  //   } else {
+  //     navigate('/');
+  //   }
+  // };
+
   return (
-    <Card sx={{ maxWidth: 495, border: 2 }}>
+    <Card sx={{ maxWidth: 495, border: 2 }} onClick={() => navigate(`/boards/${board.id}`)}>
       <CardActionArea component="div">
         <CardMedia
           component="img"
