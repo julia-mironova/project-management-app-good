@@ -1,4 +1,4 @@
-import { Container, Button, Typography } from '@mui/material';
+import { Container, Button } from '@mui/material';
 import BoardPreview from '../BoardPreview';
 import { useEffect, useState } from 'react';
 import { GetBoards } from '../../utils/backAPI';
