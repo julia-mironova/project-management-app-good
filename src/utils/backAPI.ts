@@ -19,12 +19,9 @@ const CreateNewBoard = async (title: string) => {
   if (response.status === 200) {
     const json = await response.json();
     return json;
-  } else if (response.status === 404) {
+  } else if (response.status === 404 || response.status === 401) {
     const result = await response.json();
-    console.log('Error', result.message);
-  } else if (response.status === 401) {
-    const result = await response.json();
-    console.log('Error', result.message);
+    console.error(result.message);
   }
 };
 
@@ -39,7 +36,7 @@ const DeleteBoard = async (id: string): Promise<void> => {
   });
   if (response.status === 404) {
     const result = await response.json();
-    console.log('Error', result.message);
+    console.error(result.message);
   }
 };
 
@@ -57,7 +54,7 @@ const GetBoards = async (): Promise<IBoard[]> => {
     return json;
   } else if (response.status === 404) {
     const result = await response.json();
-    console.log('Error', result.message);
+    console.error(result.message);
   }
   return [];
 };
@@ -73,7 +70,6 @@ const UpdateBoard = async (id: string, title: string): Promise<void> => {
     },
     body: JSON.stringify({ title: title }),
   });
-  const result = await response.json();
 };
 
 export { CreateNewBoard, GetBoards, DeleteBoard, UpdateBoard };
