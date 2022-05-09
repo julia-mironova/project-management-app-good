@@ -6,8 +6,6 @@ type IBoard = {
 const urlBackEnd = 'https://safe-refuge-49235.herokuapp.com/';
 
 const CreateNewBoard = async (title: string) => {
-  console.log('Создание доски');
-
   const token = localStorage.getItem('token');
 
   const response = await fetch(urlBackEnd + 'boards', {
@@ -20,20 +18,17 @@ const CreateNewBoard = async (title: string) => {
   });
   if (response.status === 200) {
     const json = await response.json();
-    console.log('Доска создана', json);
     return json;
   } else if (response.status === 404) {
     const result = await response.json();
-    console.log('Ошибка', result.message);
+    console.log('Error', result.message);
   } else if (response.status === 401) {
     const result = await response.json();
-    console.log('Ошибка', result.message);
+    console.log('Error', result.message);
   }
 };
 
 const DeleteBoard = async (id: string): Promise<void> => {
-  console.log('Удаление доски');
-
   const token = localStorage.getItem('token');
 
   const response = await fetch(urlBackEnd + 'boards/' + id, {
@@ -42,17 +37,13 @@ const DeleteBoard = async (id: string): Promise<void> => {
       Authorization: `Bearer ${token}`,
     },
   });
-  if (response.status === 204) {
-    console.log('Доска удалена');
-  } else if (response.status === 404) {
+  if (response.status === 404) {
     const result = await response.json();
-    console.log('Ошибка. Доска не найдена', result.message);
+    console.log('Error', result.message);
   }
 };
 
 const GetBoards = async (): Promise<IBoard[]> => {
-  console.log('Получение досок');
-
   const token = localStorage.getItem('token');
 
   const response = await fetch(urlBackEnd + 'boards', {
@@ -63,18 +54,15 @@ const GetBoards = async (): Promise<IBoard[]> => {
   });
   if (response.status === 200) {
     const json = await response.json();
-    console.log('Доски получены', json);
     return json;
   } else if (response.status === 404) {
     const result = await response.json();
-    console.log('Ошибка', result.message);
+    console.log('Error', result.message);
   }
   return [];
 };
 
 const UpdateBoard = async (id: string, title: string): Promise<void> => {
-  console.log('Переименование доски');
-
   const token = localStorage.getItem('token');
 
   const response = await fetch(urlBackEnd + 'boards/' + id, {
@@ -86,7 +74,6 @@ const UpdateBoard = async (id: string, title: string): Promise<void> => {
     body: JSON.stringify({ title: title }),
   });
   const result = await response.json();
-  console.log(result);
 };
 
 export { CreateNewBoard, GetBoards, DeleteBoard, UpdateBoard };

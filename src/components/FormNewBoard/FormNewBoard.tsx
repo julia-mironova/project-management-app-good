@@ -40,10 +40,9 @@ const FormNewBoard = ({
   const [changedImg, setChangedImg] = useState(-1);
 
   const onSubmit = (data: IFormInput) => {
-    data.title = changedImg + data.title;
-    console.log('Create new board', data);
-    CreateNewBoard(data.title);
-    setDataBoards([...dataBoards, { id: data.title, title: data.title }]);
+    const titleWithBoardNumber = `${String(changedImg).padStart(2, '0')}${data.title}`;
+    CreateNewBoard(titleWithBoardNumber);
+    setDataBoards([...dataBoards, { id: data.title, title: titleWithBoardNumber }]);
     onClose();
   };
 

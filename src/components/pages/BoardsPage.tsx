@@ -28,7 +28,6 @@ const BoardsPage = () => {
     <Container
       maxWidth="xl"
       sx={{ mt: '1rem', display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: 5, p: 5 }}
-      data-testid="not-found-page"
     >
       {dataBoards.map((item) => (
         <BoardPreview

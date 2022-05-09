@@ -22,14 +22,11 @@ const BoardPreview = ({
   const [isEdit, setIsEdit] = React.useState(false);
 
   const handleDeleteBoard = async () => {
-    console.log('Delete board', board);
-    // const dataBoardsNew = dataBoards.filter((item) => item.id !== board.id);
-    // setDataBoards(dataBoardsNew);
     await DeleteBoard(board.id);
+    setDataBoards(dataBoards.filter((b) => b.id !== board.id));
   };
 
   const handleEditBoard = async () => {
-    console.log('Edit board', board);
     setIsEdit(false);
   };
 
@@ -39,8 +36,8 @@ const BoardPreview = ({
         <CardMedia
           component="img"
           height="140"
-          image={`pictures/${dataPictures[+board.title?.slice(0, 2)]}`}
-          alt={board.id}
+          image={dataPictures[+board.title?.slice(0, 2)]}
+          alt="background"
           sx={{ pt: 2, pl: 2, pr: 2, pb: 0 }}
         />
         <CardContent sx={{ pt: 2, pl: 3, pr: 2, pb: 2 }}>
