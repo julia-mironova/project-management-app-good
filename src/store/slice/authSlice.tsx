@@ -58,6 +58,7 @@ export const createToken = createAsyncThunk(
 
       const result: ICreateTokenResponse = await response.json();
       dispatch(setToken(result));
+      localStorage.setItem('token', result.token);
     } catch (err) {
       const msg = (err as Error).message;
       return rejectWithValue(msg);
