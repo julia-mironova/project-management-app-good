@@ -1,3 +1,5 @@
+import { localStorageGetUserToken } from './localStorage';
+
 type IBoard = {
   id: string;
   title: string;
@@ -6,7 +8,7 @@ type IBoard = {
 const urlBackEnd = 'https://safe-refuge-49235.herokuapp.com/';
 
 const CreateNewBoard = async (title: string) => {
-  const token = localStorage.getItem('token');
+  const token = localStorageGetUserToken();
 
   const response = await fetch(urlBackEnd + 'boards', {
     method: 'POST',
@@ -26,7 +28,7 @@ const CreateNewBoard = async (title: string) => {
 };
 
 const DeleteBoard = async (id: string): Promise<void> => {
-  const token = localStorage.getItem('token');
+  const token = localStorageGetUserToken();
 
   const response = await fetch(urlBackEnd + 'boards/' + id, {
     method: 'DELETE',
@@ -41,7 +43,7 @@ const DeleteBoard = async (id: string): Promise<void> => {
 };
 
 const GetBoards = async (): Promise<IBoard[]> => {
-  const token = localStorage.getItem('token');
+  const token = localStorageGetUserToken();
 
   const response = await fetch(urlBackEnd + 'boards', {
     method: 'GET',
@@ -60,7 +62,7 @@ const GetBoards = async (): Promise<IBoard[]> => {
 };
 
 const UpdateBoard = async (id: string, title: string): Promise<void> => {
-  const token = localStorage.getItem('token');
+  const token = localStorageGetUserToken();
 
   const response = await fetch(urlBackEnd + 'boards/' + id, {
     method: 'PUT',

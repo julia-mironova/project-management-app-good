@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import {
   InputAdornment,
@@ -17,7 +18,6 @@ import SendIcon from '@mui/icons-material/Send';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux.hooks';
 import { createToken } from '../../store/slice/authSlice';
-import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 
 export const Login = () => {
   const {
@@ -38,6 +38,7 @@ export const Login = () => {
       password: data.password,
     };
     await dispatch(createToken(rename));
+
     if (path === 'string') {
       navigate(path, { replace: true });
     } else {
@@ -46,7 +47,7 @@ export const Login = () => {
   };
 
   return (
-    <Container maxWidth="xs" sx={{ mt: '1rem', pb: 3, height: 'calc(100vh - 140px)' }}>
+    <Container maxWidth="xs" sx={{ mt: '1rem', pb: 3, height: 'calc(100vh - 196px)' }}>
       <CssBaseline />
       <Box
         sx={{
