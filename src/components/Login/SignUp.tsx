@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import {
   InputAdornment,
@@ -18,6 +18,8 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { createToken, createUser } from '../../store/slice/authSlice';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux.hooks';
 import { NavLink, useNavigate } from 'react-router-dom';
+import { localStorageSetUser, localStorageSetUserToken } from '../../utils/localStorage';
+import { UserInfo } from '../../types/types';
 
 export const SignUp = () => {
   const {
@@ -27,7 +29,7 @@ export const SignUp = () => {
   } = useForm<propsSubmitSignUp>({ mode: 'onSubmit' });
 
   const [showPassword, setShowPassword] = useState(false);
-  const state = useAppSelector((state) => state.auth);
+  const { id, name, token, rejectMsg, pending } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -39,11 +41,18 @@ export const SignUp = () => {
         name: data.name,
       })
     );
-    if (!state.rejectMsg) {
+    if (rejectMsg) {
       await dispatch(createToken({ login: data.email, password: data.password }));
       navigate('/boards');
     }
   };
+
+  useEffect(() => {
+    return () => {
+      localStorageSetUser({ id: id, name: name });
+      localStorageSetUserToken(token);
+    };
+  }, [id, name, token]);
 
   return (
     <Container maxWidth="xs" sx={{ mt: '1rem', pb: 3, height: 'calc(100vh - 140px)' }}>
@@ -129,7 +138,7 @@ export const SignUp = () => {
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
             endIcon={<SendIcon />}
-            loading={state.pending}
+            loading={pending}
             loadingPosition="end"
           >
             Sign Up

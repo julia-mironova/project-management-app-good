@@ -1,14 +1,27 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
+import {
+  localStorageGetUser,
+  localStorageClear,
+  localStorageSetUser,
+  localStorageSetUserToken,
+  localStorageGetUserToken,
+} from '../../utils/localStorage';
+import { UserInfo } from '../../types/types';
+import { UserResponse } from '../../types/auth';
+import { BASE_URL } from '../../constants/baseUrl';
+import { getUserById } from '../../api/requests';
+import { parseJwt } from '../../utils/parseJWT';
 
-const BASE_URL = 'https://safe-refuge-49235.herokuapp.com/';
+const initialUser: UserInfo = localStorageGetUser() || undefined;
+const initialUserToken: string | null = localStorageGetUserToken();
 
 const initialState: AuthState = {
-  isLoggedIn: false,
-  token: '',
+  isLoggedIn: !!initialUserToken,
+  token: initialUserToken || '',
   pending: false,
   rejectMsg: '',
-  id: '',
-  name: 'Bill Smith',
+  id: initialUser?.id || '',
+  name: initialUser?.name || '',
 };
 
 export const createUser = createAsyncThunk(
@@ -38,6 +51,7 @@ export const createUser = createAsyncThunk(
     }
   }
 );
+
 export const createToken = createAsyncThunk(
   'auth/createToken',
   async (data: ICreateToken, { dispatch, rejectWithValue }) => {
@@ -58,7 +72,31 @@ export const createToken = createAsyncThunk(
       }
 
       const result: ICreateTokenResponse = await response.json();
+      dispatch(getSingleUser({ id: parseJwt(result.token).userId as string, token: result.token }));
       dispatch(setToken(result));
+      localStorageSetUserToken(result.token);
+    } catch (err) {
+      const msg = (err as Error).message;
+      return rejectWithValue(msg);
+    }
+  }
+);
+
+export const getSingleUser = createAsyncThunk(
+  'auth/getSingleUser',
+  async (data: ISingleUser, { dispatch, rejectWithValue }) => {
+    try {
+      const singleUserResponse = await getUserById(data.id, data.token);
+
+      if (!singleUserResponse.ok) {
+        const resp = await singleUserResponse.json();
+        throw new Error(
+          `bad server response, error code: ${resp?.statusCode} message: ${resp?.message}`
+        );
+      }
+      const singleUser: UserResponse = await singleUserResponse.json();
+      dispatch(setUser(singleUser));
+      localStorageSetUser({ id: singleUser.id, name: singleUser.name });
     } catch (err) {
       const msg = (err as Error).message;
       return rejectWithValue(msg);
@@ -87,6 +125,10 @@ export const authSlice = createSlice({
       state.login = action.payload.login;
       state.name = action.payload.name;
     },
+    logOut: (state) => {
+      state.isLoggedIn = false;
+      localStorageClear();
+    },
     setToken: (state, action: PayloadAction<ICreateTokenResponse>) => {
       state.token = action.payload.token;
       state.isLoggedIn = true;
@@ -98,11 +140,14 @@ export const authSlice = createSlice({
     [createUser.fulfilled.type]: fulfilled,
     [createToken.pending.type]: pending,
     [createToken.rejected.type]: reject,
-    [createToken.fulfilled.type]: fulfilled,
+    [getSingleUser.fulfilled.type]: fulfilled,
+    [getSingleUser.pending.type]: pending,
+    [getSingleUser.rejected.type]: reject,
+    [getSingleUser.fulfilled.type]: fulfilled,
   },
 });
 
-export const { setUser, setToken } = authSlice.actions;
+export const { setUser, logOut, setToken } = authSlice.actions;
 
 export default authSlice.reducer;
 
@@ -113,7 +158,7 @@ interface AuthState {
   rejectMsg: string | null;
   id: string;
   login?: string;
-  name?: string;
+  name: string;
 }
 
 type ICreateUser = {
@@ -132,5 +177,10 @@ type ICreateUserResponse = {
   login: string;
 };
 type ICreateTokenResponse = {
+  token: string;
+};
+
+type ISingleUser = {
+  id: string;
   token: string;
 };
