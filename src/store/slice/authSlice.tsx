@@ -8,6 +8,7 @@ const initialState: AuthState = {
   pending: false,
   rejectMsg: '',
   id: '',
+  name: 'Bill Smith',
 };
 
 export const createUser = createAsyncThunk(
