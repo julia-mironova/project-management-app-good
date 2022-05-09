@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import {
   AppBar,
   Container,
@@ -11,7 +11,6 @@ import {
   MenuItem,
   Tooltip,
   IconButton,
-  Grid,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import LogoutIcon from '@mui/icons-material/Logout';
@@ -19,7 +18,6 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { useAppSelector, useAppDispatch } from '../../hooks/redux.hooks';
 import { generateUserInitials } from '../../utils/generateUserInitials';
 import { logOut } from '../../store/slice/authSlice';
-import { localStorageClear } from '../../utils/localStorage';
 
 const pages = [
   { page: 'Welcome', path: '/' },
@@ -34,6 +32,7 @@ const settings = [
 
 const Header = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
   const [isSticky, setIsSticky] = useState<boolean>(false);
@@ -158,7 +157,12 @@ const Header = () => {
 
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+              <IconButton
+                onClick={(e) => {
+                  isLoggedIn ? navigate('/edit-profile') : handleOpenUserMenu(e);
+                }}
+                sx={{ p: 0 }}
+              >
                 {isLoggedIn ? (
                   <Box
                     justifyContent="center"
