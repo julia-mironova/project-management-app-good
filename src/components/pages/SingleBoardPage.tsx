@@ -1,4 +1,6 @@
 import { Button, Container, Stack } from '@mui/material';
+import FormNewColumn from '../FormNewColumn';
+import ModalWindow from '../ModalWindow';
 import React from 'react';
 import BoardColumn from '../BoardColumn';
 
@@ -31,6 +33,8 @@ export type IBoardFull = {
 };
 
 const SingleBoardPage = () => {
+  const [isOpenModalAddNewColumn, setIsOpenModalAddNewColumn] = React.useState(false);
+
   const startDataBoard: IBoardFull = {
     id: '9a111e19-24ec-43e1-b8c4-13776842b8d5',
     title: 'Homework tasks',
@@ -98,7 +102,7 @@ const SingleBoardPage = () => {
     ],
   };
 
-  const [dataBoard, setDataBoard] = React.useState<IColumn[]>(startDataBoard.columns);
+  const [dataColumns, setDataColumns] = React.useState<IColumn[]>(startDataBoard.columns);
 
   return (
     <Container maxWidth={false} sx={{ mt: '1rem', height: '83.5vh' }}>
@@ -106,21 +110,34 @@ const SingleBoardPage = () => {
         direction={{ xs: 'column', sm: 'row' }}
         spacing={{ xs: 1, sm: 2, md: 4 }}
         justifyContent="flex-start"
+        sx={{ overflowX: 'scroll', overflowY: 'hidden' }}
       >
-        {dataBoard
+        {dataColumns
           .sort((a, b) => a.order - b.order)
           .map((column) => (
             <BoardColumn
               key={column.id}
               column={column}
-              dataBoard={dataBoard}
-              setDataBoard={setDataBoard}
+              dataColumns={dataColumns}
+              setDataColumns={setDataColumns}
             />
           ))}
-        <Button variant="outlined" size="large" sx={{ height: 50, width: 300 }}>
+        <Button
+          variant="outlined"
+          size="large"
+          sx={{ height: 50, minWidth: 300 }}
+          onClick={() => setIsOpenModalAddNewColumn(true)}
+        >
           + new colomn
         </Button>
       </Stack>
+      <ModalWindow open={isOpenModalAddNewColumn} onClose={() => setIsOpenModalAddNewColumn(false)}>
+        <FormNewColumn
+          onClose={() => setIsOpenModalAddNewColumn(false)}
+          dataColumns={dataColumns}
+          setDataColumns={setDataColumns}
+        />
+      </ModalWindow>
     </Container>
   );
 };
