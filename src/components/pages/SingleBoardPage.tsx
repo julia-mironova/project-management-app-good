@@ -103,7 +103,7 @@ const SingleBoardPage = () => {
   const [dataBoard, setDataBoard] = React.useState<IColumn[]>(startDataBoard.columns);
 
   return (
-    <Container maxWidth="xl" sx={{ mt: '1rem', height: '83.5vh' }}>
+    <Container maxWidth={false} sx={{ mt: '1rem', height: '83.5vh' }}>
       <Stack
         direction={{ xs: 'column', sm: 'row' }}
         spacing={{ xs: 1, sm: 2, md: 4 }}
@@ -112,7 +112,12 @@ const SingleBoardPage = () => {
         {dataBoard
           .sort((a, b) => a.order - b.order)
           .map((column) => (
-            <BoardColumn key={column.id} column={column} />
+            <BoardColumn
+              key={column.id}
+              column={column}
+              dataBoard={dataBoard}
+              setDataBoard={setDataBoard}
+            />
           ))}
         <Button variant="outlined" size="large" sx={{ height: 50, width: 300 }}>
           + new colomn

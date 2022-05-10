@@ -1,32 +1,34 @@
-import { Box, IconButton, Paper, Stack, styled, TextField } from '@mui/material';
+import { Box, IconButton, Stack, TextField } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import React from 'react';
-import { IColumn, ITask, IFileAttached } from '../pages/SingleBoardPage';
+import { IColumn, ITask } from '../pages/SingleBoardPage';
 import ColumnTask from '../ColumnTask';
 
-const BoardColumn = ({ column }: { column: IColumn }) => {
+const BoardColumn = ({
+  column,
+  dataBoard,
+  setDataBoard,
+}: {
+  column: IColumn;
+  dataBoard: IColumn[];
+  setDataBoard: React.Dispatch<React.SetStateAction<IColumn[]>>;
+}) => {
   const [isEdit, setIsEdit] = React.useState(false);
 
-  const handleDeleteBoard = async () => {
+  const handleDeleteColumn = async () => {
     console.log('delete column');
+    console.log(column);
+    console.log(dataBoard);
+    const newDataBoard = dataBoard.filter((col) => col.id !== column.id);
+    console.log(newDataBoard);
+    setDataBoard(newDataBoard);
   };
 
   const handleEditBoard = async () => {
     console.log('edit name of column');
     setIsEdit(false);
   };
-
-  const Item = styled(Paper)(({ theme }) => ({
-    ...theme.typography.body2,
-    textAlign: 'left',
-    paddingLeft: theme.spacing(2),
-    color: theme.palette.text.secondary,
-    height: 60,
-    width: '100%',
-    lineHeight: '60px',
-    borderRadius: theme.shape.borderRadius,
-  }));
 
   return (
     <Stack
@@ -60,7 +62,7 @@ const BoardColumn = ({ column }: { column: IColumn }) => {
         <IconButton aria-label="edit" onClick={() => setIsEdit(true)}>
           <EditIcon />
         </IconButton>
-        <IconButton aria-label="delete" onClick={handleDeleteBoard}>
+        <IconButton aria-label="delete" onClick={handleDeleteColumn}>
           <DeleteIcon />
         </IconButton>
       </Box>
