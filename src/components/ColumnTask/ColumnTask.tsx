@@ -1,19 +1,7 @@
-import { Box, IconButton, Paper, Stack, styled, TextField } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
-import React from 'react';
-import { IColumn, ITask, IFileAttached } from '../pages/SingleBoardPage';
+import { Paper, styled } from '@mui/material';
+import { ITask } from '../pages/SingleBoardPage';
 
 const ColumnTask = ({ task }: { task: ITask }) => {
-  const [isEdit, setIsEdit] = React.useState(false);
-
-  // const handleDeleteBoard = async () => {
-  // };
-
-  const handleEditBoard = async () => {
-    setIsEdit(false);
-  };
-
   const Task = styled(Paper)(({ theme }) => ({
     ...theme.typography.body2,
     textAlign: 'left',

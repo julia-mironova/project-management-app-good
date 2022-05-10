@@ -1,17 +1,7 @@
-import {
-  Button,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  ImageList,
-  ImageListItem,
-  TextField,
-  Typography,
-} from '@mui/material';
+import { Button, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
 import { ITask } from '../pages/SingleBoardPage';
-import React, { useState } from 'react';
+import React from 'react';
 import { useForm } from 'react-hook-form';
-import dataPictures from '../../dataPictures';
 import { useAppSelector } from '../../hooks/redux.hooks';
 
 type IFormInputNewTask = {
@@ -36,8 +26,6 @@ const FormNewTask = ({
   const { id } = useAppSelector((state) => state.auth);
 
   const onSubmit = (data: IFormInputNewTask) => {
-    console.log('Create new task', data);
-
     const maxOrder = dataTasks.reduce((acc, curr) => (acc > curr.order ? acc : curr.order), 0);
 
     const newTask = {

@@ -1,6 +1,4 @@
-import { Box, Button, Container, IconButton, Paper, Stack, styled, TextField } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
+import { Button, Container, Stack } from '@mui/material';
 import React from 'react';
 import BoardColumn from '../BoardColumn';
 
