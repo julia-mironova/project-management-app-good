@@ -127,6 +127,9 @@ export const authSlice = createSlice({
     },
     logOut: (state) => {
       state.isLoggedIn = false;
+      state.id = '';
+      state.name = '';
+      state.token = '';
       localStorageClear();
     },
     setToken: (state, action: PayloadAction<ICreateTokenResponse>) => {
