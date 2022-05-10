@@ -1,27 +1,52 @@
-import { Box, IconButton, Stack, TextField } from '@mui/material';
+import { Box, Divider, IconButton, Stack, TextField, Tooltip, Typography } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
+import CancelIcon from '@mui/icons-material/Cancel';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import React from 'react';
 import { IColumn, ITask } from '../pages/SingleBoardPage';
 import ColumnTask from '../ColumnTask';
+import ModalWindow from '../ModalWindow';
+import FormNewTask from '../FormNewTask';
+import { useForm } from 'react-hook-form';
+
+type IFormInputChangeName = {
+  title: string;
+};
 
 const BoardColumn = ({
   column,
-  dataBoard,
-  setDataBoard,
+  dataColumns,
+  setDataColumns,
 }: {
   column: IColumn;
-  dataBoard: IColumn[];
-  setDataBoard: React.Dispatch<React.SetStateAction<IColumn[]>>;
+  dataColumns: IColumn[];
+  setDataColumns: React.Dispatch<React.SetStateAction<IColumn[]>>;
 }) => {
   const [isEdit, setIsEdit] = React.useState(false);
+  const [isOpenModalAddNewTask, setisOpenModalAddNewTask] = React.useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<IFormInputChangeName>();
+
+  const [dataTasks, setDataTasks] = React.useState(column.tasks);
 
   const handleDeleteColumn = async () => {
-    const newDataBoard = dataBoard.filter((col) => col.id !== column.id);
-    setDataBoard(newDataBoard);
+    const newDataColumns = dataColumns.filter((col) => col.id !== column.id);
+    setDataColumns(newDataColumns);
   };
 
-  const handleEditBoard = async () => {
+  const changeNameColumn = async (e: IFormInputChangeName) => {
+    const newDataColumns = dataColumns.map((col) => {
+      if (col.id === column.id) {
+        col.title = e.title;
+      }
+      return col;
+    });
+    setDataColumns(newDataColumns);
     setIsEdit(false);
   };
 
@@ -30,42 +55,149 @@ const BoardColumn = ({
       spacing={2}
       sx={{
         width: '400px',
-        border: '1px solid gray',
+        minWidth: '400px',
+        border: '1px solid LightGray',
         borderRadius: 2,
         padding: 2,
-        backgroundColor: 'lightgray',
+        backgroundColor: 'Gainsboro',
         height: '81vh',
       }}
     >
-      <Box sx={{ width: '100%' }}>
-        <TextField
-          defaultValue={column.title}
-          disabled={!isEdit}
-          autoFocus={isEdit}
-          variant="standard"
-          sx={{
-            border: 0,
-            textAlign: 'center',
-            color: 'black',
-            width: '78%',
-            background: `${isEdit ? 'white' : 'lightgray'}`,
-            borderRadius: 1,
-          }}
-          onClick={() => setIsEdit(true)}
-          onBlur={handleEditBoard}
-        />
-        <IconButton aria-label="add new task">
-          <AddIcon />
-        </IconButton>
-        <IconButton aria-label="delete" onClick={handleDeleteColumn}>
-          <DeleteIcon />
-        </IconButton>
+      <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between', height: '33px' }}>
+        {isEdit ? (
+          <form onSubmit={handleSubmit(changeNameColumn)}>
+            <Box
+              sx={{
+                width: '300px',
+                display: 'flex',
+                justifyContent: 'space-between',
+                height: '33px',
+                border: '1px solid gray',
+                borderRadius: 2,
+              }}
+            >
+              <TextField
+                defaultValue={column.title}
+                variant="standard"
+                error={errors.title ? true : false}
+                helperText={errors.title ? errors.title.message : ''}
+                sx={{
+                  cursor: 'default',
+                  color: 'black',
+                  width: '75%',
+                  background: 'white',
+                  borderRadius: 1,
+                  pl: 1,
+                }}
+                {...register('title', {
+                  required: { value: true, message: 'this field is required' },
+                  minLength: {
+                    value: 6,
+                    message: 'must be at least 6 characters long',
+                  },
+                })}
+              />
+              <Box>
+                <Tooltip title="Change name">
+                  <IconButton
+                    aria-label="change name"
+                    color="primary"
+                    size="large"
+                    sx={{
+                      p: 0.5,
+                    }}
+                    type="submit"
+                  >
+                    <CheckCircleIcon />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Cancel">
+                  <IconButton
+                    aria-label="cancel"
+                    color="primary"
+                    size="large"
+                    sx={{
+                      p: 0.5,
+                    }}
+                    onClick={() => setIsEdit(false)}
+                  >
+                    <CancelIcon />
+                  </IconButton>
+                </Tooltip>
+              </Box>
+            </Box>
+          </form>
+        ) : (
+          <Typography
+            align="left"
+            noWrap={true}
+            sx={{
+              width: '70%',
+              fontSize: '1.5rem',
+              fontWeight: 'bold',
+            }}
+            onClick={() => setIsEdit(true)}
+          >
+            {column.title}
+          </Typography>
+        )}
+
+        <Box>
+          <Tooltip title="Add new task">
+            <IconButton
+              aria-label="add new task"
+              color="primary"
+              size="large"
+              sx={{
+                p: 0,
+                pr: 1,
+              }}
+              onClick={() => setisOpenModalAddNewTask(true)}
+            >
+              <AddIcon />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Delete column">
+            <IconButton
+              aria-label="delete column"
+              color="primary"
+              size="large"
+              sx={{
+                p: 0,
+              }}
+              onClick={handleDeleteColumn}
+            >
+              <DeleteIcon />
+            </IconButton>
+          </Tooltip>
+        </Box>
       </Box>
-      {column.tasks
-        .sort((a, b) => a.order - b.order)
-        .map((task: ITask) => (
-          <ColumnTask key={task.id} task={task} />
-        ))}
+      <Divider />
+      <Stack
+        spacing={2}
+        sx={{
+          overflowY: 'scroll',
+          overflowX: 'hidden',
+        }}
+      >
+        {dataTasks
+          .sort((a, b) => a.order - b.order)
+          .map((task: ITask) => (
+            <ColumnTask
+              key={task.id}
+              task={task}
+              dataTasks={dataTasks}
+              setDataTasks={setDataTasks}
+            />
+          ))}
+      </Stack>
+      <ModalWindow open={isOpenModalAddNewTask} onClose={() => setisOpenModalAddNewTask(false)}>
+        <FormNewTask
+          onClose={() => setisOpenModalAddNewTask(false)}
+          dataTasks={dataTasks}
+          setDataTasks={setDataTasks}
+        />
+      </ModalWindow>
     </Stack>
   );
 };
