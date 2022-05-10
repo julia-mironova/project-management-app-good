@@ -17,16 +17,11 @@ const BoardColumn = ({
   const [isEdit, setIsEdit] = React.useState(false);
 
   const handleDeleteColumn = async () => {
-    console.log('delete column');
-    console.log(column);
-    console.log(dataBoard);
     const newDataBoard = dataBoard.filter((col) => col.id !== column.id);
-    console.log(newDataBoard);
     setDataBoard(newDataBoard);
   };
 
   const handleEditBoard = async () => {
-    console.log('edit name of column');
     setIsEdit(false);
   };
 

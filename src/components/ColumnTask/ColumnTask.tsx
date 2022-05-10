@@ -7,12 +7,10 @@ import { IColumn, ITask, IFileAttached } from '../pages/SingleBoardPage';
 const ColumnTask = ({ task }: { task: ITask }) => {
   const [isEdit, setIsEdit] = React.useState(false);
 
-  const handleDeleteBoard = async () => {
-    console.log('delete column');
-  };
+  // const handleDeleteBoard = async () => {
+  // };
 
   const handleEditBoard = async () => {
-    console.log('edit name of column');
     setIsEdit(false);
   };
 
