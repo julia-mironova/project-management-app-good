@@ -22,10 +22,10 @@ const BoardsPage = () => {
   const handlerCreateBoard = (title: string) => {
     dispatch(createBoard(title));
   };
+
   useEffect(() => {
-    dispatch(getAllBoards());
-    console.log('get all boards');
-  }, [dispatch]);
+    if (boards.length === 0) dispatch(getAllBoards());
+  }, []);
 
   return (
     <Container
