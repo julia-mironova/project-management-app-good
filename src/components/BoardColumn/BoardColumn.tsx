@@ -1,4 +1,4 @@
-import { Box, IconButton, Stack, TextField } from '@mui/material';
+import { Box, IconButton, Stack, TextField, Tooltip } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import React from 'react';
@@ -45,25 +45,38 @@ const BoardColumn = ({
         <TextField
           defaultValue={column.title}
           disabled={!isEdit}
-          autoFocus={isEdit}
           variant="standard"
           sx={{
             border: 0,
             textAlign: 'center',
             color: 'black',
-            width: '78%',
+            width: '73%',
             background: `${isEdit ? 'white' : 'lightgray'}`,
             borderRadius: 1,
           }}
           onClick={() => setIsEdit(true)}
           onBlur={handleEditBoard}
         />
-        <IconButton aria-label="add new task" onClick={() => setisOpenModalAddNewTask(true)}>
-          <AddIcon />
-        </IconButton>
-        <IconButton aria-label="delete" onClick={handleDeleteColumn}>
-          <DeleteIcon />
-        </IconButton>
+        <Tooltip title="Add new task">
+          <IconButton
+            aria-label="add new task"
+            color="primary"
+            size="large"
+            onClick={() => setisOpenModalAddNewTask(true)}
+          >
+            <AddIcon />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title="Delete column">
+          <IconButton
+            aria-label="delete column"
+            color="primary"
+            size="large"
+            onClick={handleDeleteColumn}
+          >
+            <DeleteIcon />
+          </IconButton>
+        </Tooltip>
       </Box>
       {dataTasks
         .sort((a, b) => a.order - b.order)
