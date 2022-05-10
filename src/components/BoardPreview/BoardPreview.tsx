@@ -32,15 +32,6 @@ const BoardPreview = ({
     setIsEdit(false);
   };
 
-  // const path: string | unknown = useLocation().state;
-
-  //   if (path === 'string') {
-  //     navigate(path, { replace: true });
-  //   } else {
-  //     navigate('/');
-  //   }
-  // };
-
   return (
     <Card sx={{ maxWidth: 495, border: 2 }} onClick={() => navigate(`/boards/${board.id}`)}>
       <CardActionArea component="div">
