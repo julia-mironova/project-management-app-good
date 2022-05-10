@@ -16,7 +16,7 @@ const ColumnTask = ({
   const [isOpenModalTaskFull, setIsOpenModalTaskFull] = React.useState(false);
 
   const Task = styled(Paper)(({ theme }) => ({
-    ...theme.typography.body2,
+    ...theme.typography.h6,
     textAlign: 'left',
     paddingLeft: theme.spacing(2),
     color: theme.palette.text.secondary,
@@ -24,6 +24,7 @@ const ColumnTask = ({
     width: '100%',
     lineHeight: '60px',
     borderRadius: theme.shape.borderRadius,
+    textDecoration: task.done ? 'line-through' : 'none',
   }));
 
   return (

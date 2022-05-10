@@ -78,6 +78,12 @@ const TaskFull = ({
     setDataTasks(newDataTasks);
   };
 
+  const onDelete = () => {
+    const newDataTasks = dataTasks.filter((item) => item.id !== task.id);
+    setDataTasks(newDataTasks);
+    onClose();
+  };
+
   const handleDeleteFile = (name: string) => {
     console.log('Delete file: ', name);
     console.log(downloadFiles);
@@ -203,6 +209,9 @@ const TaskFull = ({
           </Button>
         </DialogContent>
         <DialogActions>
+          <Button onClick={onDelete} sx={{ color: 'red' }}>
+            Delete task
+          </Button>
           <Button onClick={onClose}>Cancel</Button>
           <Button type="submit">Ok</Button>
         </DialogActions>
