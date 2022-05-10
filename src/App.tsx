@@ -1,5 +1,5 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
-import Layout from './components/layout/Layout/Layout';
+import Layout from './components/Layout/Layout';
 import { WelcomePage, EditProfile, Page404, BoardsPage, SingleBoardPage } from './components/pages';
 import { Login, SignUp } from './components';
 import RequireAuth from './hoc/RequireAuth';
