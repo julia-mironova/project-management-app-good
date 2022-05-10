@@ -4,6 +4,8 @@ import AddIcon from '@mui/icons-material/Add';
 import React from 'react';
 import { IColumn, ITask } from '../pages/SingleBoardPage';
 import ColumnTask from '../ColumnTask';
+import ModalWindow from '../ModalWindow';
+import FormNewTask from '../FormNewTask';
 
 const BoardColumn = ({
   column,
@@ -15,6 +17,8 @@ const BoardColumn = ({
   setDataBoard: React.Dispatch<React.SetStateAction<IColumn[]>>;
 }) => {
   const [isEdit, setIsEdit] = React.useState(false);
+  const [isOpenModalAddNewTask, setisOpenModalAddNewTask] = React.useState(false);
+  const [dataTasks, setDataTasks] = React.useState(column.tasks);
 
   const handleDeleteColumn = async () => {
     const newDataBoard = dataBoard.filter((col) => col.id !== column.id);
@@ -54,18 +58,25 @@ const BoardColumn = ({
           onClick={() => setIsEdit(true)}
           onBlur={handleEditBoard}
         />
-        <IconButton aria-label="add new task">
+        <IconButton aria-label="add new task" onClick={() => setisOpenModalAddNewTask(true)}>
           <AddIcon />
         </IconButton>
         <IconButton aria-label="delete" onClick={handleDeleteColumn}>
           <DeleteIcon />
         </IconButton>
       </Box>
-      {column.tasks
+      {dataTasks
         .sort((a, b) => a.order - b.order)
         .map((task: ITask) => (
           <ColumnTask key={task.id} task={task} />
         ))}
+      <ModalWindow open={isOpenModalAddNewTask} onClose={() => setisOpenModalAddNewTask(false)}>
+        <FormNewTask
+          onClose={() => setisOpenModalAddNewTask(false)}
+          dataTasks={dataTasks}
+          setDataTasks={setDataTasks}
+        />
+      </ModalWindow>
     </Stack>
   );
 };
