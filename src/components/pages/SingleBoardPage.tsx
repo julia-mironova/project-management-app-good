@@ -56,6 +56,18 @@ const SingleBoardPage = () => {
                 filename: 'foto.jpg',
                 fileSize: 6105000,
               },
+              {
+                filename: 'foto2.jpg',
+                fileSize: 6105000,
+              },
+              {
+                filename: 'foto3.jpg',
+                fileSize: 6105000,
+              },
+              {
+                filename: 'foto4.jpg',
+                fileSize: 6105000,
+              },
             ],
           },
           {
@@ -69,6 +81,10 @@ const SingleBoardPage = () => {
               {
                 filename: 'foto.jpg',
                 fileSize: 6105000,
+              },
+              {
+                filename: 'foto2.jpg',
+                fileSize: 3105000,
               },
             ],
           },

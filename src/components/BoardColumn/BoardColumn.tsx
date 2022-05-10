@@ -56,10 +56,10 @@ const BoardColumn = ({
       sx={{
         width: '400px',
         minWidth: '400px',
-        border: '1px solid gray',
+        border: '1px solid LightGray',
         borderRadius: 2,
         padding: 2,
-        backgroundColor: 'lightgray',
+        backgroundColor: 'Gainsboro',
         height: '81vh',
       }}
     >
@@ -183,7 +183,12 @@ const BoardColumn = ({
         {dataTasks
           .sort((a, b) => a.order - b.order)
           .map((task: ITask) => (
-            <ColumnTask key={task.id} task={task} />
+            <ColumnTask
+              key={task.id}
+              task={task}
+              dataTasks={dataTasks}
+              setDataTasks={setDataTasks}
+            />
           ))}
       </Stack>
       <ModalWindow open={isOpenModalAddNewTask} onClose={() => setisOpenModalAddNewTask(false)}>
