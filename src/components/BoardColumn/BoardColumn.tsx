@@ -1,6 +1,6 @@
 import { Box, IconButton, Stack, TextField } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
+import AddIcon from '@mui/icons-material/Add';
 import React from 'react';
 import { IColumn, ITask } from '../pages/SingleBoardPage';
 import ColumnTask from '../ColumnTask';
@@ -59,8 +59,8 @@ const BoardColumn = ({
           onClick={() => setIsEdit(true)}
           onBlur={handleEditBoard}
         />
-        <IconButton aria-label="edit" onClick={() => setIsEdit(true)}>
-          <EditIcon />
+        <IconButton aria-label="add new task">
+          <AddIcon />
         </IconButton>
         <IconButton aria-label="delete" onClick={handleDeleteColumn}>
           <DeleteIcon />
