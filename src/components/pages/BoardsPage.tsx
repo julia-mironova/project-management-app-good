@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import ModalWindow from '../ModalWindow';
 import FormCreateBoard from '../FormCreateBoard';
 import { useAppSelector, useAppDispatch } from '../../hooks/redux.hooks';
-import { getAllBoards, deleteAsyncBoard, createBoard } from '../../store/slice/boardSlice';
+import { getAllBoards, deleteAsyncBoard, createBoard } from '../../store/slices/boardSlice';
 
 const BoardsPage = () => {
   const [openModal, setOpenModal] = useState(false);
@@ -25,15 +25,15 @@ const BoardsPage = () => {
 
   useEffect(() => {
     if (boards.length === 0) dispatch(getAllBoards());
-  }, []);
+  }, [boards.length, dispatch]);
 
   return (
     <Container
       maxWidth="xl"
       sx={{ mt: '1rem', display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: 5, p: 5 }}
     >
-      {boards.map((item, index) => (
-        <BoardPreview board={item} key={item.id} index={index} handlerDelete={handlerDelete} />
+      {boards.map((item) => (
+        <BoardPreview board={item} key={item.id} handlerDelete={handlerDelete} />
       ))}
       <Button variant="contained" onClick={() => setOpenModal(true)}>
         +

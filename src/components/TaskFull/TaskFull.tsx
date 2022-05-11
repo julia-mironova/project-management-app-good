@@ -18,7 +18,7 @@ import {
   TextField,
   Tooltip,
 } from '@mui/material';
-import { IFileAttached, ITask } from '../pages/SingleBoardPage';
+import { IFileAttached, ITaskResp } from '../../types/board';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -43,9 +43,9 @@ const TaskFull = ({
   setDataTasks,
 }: {
   onClose: () => void;
-  task: ITask;
-  dataTasks: ITask[];
-  setDataTasks: React.Dispatch<React.SetStateAction<ITask[]>>;
+  task: ITaskResp;
+  dataTasks: ITaskResp[];
+  setDataTasks: React.Dispatch<React.SetStateAction<ITaskResp[]>>;
 }) => {
   const {
     register,
@@ -54,7 +54,7 @@ const TaskFull = ({
   } = useForm<IFormTaskData>();
 
   const [downloadFiles, setDownloadFiles] = React.useState<IFormInputFile[]>(task.files);
-  const [checkedDone, setCheckedDone] = React.useState(task.done);
+  // const [checkedDone, setCheckedDone] = React.useState(task.done);
 
   const onSubmit = (data: IFormTaskData) => {
     const newFiles: IFileAttached[] = downloadFiles.map((item) => ({
@@ -68,7 +68,7 @@ const TaskFull = ({
         const newTask = { ...item };
         newTask.title = data.title;
         newTask.description = data.description;
-        newTask.done = Boolean(data.done);
+        // newTask.done = Boolean(data.done);
         newTask.files = newFiles;
         return newTask;
       }
@@ -145,8 +145,8 @@ const TaskFull = ({
             value={true}
             control={
               <Checkbox
-                checked={checkedDone}
-                onClick={() => setCheckedDone(!checkedDone)}
+                // checked={checkedDone}
+                // onClick={() => setCheckedDone(!checkedDone)}
                 {...register('done', { required: false })}
               />
             }

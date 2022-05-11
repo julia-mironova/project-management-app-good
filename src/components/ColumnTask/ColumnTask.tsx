@@ -2,16 +2,16 @@ import { Paper, styled } from '@mui/material';
 import ModalWindow from '../ModalWindow';
 import TaskFull from '../TaskFull';
 import React from 'react';
-import { ITask } from '../pages/SingleBoardPage';
+import { ITaskResp } from '../../types/board';
 
 const ColumnTask = ({
   task,
   dataTasks,
   setDataTasks,
 }: {
-  task: ITask;
-  dataTasks: ITask[];
-  setDataTasks: React.Dispatch<React.SetStateAction<ITask[]>>;
+  task: ITaskResp;
+  dataTasks: ITaskResp[];
+  setDataTasks: React.Dispatch<React.SetStateAction<ITaskResp[]>>;
 }) => {
   const [isOpenModalTaskFull, setIsOpenModalTaskFull] = React.useState(false);
 
@@ -24,7 +24,7 @@ const ColumnTask = ({
     width: '100%',
     lineHeight: '60px',
     borderRadius: theme.shape.borderRadius,
-    textDecoration: task.done ? 'line-through' : 'none',
+    // textDecoration: task.done ? 'line-through' : 'none',
   }));
 
   return (

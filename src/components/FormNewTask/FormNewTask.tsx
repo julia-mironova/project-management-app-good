@@ -1,8 +1,8 @@
 import { Button, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
-import { ITask } from '../pages/SingleBoardPage';
+// import { ITaskResp } from '../../types/board';
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { useAppSelector } from '../../hooks/redux.hooks';
+// import { useAppSelector } from '../../hooks/redux.hooks';
 
 type IFormInputNewTask = {
   title: string;
@@ -11,39 +11,41 @@ type IFormInputNewTask = {
 
 const FormNewTask = ({
   onClose,
-  dataTasks,
-  setDataTasks,
-}: {
+}: // dataTasks,
+// setDataTasks,
+{
   onClose: () => void;
-  dataTasks: ITask[];
-  setDataTasks: React.Dispatch<React.SetStateAction<ITask[]>>;
+  // dataTasks: ITaskResp[];
+  // setDataTasks: React.Dispatch<React.SetStateAction<ITaskResp[]>>;
 }) => {
   const {
     register,
-    handleSubmit,
+    // handleSubmit,
     formState: { errors },
   } = useForm<IFormInputNewTask>();
-  const { id } = useAppSelector((state) => state.auth);
+  // const { id } = useAppSelector((state) => state.auth);
 
-  const onSubmit = (data: IFormInputNewTask) => {
-    const maxOrder = dataTasks.reduce((acc, curr) => (acc > curr.order ? acc : curr.order), 0);
+  // const onSubmit = (data: IFormInputNewTask) => {
+  // const maxOrder = dataTasks.reduce((acc, curr) => (acc > curr.order ? acc : curr.order), 0);
 
-    const newTask = {
-      id: `${Math.random()}`,
-      title: data.title,
-      description: data.description,
-      order: maxOrder + 1,
-      done: false,
-      userId: id,
-      files: [],
-    };
+  // const newTask = {
+  //   id: `${Math.random()}`,
+  //   title: data.title,
+  //   description: data.description,
+  //   order: maxOrder + 1,
+  //   done: false,
+  //   userId: id,
+  //   files: [],
+  // };
 
-    setDataTasks([...dataTasks, newTask]);
-    onClose();
-  };
+  // setDataTasks([...dataTasks, newTask]);
+  // onClose();
+  // };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form
+    // onSubmit={handleSubmit(onSubmit)}
+    >
       <DialogTitle>Create new task</DialogTitle>
       <DialogContent>
         <TextField

@@ -1,11 +1,20 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { localStorageGetUserToken } from '../../utils/localStorage';
+import { getBoardById } from '../../api/requests';
 import { BASE_URL } from '../../constants/baseUrl';
+import { IBoardFull } from '../../types/board';
+
+const initialSingleBoard: IBoardFull = {
+  id: '',
+  title: '',
+  columns: [],
+};
 
 const initialState: boardState = {
   boards: [],
   rejectMsg: '',
   pending: false,
+  singleBoard: initialSingleBoard,
 };
 
 export const getAllBoards = createAsyncThunk(
@@ -119,6 +128,26 @@ export const deleteAsyncBoard = createAsyncThunk(
   }
 );
 
+export const getSingleBoard = createAsyncThunk(
+  'board/getSingleBoard',
+  async (id: string, { dispatch, rejectWithValue }) => {
+    try {
+      const singleBoardResponse = await getBoardById(id);
+      if (!singleBoardResponse.ok) {
+        const resp = await singleBoardResponse.json();
+        throw new Error(
+          `bad server response, error code: ${resp?.statusCode} message: ${resp?.message}`
+        );
+      }
+      const singleBoard: IBoardFull = await singleBoardResponse.json();
+      dispatch(setBoard(singleBoard));
+    } catch (err) {
+      const msg = (err as Error).message;
+      return rejectWithValue(msg);
+    }
+  }
+);
+
 const pending = (state: boardState) => {
   state.pending = true;
   state.rejectMsg = '';
@@ -148,6 +177,9 @@ export const boardSlice = createSlice({
     deleteBoard: (state: boardState, action: PayloadAction<string>) => {
       state.boards = state.boards.filter((el) => el.id !== action.payload);
     },
+    setSingleBoard: (state: boardState, action: PayloadAction<IBoardFull>) => {
+      state.singleBoard = action.payload;
+    },
   },
   extraReducers: {
     [getAllBoards.pending.type]: pending,
@@ -162,6 +194,9 @@ export const boardSlice = createSlice({
     [deleteAsyncBoard.pending.type]: pending,
     [deleteAsyncBoard.rejected.type]: reject,
     [deleteAsyncBoard.fulfilled.type]: fulfilled,
+    [getSingleBoard.pending.type]: pending,
+    [getSingleBoard.rejected.type]: reject,
+    [getSingleBoard.fulfilled.type]: fulfilled,
   },
 });
 
@@ -173,6 +208,7 @@ interface boardState {
   boards: IBoard[];
   rejectMsg: string;
   pending: boolean;
+  singleBoard: IBoardFull;
 }
 export type IBoard = {
   id: string;

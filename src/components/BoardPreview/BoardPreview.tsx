@@ -4,11 +4,10 @@ import EditIcon from '@mui/icons-material/Edit';
 import React, { FC } from 'react';
 import dataPictures from '../../dataPictures';
 import { useNavigate } from 'react-router-dom';
-import { IBoard } from '../../store/slice/boardSlice';
+import { IBoard } from '../../store/slices/boardSlice';
 
-const BoardPreview: FC<{ board: IBoard; index: number; handlerDelete: (id: string) => void }> = ({
+const BoardPreview: FC<{ board: IBoard; handlerDelete: (id: string) => void }> = ({
   board,
-  index,
   handlerDelete,
 }) => {
   const [isEdit, setIsEdit] = React.useState(false);
@@ -21,7 +20,7 @@ const BoardPreview: FC<{ board: IBoard; index: number; handlerDelete: (id: strin
   return (
     <Card sx={{ maxWidth: 495, border: 2 }}>
       <CardMedia
-        onClick={() => navigate(`/boards/${index}`)}
+        onClick={() => navigate(`/boards/${board.id}`)}
         component="img"
         height="140"
         image={dataPictures[+board.title?.slice(0, 2)]}

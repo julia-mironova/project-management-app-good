@@ -9,13 +9,16 @@ const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(props, ref) 
 
 const SnackbarMessage = () => {
   const [open, setOpen] = useState(false);
-  const { rejectMsg } = useAppSelector((state) => state.auth);
+  const { rejectMsg: rejectMsgAuth } = useAppSelector((state) => state.auth);
+  const { rejectMsg: rejectMsgBoards } = useAppSelector((state) => state.boards);
+  const { rejectMsg: rejectMsgColumns } = useAppSelector((state) => state.columns);
+  const { rejectMsg: rejectMsgTasks } = useAppSelector((state) => state.tasks);
 
   useEffect(() => {
-    if (rejectMsg) {
+    if (rejectMsgAuth || rejectMsgBoards || rejectMsgColumns || rejectMsgTasks) {
       setOpen(true);
     }
-  }, [rejectMsg]);
+  }, [rejectMsgAuth, rejectMsgBoards, rejectMsgColumns, rejectMsgTasks]);
 
   const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
     if (reason === 'clickaway') {
@@ -28,7 +31,7 @@ const SnackbarMessage = () => {
     <Stack spacing={2} sx={{ width: '100%' }}>
       <Snackbar open={open} autoHideDuration={5000} onClose={handleClose}>
         <Alert onClose={handleClose} severity="warning" sx={{ width: '100%' }}>
-          {rejectMsg}
+          {rejectMsgAuth || rejectMsgBoards || rejectMsgColumns || rejectMsgTasks}
         </Alert>
       </Snackbar>
     </Stack>
