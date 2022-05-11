@@ -1,27 +1,30 @@
 import { Container, Button } from '@mui/material';
 import BoardPreview from '../BoardPreview';
 import { useEffect, useState } from 'react';
-import { GetBoards } from '../../utils/backAPI';
 import ModalWindow from '../ModalWindow';
-import FormNewBoard from '../FormNewBoard';
-
-type IBoard = {
-  id: string;
-  title: string;
-};
+import FormCreateBoard from '../FormCreateBoard';
+import { useAppSelector, useAppDispatch } from '../../hooks/redux.hooks';
+import { getAllBoards, deleteAsyncBoard, createBoard } from '../../store/slice/boardSlice';
 
 const BoardsPage = () => {
-  const [dataBoards, setDataBoards] = useState<IBoard[]>([]);
-  const [isOpenModal, setIsOpenModal] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
+  const dispatch = useAppDispatch();
+  const { boards } = useAppSelector((state) => state.boards);
 
   const handleOnClose = () => {
-    setIsOpenModal(false);
+    setOpenModal(false);
   };
 
-  const start = async () => setDataBoards(await GetBoards());
+  const handlerDelete = (id: string) => {
+    dispatch(deleteAsyncBoard(id));
+  };
+
+  const handlerCreateBoard = (title: string) => {
+    dispatch(createBoard(title));
+  };
 
   useEffect(() => {
-    start();
+    if (boards.length === 0) dispatch(getAllBoards());
   }, []);
 
   return (
@@ -29,23 +32,14 @@ const BoardsPage = () => {
       maxWidth="xl"
       sx={{ mt: '1rem', display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: 5, p: 5 }}
     >
-      {dataBoards.map((item) => (
-        <BoardPreview
-          board={item}
-          key={item.id}
-          dataBoards={dataBoards}
-          setDataBoards={setDataBoards}
-        />
+      {boards.map((item, index) => (
+        <BoardPreview board={item} key={item.id} index={index} handlerDelete={handlerDelete} />
       ))}
-      <Button variant="contained" onClick={() => setIsOpenModal(true)}>
+      <Button variant="contained" onClick={() => setOpenModal(true)}>
         +
       </Button>
-      <ModalWindow open={isOpenModal} onClose={handleOnClose}>
-        <FormNewBoard
-          onClose={handleOnClose}
-          dataBoards={dataBoards}
-          setDataBoards={setDataBoards}
-        />
+      <ModalWindow open={openModal} onClose={handleOnClose}>
+        <FormCreateBoard onClose={handleOnClose} handlerCreateBoard={handlerCreateBoard} />
       </ModalWindow>
     </Container>
   );

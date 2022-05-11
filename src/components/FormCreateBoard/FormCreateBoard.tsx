@@ -8,28 +8,17 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import dataPictures from '../../dataPictures';
-import { CreateNewBoard } from '../../utils/backAPI';
 
 interface IFormInput {
   title: string;
 }
 
-type IBoard = {
-  id: string;
-  title: string;
-};
-
-const FormNewBoard = ({
+const FormCreateBoard: FC<{ onClose: () => void; handlerCreateBoard: (title: string) => void }> = ({
   onClose,
-  dataBoards,
-  setDataBoards,
-}: {
-  onClose: () => void;
-  dataBoards: IBoard[];
-  setDataBoards: React.Dispatch<React.SetStateAction<IBoard[]>>;
+  handlerCreateBoard,
 }) => {
   const {
     register,
@@ -37,12 +26,11 @@ const FormNewBoard = ({
     formState: { errors },
   } = useForm<IFormInput>();
 
-  const [changedImg, setChangedImg] = useState(-1);
+  const [changedImg, setChangedImg] = useState(0);
 
   const onSubmit = (data: IFormInput) => {
     const titleWithBoardNumber = `${String(changedImg).padStart(2, '0')}${data.title}`;
-    CreateNewBoard(titleWithBoardNumber);
-    setDataBoards([...dataBoards, { id: data.title, title: titleWithBoardNumber }]);
+    handlerCreateBoard(titleWithBoardNumber);
     onClose();
   };
 
@@ -81,13 +69,13 @@ const FormNewBoard = ({
           {...register('title', {
             required: { value: true, message: 'this field is required' },
             minLength: {
-              value: 6,
-              message: 'Your board name must be at least 6 characters long.',
+              value: 3,
+              message: 'Your board name must be at least 3 characters long.',
             },
           })}
         />
         <Typography variant="body1" sx={{ color: 'red' }}>
-          {errors?.title && (errors?.title?.message || 'Error')}
+          {errors?.title && errors?.title?.message}
         </Typography>
       </DialogContent>
       <DialogActions>
@@ -98,4 +86,4 @@ const FormNewBoard = ({
   );
 };
 
-export default FormNewBoard;
+export { FormCreateBoard };

@@ -16,7 +16,8 @@ const localStorageGetUser = () => {
   return null;
 };
 const localStorageGetUserToken = () => {
-  return localStorage.getItem('userToken');
+  const token = localStorage.getItem('userToken');
+  return token !== null ? token : '';
 };
 
 const localStorageRemoveUser = () => {
