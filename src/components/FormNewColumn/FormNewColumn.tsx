@@ -11,15 +11,7 @@ type IFormInputNewTask = {
   description: string;
 };
 
-const FormNewColumn = ({
-  onClose,
-}: // dataColumns,
-// setDataColumns,
-{
-  onClose: () => void;
-  // dataColumns: IColumn[];
-  // setDataColumns: React.Dispatch<React.SetStateAction<IColumn[]>>;
-}) => {
+const FormNewColumn = ({ onClose }: { onClose: () => void }) => {
   const {
     register,
     handleSubmit,
@@ -31,21 +23,14 @@ const FormNewColumn = ({
   const { boardId } = useParams();
 
   const onSubmit = (data: IFormInputNewTask) => {
-    // const maxOrder = dataColumns.reduce((acc, curr) => (acc > curr.order ? acc : curr.order), 0);
     const maxOrder = columns.length;
-    console.log('title', data.title);
-
     const newColumn = {
       title: data.title,
       order: maxOrder + 1,
-      // tasks: [],
     };
-    console.log(newColumn);
     if (boardId) {
       dispatch(createColumn({ boardId: boardId, columnBody: newColumn }));
     }
-
-    // setDataColumns([...dataColumns, newColumn]);
     onClose();
   };
 

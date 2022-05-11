@@ -23,6 +23,7 @@ const getBoardById = async (id: string): Promise<Response> => {
   return response;
 };
 
+//columns
 const getAllColumnsRequest = async (boardId: string): Promise<Response> => {
   const token = localStorageGetUserToken();
   const response = await fetch(`${BASE_URL}boards/${boardId}/columns`, {
@@ -39,7 +40,7 @@ const postColumn = async (boardId: string, columnBody: IColumnBody): Promise<Res
   const response = await fetch(`${BASE_URL}boards/${boardId}/columns`, {
     method: 'POST',
     headers: {
-      Accept: 'application/json',
+      'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify(columnBody),
