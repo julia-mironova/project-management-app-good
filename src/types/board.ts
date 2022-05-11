@@ -3,21 +3,32 @@ export type IFileAttached = {
   fileSize: number;
 };
 
-export type ITask = {
+export type ITaskResp = {
   id: string;
   title: string;
   order: number;
-  done: boolean;
   description: string;
   userId: string;
+  boardId: string;
+  columnId: string;
   files: IFileAttached[];
+};
+
+export type ITasksResp = {
+  title: string;
+  order: number;
+  description: string;
+  userId: string;
+  boardId: string;
+  columnId: string;
+  id: string;
 };
 
 export type IColumn = {
   id: string;
   title: string;
   order: number;
-  tasks: ITask[];
+  tasks: ITaskResp[];
 };
 
 export type IBoardFull = {
@@ -26,7 +37,7 @@ export type IBoardFull = {
   columns: IColumn[];
 };
 
-export type IColumnResp = {
+export type IColumnsResp = {
   id: string;
   title: string;
   order: number;

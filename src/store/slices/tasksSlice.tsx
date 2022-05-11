@@ -1,18 +1,19 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
-import { getAllColumnsRequest, postColumn } from '../../api/requests';
-import { IColumnsResp, IColumnBody } from '../../types/board';
+// import { localStorageGetUserToken } from '../../utils/localStorage';
+import { getAllTasksRequest } from '../../api/requests';
+import { ITasksResp } from '../../types/board';
 
-const initialState: columnState = {
-  columns: [],
+const initialState: tasksState = {
+  tasks: [],
   rejectMsg: '',
   pending: false,
 };
 
-export const getAllColumns = createAsyncThunk(
+export const getAllTasks = createAsyncThunk(
   'column/getAllColumns',
-  async (boardId: string, { dispatch, rejectWithValue }) => {
+  async (data: { boardId: string; columnId: string }, { dispatch, rejectWithValue }) => {
     try {
-      const response = await getAllColumnsRequest(boardId);
+      const response = await getAllTasksRequest(data.boardId, data.columnId);
 
       if (!response.ok) {
         const resp = await response.json();
@@ -21,8 +22,8 @@ export const getAllColumns = createAsyncThunk(
         );
       }
 
-      const result: IColumnsResp[] = await response.json();
-      dispatch(setColumns(result));
+      const result: ITasksResp[] = await response.json();
+      dispatch(setTasks(result));
     } catch (err) {
       const msg = (err as Error).message;
       return rejectWithValue(msg);
@@ -30,27 +31,27 @@ export const getAllColumns = createAsyncThunk(
   }
 );
 
-export const createColumn = createAsyncThunk(
-  'column/createColumn',
+// export const createColumn = createAsyncThunk(
+//   'column/createColumn',
 
-  async (data: { boardId: string; columnBody: IColumnBody }, { dispatch, rejectWithValue }) => {
-    try {
-      const response = await postColumn(data.boardId, data.columnBody);
+//   async (data: { boardId: string; columnBody: IColumnBody }, { dispatch, rejectWithValue }) => {
+//     try {
+//       const response = await postColumn(data.boardId, data.columnBody);
 
-      if (!response.ok) {
-        const resp = await response.json();
-        throw new Error(
-          `bad server response, error code: ${resp?.statusCode} message: ${resp?.message}`
-        );
-      }
-      const result: IColumnsResp = await response.json();
-      dispatch(setSingleColumn(result));
-    } catch (err) {
-      const msg = (err as Error).message;
-      return rejectWithValue(msg);
-    }
-  }
-);
+//       if (!response.ok) {
+//         const resp = await response.json();
+//         throw new Error(
+//           `bad server response, error code: ${resp?.statusCode} message: ${resp?.message}`
+//         );
+//       }
+//       const result: IColumnResp = await response.json();
+//       dispatch(setSingleColumn(result));
+//     } catch (err) {
+//       const msg = (err as Error).message;
+//       return rejectWithValue(msg);
+//     }
+//   }
+// );
 
 // export const createBoard = createAsyncThunk(
 //   'board/createAsyncUser',
@@ -156,36 +157,36 @@ export const createColumn = createAsyncThunk(
 //   }
 // );
 
-const pending = (state: columnState) => {
+const pending = (state: tasksState) => {
   state.pending = true;
   state.rejectMsg = '';
 };
-const reject = (state: columnState, action: PayloadAction<string>) => {
+const reject = (state: tasksState, action: PayloadAction<string>) => {
   state.pending = false;
   state.rejectMsg = action.payload;
 };
-const fulfilled = (state: columnState) => {
+const fulfilled = (state: tasksState) => {
   state.pending = false;
 };
 
-export const columnSlice = createSlice({
-  name: 'board',
+export const tasksSlice = createSlice({
+  name: 'tasks',
   initialState,
   reducers: {
-    setColumns: (state: columnState, action: PayloadAction<IColumnsResp[]>) => {
-      state.columns = action.payload;
+    setTasks: (state: tasksState, action: PayloadAction<ITasksResp[]>) => {
+      state.tasks = action.payload;
     },
-    setSingleColumn: (state: columnState, action: PayloadAction<IColumnsResp>) => {
-      state.columns = [...state.columns, action.payload];
-    },
-    // updateBoard: (state: columnState, action: PayloadAction<IBoard>) => {
+    // setSingleColumn: (state: tasksState, action: PayloadAction<IColumnResp>) => {
+    //   state.columns = [...state.columns, action.payload];
+    // },
+    // updateBoard: (state: tasksState, action: PayloadAction<IBoard>) => {
     //   const cash = state.boards.filter((el) => el.id !== action.payload.id);
     //   state.boards = [...cash, action.payload];
     // },
-    // deleteBoard: (state: columnState, action: PayloadAction<string>) => {
+    // deleteBoard: (state: tasksState, action: PayloadAction<string>) => {
     //   state.boards = state.boards.filter((el) => el.id !== action.payload);
     // },
-    // setSingleBoard: (state: columnState, action: PayloadAction<IBoardFull>) => {
+    // setSingleBoard: (state: tasksState, action: PayloadAction<IBoardFull>) => {
     //   state.singleBoard = action.payload;
     // },
 
@@ -194,12 +195,12 @@ export const columnSlice = createSlice({
     // },
   },
   extraReducers: {
-    [getAllColumns.pending.type]: pending,
-    [getAllColumns.rejected.type]: reject,
-    [getAllColumns.fulfilled.type]: fulfilled,
-    [createColumn.pending.type]: pending,
-    [createColumn.rejected.type]: reject,
-    [createColumn.fulfilled.type]: fulfilled,
+    [getAllTasks.pending.type]: pending,
+    [getAllTasks.rejected.type]: reject,
+    [getAllTasks.fulfilled.type]: fulfilled,
+    // [createColumn.pending.type]: pending,
+    // [createColumn.rejected.type]: reject,
+    // [createColumn.fulfilled.type]: fulfilled,
     // [updateAsyncBoard.pending.type]: pending,
     // [updateAsyncBoard.rejected.type]: reject,
     // [updateAsyncBoard.fulfilled.type]: fulfilled,
@@ -212,12 +213,12 @@ export const columnSlice = createSlice({
   },
 });
 
-export const { setColumns, setSingleColumn } = columnSlice.actions;
+export const { setTasks } = tasksSlice.actions;
 
-export default columnSlice.reducer;
+export default tasksSlice.reducer;
 
-interface columnState {
-  columns: IColumnsResp[];
+interface tasksState {
+  tasks: ITasksResp[];
   rejectMsg: string;
   pending: boolean;
 }
