@@ -13,11 +13,11 @@ import { getUserById } from '../../api/requests';
 import { parseJwt } from '../../utils/parseJWT';
 
 const initialUser: UserInfo = localStorageGetUser() || undefined;
-const initialUserToken: string | null = localStorageGetUserToken();
+const initialUserToken = localStorageGetUserToken();
 
 const initialState: AuthState = {
   isLoggedIn: !!initialUserToken,
-  token: initialUserToken || '',
+  token: initialUserToken,
   pending: false,
   rejectMsg: '',
   id: initialUser?.id || '',
