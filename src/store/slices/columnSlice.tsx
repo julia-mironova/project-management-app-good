@@ -11,7 +11,7 @@ const initialState: columnState = {
 };
 
 export const getAllColumns = createAsyncThunk(
-  'column/createAsyncUser',
+  'column/getAllColumns',
   async (boardId: string, { dispatch, rejectWithValue }) => {
     try {
       const response = await getAllColumnsRequest(boardId);
