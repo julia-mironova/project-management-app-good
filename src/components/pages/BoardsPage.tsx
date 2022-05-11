@@ -32,8 +32,8 @@ const BoardsPage = () => {
       maxWidth="xl"
       sx={{ mt: '1rem', display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: 5, p: 5 }}
     >
-      {boards.map((item, index) => (
-        <BoardPreview board={item} key={item.id} index={index} handlerDelete={handlerDelete} />
+      {boards.map((item) => (
+        <BoardPreview board={item} key={item.id} handlerDelete={handlerDelete} />
       ))}
       <Button variant="contained" onClick={() => setOpenModal(true)}>
         +
