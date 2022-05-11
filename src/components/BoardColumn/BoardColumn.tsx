@@ -1,14 +1,18 @@
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import { Box, Divider, IconButton, Stack, TextField, Tooltip, Typography } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import CancelIcon from '@mui/icons-material/Cancel';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import React from 'react';
-import { IColumn } from '../../types/board';
+
+import { ITasksResp, IColumnsResp } from '../../types/board';
 // import ColumnTask from '../ColumnTask';
 import ModalWindow from '../ModalWindow';
 import FormNewTask from '../FormNewTask';
 import { useForm } from 'react-hook-form';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux.hooks';
+import { getAllTasks } from '../../store/slices/tasksSlice';
 
 type IFormInputChangeName = {
   title: string;
@@ -17,13 +21,13 @@ type IFormInputChangeName = {
 const BoardColumn = ({
   column,
 }: // dataColumns,
-// setDataColumns,
+
 {
-  column: IColumn;
+  column: IColumnsResp;
   // dataColumns: IColumn[];
   // setDataColumns: React.Dispatch<React.SetStateAction<IColumn[]>>;
 }) => {
-  const [isEdit, setIsEdit] = React.useState(false);
+  const [isEdit, setIsEdit] = useState(false);
   const [isOpenModalAddNewTask, setisOpenModalAddNewTask] = React.useState(false);
 
   const {
@@ -32,7 +36,16 @@ const BoardColumn = ({
     formState: { errors },
   } = useForm<IFormInputChangeName>();
 
-  const [dataTasks, setDataTasks] = React.useState(column.tasks);
+  // const [dataTasks, setDataTasks] = React.useState(column.tasks);
+  const { tasks } = useAppSelector((state) => state.tasks);
+  const dispatch = useAppDispatch();
+  const { boardId } = useParams();
+
+  useEffect(() => {
+    if (boardId) {
+      dispatch(getAllTasks({ boardId: boardId, columnId: column.id }));
+    }
+  }, [boardId, column.id]);
 
   // const handleDeleteColumn = async () => {
   //   const newDataColumns = dataColumns.filter((col) => col.id !== column.id);
@@ -182,22 +195,23 @@ const BoardColumn = ({
           overflowX: 'hidden',
         }}
       >
-        {/* {dataTasks
-          .sort((a, b) => a.order - b.order)
-          .map((task: ITask) => (
-            <ColumnTask
-              key={task.id}
-              task={task}
-              dataTasks={dataTasks}
-              setDataTasks={setDataTasks}
-            />
-          ))} */}
+        {tasks
+          // .sort((a, b) => a.order - b.order)
+          .map((task: ITasksResp) => (
+            <p key={task.id}>{task.title}</p>
+            // <ColumnTask
+            //   key={task.id}
+            //   task={task}
+            //   dataTasks={dataTasks}
+            //   setDataTasks={setDataTasks}
+            // />
+          ))}
       </Stack>
       <ModalWindow open={isOpenModalAddNewTask} onClose={() => setisOpenModalAddNewTask(false)}>
         <FormNewTask
           onClose={() => setisOpenModalAddNewTask(false)}
-          dataTasks={dataTasks}
-          setDataTasks={setDataTasks}
+          // dataTasks={tasks}
+          // setDataTasks={tasks}
         />
       </ModalWindow>
     </Stack>
