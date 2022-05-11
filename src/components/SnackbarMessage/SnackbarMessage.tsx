@@ -9,13 +9,15 @@ const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(props, ref) 
 
 const SnackbarMessage = () => {
   const [open, setOpen] = useState(false);
-  const { rejectMsg } = useAppSelector((state) => state.auth);
+  const { rejectMsg: rejectMsgAuth } = useAppSelector((state) => state.auth);
+  const { rejectMsg: rejectMsgBoards } = useAppSelector((state) => state.boards);
+  const { rejectMsg: rejectMsgColumns } = useAppSelector((state) => state.columns);
 
   useEffect(() => {
-    if (rejectMsg) {
+    if (rejectMsgAuth || rejectMsgBoards || rejectMsgColumns) {
       setOpen(true);
     }
-  }, [rejectMsg]);
+  }, [rejectMsgAuth, rejectMsgBoards, rejectMsgColumns]);
 
   const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
     if (reason === 'clickaway') {
@@ -28,7 +30,7 @@ const SnackbarMessage = () => {
     <Stack spacing={2} sx={{ width: '100%' }}>
       <Snackbar open={open} autoHideDuration={5000} onClose={handleClose}>
         <Alert onClose={handleClose} severity="warning" sx={{ width: '100%' }}>
-          {rejectMsg}
+          {rejectMsgAuth || rejectMsgBoards || rejectMsgColumns}
         </Alert>
       </Snackbar>
     </Stack>
