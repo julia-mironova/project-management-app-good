@@ -4,8 +4,8 @@ import AddIcon from '@mui/icons-material/Add';
 import CancelIcon from '@mui/icons-material/Cancel';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import React from 'react';
-import { IColumn, ITask } from '../pages/SingleBoardPage';
-import ColumnTask from '../ColumnTask';
+import { IColumn } from '../../types/board';
+// import ColumnTask from '../ColumnTask';
 import ModalWindow from '../ModalWindow';
 import FormNewTask from '../FormNewTask';
 import { useForm } from 'react-hook-form';
@@ -16,39 +16,39 @@ type IFormInputChangeName = {
 
 const BoardColumn = ({
   column,
-  dataColumns,
-  setDataColumns,
-}: {
+}: // dataColumns,
+// setDataColumns,
+{
   column: IColumn;
-  dataColumns: IColumn[];
-  setDataColumns: React.Dispatch<React.SetStateAction<IColumn[]>>;
+  // dataColumns: IColumn[];
+  // setDataColumns: React.Dispatch<React.SetStateAction<IColumn[]>>;
 }) => {
   const [isEdit, setIsEdit] = React.useState(false);
   const [isOpenModalAddNewTask, setisOpenModalAddNewTask] = React.useState(false);
 
   const {
     register,
-    handleSubmit,
+    // handleSubmit,
     formState: { errors },
   } = useForm<IFormInputChangeName>();
 
   const [dataTasks, setDataTasks] = React.useState(column.tasks);
 
-  const handleDeleteColumn = async () => {
-    const newDataColumns = dataColumns.filter((col) => col.id !== column.id);
-    setDataColumns(newDataColumns);
-  };
+  // const handleDeleteColumn = async () => {
+  //   const newDataColumns = dataColumns.filter((col) => col.id !== column.id);
+  //   setDataColumns(newDataColumns);
+  // };
 
-  const changeNameColumn = async (e: IFormInputChangeName) => {
-    const newDataColumns = dataColumns.map((col) => {
-      if (col.id === column.id) {
-        col.title = e.title;
-      }
-      return col;
-    });
-    setDataColumns(newDataColumns);
-    setIsEdit(false);
-  };
+  // const changeNameColumn = async (e: IFormInputChangeName) => {
+  //   const newDataColumns = dataColumns.map((col) => {
+  //     if (col.id === column.id) {
+  //       col.title = e.title;
+  //     }
+  //     return col;
+  //   });
+  //   setDataColumns(newDataColumns);
+  //   setIsEdit(false);
+  // };
 
   return (
     <Stack
@@ -65,7 +65,9 @@ const BoardColumn = ({
     >
       <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between', height: '33px' }}>
         {isEdit ? (
-          <form onSubmit={handleSubmit(changeNameColumn)}>
+          <form
+          // onSubmit={handleSubmit(changeNameColumn)}
+          >
             <Box
               sx={{
                 width: '300px',
@@ -165,7 +167,7 @@ const BoardColumn = ({
               sx={{
                 p: 0,
               }}
-              onClick={handleDeleteColumn}
+              // onClick={handleDeleteColumn}
             >
               <DeleteIcon />
             </IconButton>
@@ -180,7 +182,7 @@ const BoardColumn = ({
           overflowX: 'hidden',
         }}
       >
-        {dataTasks
+        {/* {dataTasks
           .sort((a, b) => a.order - b.order)
           .map((task: ITask) => (
             <ColumnTask
@@ -189,7 +191,7 @@ const BoardColumn = ({
               dataTasks={dataTasks}
               setDataTasks={setDataTasks}
             />
-          ))}
+          ))} */}
       </Stack>
       <ModalWindow open={isOpenModalAddNewTask} onClose={() => setisOpenModalAddNewTask(false)}>
         <FormNewTask

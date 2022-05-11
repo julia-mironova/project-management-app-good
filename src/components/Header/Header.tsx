@@ -17,7 +17,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { useAppSelector, useAppDispatch } from '../../hooks/redux.hooks';
 import { generateUserInitials } from '../../utils/generateUserInitials';
-import { logOut } from '../../store/slice/authSlice';
+import { logOut } from '../../store/slices/authSlice';
 
 const pages = [
   { page: 'Welcome', path: '/' },

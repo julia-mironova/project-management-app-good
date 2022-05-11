@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import ModalWindow from '../ModalWindow';
 import FormCreateBoard from '../FormCreateBoard';
 import { useAppSelector, useAppDispatch } from '../../hooks/redux.hooks';
-import { getAllBoards, deleteAsyncBoard, createBoard } from '../../store/slice/boardSlice';
+import { getAllBoards, deleteAsyncBoard, createBoard } from '../../store/slices/boardSlice';
 
 const BoardsPage = () => {
   const [openModal, setOpenModal] = useState(false);

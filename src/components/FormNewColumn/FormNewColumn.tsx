@@ -1,7 +1,10 @@
 import { Box, Button, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
-import { IColumn } from '../pages/SingleBoardPage';
+// import { IColumn } from '../../types/board';
 import React from 'react';
+import { useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux.hooks';
+import { createColumn } from '../../store/slices/columnSlice';
 
 type IFormInputNewTask = {
   title: string;
@@ -10,12 +13,12 @@ type IFormInputNewTask = {
 
 const FormNewColumn = ({
   onClose,
-  dataColumns,
-  setDataColumns,
-}: {
+}: // dataColumns,
+// setDataColumns,
+{
   onClose: () => void;
-  dataColumns: IColumn[];
-  setDataColumns: React.Dispatch<React.SetStateAction<IColumn[]>>;
+  // dataColumns: IColumn[];
+  // setDataColumns: React.Dispatch<React.SetStateAction<IColumn[]>>;
 }) => {
   const {
     register,
@@ -23,17 +26,26 @@ const FormNewColumn = ({
     formState: { errors },
   } = useForm<IFormInputNewTask>();
 
+  const { columns } = useAppSelector((state) => state.columns);
+  const dispatch = useAppDispatch();
+  const { boardId } = useParams();
+
   const onSubmit = (data: IFormInputNewTask) => {
-    const maxOrder = dataColumns.reduce((acc, curr) => (acc > curr.order ? acc : curr.order), 0);
+    // const maxOrder = dataColumns.reduce((acc, curr) => (acc > curr.order ? acc : curr.order), 0);
+    const maxOrder = columns.length;
+    console.log('title', data.title);
 
     const newColumn = {
-      id: `${Math.random()}`,
       title: data.title,
       order: maxOrder + 1,
-      tasks: [],
+      // tasks: [],
     };
+    console.log(newColumn);
+    if (boardId) {
+      dispatch(createColumn({ boardId: boardId, columnBody: newColumn }));
+    }
 
-    setDataColumns([...dataColumns, newColumn]);
+    // setDataColumns([...dataColumns, newColumn]);
     onClose();
   };
 

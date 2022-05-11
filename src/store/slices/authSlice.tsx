@@ -17,7 +17,7 @@ const initialUserToken = localStorageGetUserToken();
 
 const initialState: AuthState = {
   isLoggedIn: !!initialUserToken,
-  token: initialUserToken,
+  token: initialUserToken || '',
   pending: false,
   rejectMsg: '',
   id: initialUser?.id || '',
