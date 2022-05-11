@@ -15,11 +15,10 @@ import { LoadingButton } from '@mui/lab';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import SendIcon from '@mui/icons-material/Send';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import { createToken, createUser } from '../../store/slice/authSlice';
+import { createToken, createUser } from '../../store/slices/authSlice';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux.hooks';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { localStorageSetUser, localStorageSetUserToken } from '../../utils/localStorage';
-import { UserInfo } from '../../types/types';
 
 export const SignUp = () => {
   const {

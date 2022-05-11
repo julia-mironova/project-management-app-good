@@ -1,5 +1,5 @@
 import { Button, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
-import { ITask } from '../pages/SingleBoardPage';
+import { ITask } from '../../types/board';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useAppSelector } from '../../hooks/redux.hooks';

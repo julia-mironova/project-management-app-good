@@ -4,7 +4,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import React, { FC } from 'react';
 import dataPictures from '../../dataPictures';
 import { useNavigate } from 'react-router-dom';
-import { IBoard } from '../../store/slice/boardSlice';
+import { IBoard } from '../../store/slices/boardSlice';
 
 const BoardPreview: FC<{ board: IBoard; handlerDelete: (id: string) => void }> = ({
   board,

@@ -2,7 +2,7 @@ import { Paper, styled } from '@mui/material';
 import ModalWindow from '../ModalWindow';
 import TaskFull from '../TaskFull';
 import React from 'react';
-import { ITask } from '../pages/SingleBoardPage';
+import { ITask } from '../../types/board';
 
 const ColumnTask = ({
   task,

@@ -18,7 +18,7 @@ import {
   TextField,
   Tooltip,
 } from '@mui/material';
-import { IFileAttached, ITask } from '../pages/SingleBoardPage';
+import { IFileAttached, ITask } from '../../types/board';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import DeleteIcon from '@mui/icons-material/Delete';
