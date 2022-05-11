@@ -16,11 +16,10 @@ const SingleBoardPage = () => {
   const { boardId } = useParams();
 
   useEffect(() => {
-    console.log('useEffect SingleBoardPage');
     if (boardId) {
       dispatch(getAllColumns(boardId));
     }
-  }, [boardId]);
+  }, [boardId, dispatch]);
 
   // const [dataColumns, setDataColumns] = React.useState<IColumn[]>(startDataBoard.columns);
 
