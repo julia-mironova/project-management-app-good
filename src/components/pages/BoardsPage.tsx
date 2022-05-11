@@ -25,7 +25,7 @@ const BoardsPage = () => {
 
   useEffect(() => {
     if (boards.length === 0) dispatch(getAllBoards());
-  }, []);
+  }, [boards.length, dispatch]);
 
   return (
     <Container

@@ -46,7 +46,7 @@ const BoardColumn = ({
     if (boardId) {
       dispatch(getAllTasks({ boardId: boardId, columnId: column.id }));
     }
-  }, [boardId, column.id]);
+  }, [boardId, column.id, dispatch]);
 
   const handleDeleteColumn = async () => {
     if (boardId) {
