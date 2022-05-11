@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
-import { getAllColumnsRequest, postColumn } from '../../api/requests';
+import { getAllColumnsRequest, postColumn, deleteColumnRequest } from '../../api/requests';
 import { IColumnsResp, IColumnBody } from '../../types/board';
 
 const initialState: columnState = {
@@ -52,109 +52,26 @@ export const createColumn = createAsyncThunk(
   }
 );
 
-// export const createBoard = createAsyncThunk(
-//   'board/createAsyncUser',
-//   async (title: string, { dispatch, rejectWithValue }) => {
-//     try {
-//       const token = localStorageGetUserToken();
-//       const response = await fetch(`${BASE_URL}boards`, {
-//         method: 'POST',
-//         headers: {
-//           'Content-Type': 'application/json',
-//           Authorization: `Bearer ${token}`,
-//         },
-//         body: JSON.stringify({ title: title }),
-//       });
+export const deleteAsyncColumn = createAsyncThunk(
+  'column/deleteAsyncColumn',
 
-//       if (!response.ok) {
-//         const resp = await response.json();
-//         throw new Error(
-//           `bad server response, error code: ${resp?.statusCode} message: ${resp?.message}`
-//         );
-//       }
+  async (data: { boardId: string; columnId: string }, { dispatch, rejectWithValue }) => {
+    try {
+      const response = await deleteColumnRequest(data.boardId, data.columnId);
 
-//       const result: IBoard = await response.json();
-//       dispatch(setBoard(result));
-//     } catch (err) {
-//       const msg = (err as Error).message;
-//       return rejectWithValue(msg);
-//     }
-//   }
-// );
-// export const updateAsyncBoard = createAsyncThunk(
-//   'board/createAsyncUser',
-//   async (title: string, { dispatch, rejectWithValue }) => {
-//     try {
-//       const token = localStorageGetUserToken();
-//       const response = await fetch(`${BASE_URL}boards`, {
-//         method: 'PUT',
-//         headers: {
-//           'Content-Type': 'application/json',
-//           Authorization: `Bearer ${token}`,
-//         },
-//         body: JSON.stringify({ title: title }),
-//       });
-
-//       if (!response.ok) {
-//         const resp = await response.json();
-//         throw new Error(
-//           `bad server response, error code: ${resp?.statusCode} message: ${resp?.message}`
-//         );
-//       }
-
-//       const result: IColumnResp[] = await response.json();
-//       dispatch(setColumns(result));
-//     } catch (err) {
-//       const msg = (err as Error).message;
-//       return rejectWithValue(msg);
-//     }
-//   }
-// );
-// export const deleteAsyncBoard = createAsyncThunk(
-//   'board/createAsyncUser',
-//   async (id: string, { dispatch, rejectWithValue }) => {
-//     try {
-//       const token = localStorageGetUserToken();
-//       const response = await fetch(`${BASE_URL}boards/${id}`, {
-//         method: 'DELETE',
-//         headers: {
-//           Authorization: `Bearer ${token}`,
-//         },
-//       });
-
-//       if (!response.ok) {
-//         const resp = await response.json();
-//         throw new Error(
-//           `bad server response, error code: ${resp?.statusCode} message: ${resp?.message}`
-//         );
-//       }
-//       dispatch(deleteBoard(id));
-//     } catch (err) {
-//       const msg = (err as Error).message;
-//       return rejectWithValue(msg);
-//     }
-//   }
-// );
-
-// export const getSingleBoard = createAsyncThunk(
-//   'board/getSingleBoard',
-//   async (id: string, { dispatch, rejectWithValue }) => {
-//     try {
-//       const singleBoardResponse = await getBoardById(id);
-//       if (!singleBoardResponse.ok) {
-//         const resp = await singleBoardResponse.json();
-//         throw new Error(
-//           `bad server response, error code: ${resp?.statusCode} message: ${resp?.message}`
-//         );
-//       }
-//       const singleBoard: IBoardFull = await singleBoardResponse.json();
-//       dispatch(setBoard(singleBoard));
-//     } catch (err) {
-//       const msg = (err as Error).message;
-//       return rejectWithValue(msg);
-//     }
-//   }
-// );
+      if (!response.ok) {
+        const resp = await response.json();
+        throw new Error(
+          `bad server response, error code: ${resp?.statusCode} message: ${resp?.message}`
+        );
+      }
+      dispatch(deleteColumn(data.columnId));
+    } catch (err) {
+      const msg = (err as Error).message;
+      return rejectWithValue(msg);
+    }
+  }
+);
 
 const pending = (state: columnState) => {
   state.pending = true;
@@ -178,20 +95,9 @@ export const columnSlice = createSlice({
     setSingleColumn: (state: columnState, action: PayloadAction<IColumnsResp>) => {
       state.columns = [...state.columns, action.payload];
     },
-    // updateBoard: (state: columnState, action: PayloadAction<IBoard>) => {
-    //   const cash = state.boards.filter((el) => el.id !== action.payload.id);
-    //   state.boards = [...cash, action.payload];
-    // },
-    // deleteBoard: (state: columnState, action: PayloadAction<string>) => {
-    //   state.boards = state.boards.filter((el) => el.id !== action.payload);
-    // },
-    // setSingleBoard: (state: columnState, action: PayloadAction<IBoardFull>) => {
-    //   state.singleBoard = action.payload;
-    // },
-
-    // setColumn: (state: columnStated, action: PayloadAction<IColumnResp>) => {
-    //   state.singleBoard.columns = [...state.singleBoard.columns, action.payload];
-    // },
+    deleteColumn: (state: columnState, action: PayloadAction<string>) => {
+      state.columns = state.columns.filter((column) => column.id !== action.payload);
+    },
   },
   extraReducers: {
     [getAllColumns.pending.type]: pending,
@@ -200,19 +106,13 @@ export const columnSlice = createSlice({
     [createColumn.pending.type]: pending,
     [createColumn.rejected.type]: reject,
     [createColumn.fulfilled.type]: fulfilled,
-    // [updateAsyncBoard.pending.type]: pending,
-    // [updateAsyncBoard.rejected.type]: reject,
-    // [updateAsyncBoard.fulfilled.type]: fulfilled,
-    // [deleteAsyncBoard.pending.type]: pending,
-    // [deleteAsyncBoard.rejected.type]: reject,
-    // [deleteAsyncBoard.fulfilled.type]: fulfilled,
-    // [getSingleBoard.pending.type]: pending,
-    // [getSingleBoard.rejected.type]: reject,
-    // [getSingleBoard.fulfilled.type]: fulfilled,
+    [deleteAsyncColumn.pending.type]: pending,
+    [deleteAsyncColumn.rejected.type]: reject,
+    [deleteAsyncColumn.fulfilled.type]: fulfilled,
   },
 });
 
-export const { setColumns, setSingleColumn } = columnSlice.actions;
+export const { setColumns, setSingleColumn, deleteColumn } = columnSlice.actions;
 
 export default columnSlice.reducer;
 
