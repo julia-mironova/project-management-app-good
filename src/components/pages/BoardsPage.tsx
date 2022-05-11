@@ -1,4 +1,4 @@
-import { Container, Button } from '@mui/material';
+import { Container, Button, Backdrop, CircularProgress } from '@mui/material';
 import BoardPreview from '../BoardPreview';
 import { useEffect, useState } from 'react';
 import ModalWindow from '../ModalWindow';
@@ -9,7 +9,7 @@ import { getAllBoards, deleteAsyncBoard, createBoard } from '../../store/slices/
 const BoardsPage = () => {
   const [openModal, setOpenModal] = useState(false);
   const dispatch = useAppDispatch();
-  const { boards } = useAppSelector((state) => state.boards);
+  const { boards, pending } = useAppSelector((state) => state.boards);
 
   const handleOnClose = () => {
     setOpenModal(false);
@@ -42,6 +42,9 @@ const BoardsPage = () => {
       <ModalWindow open={openModal} onClose={handleOnClose}>
         <FormCreateBoard onClose={handleOnClose} handlerCreateBoard={handlerCreateBoard} />
       </ModalWindow>
+      <Backdrop sx={{ color: '#fff', zIndex: 100 }} open={pending}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </Container>
   );
 };
