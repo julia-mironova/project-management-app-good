@@ -61,7 +61,6 @@ const TaskFull = ({ onClose, task, dataTasks, setDataTasks }: IPropsTaskFull) =>
       fileSize: item.fileSize,
     }));
 
-    console.log(data);
     const newDataTasks = dataTasks.map((item) => {
       if (item.id === task.id) {
         const newTask = { ...item };
@@ -84,15 +83,11 @@ const TaskFull = ({ onClose, task, dataTasks, setDataTasks }: IPropsTaskFull) =>
   };
 
   const handleDeleteFile = (name: string) => {
-    console.log('Delete file: ', name);
-    console.log(downloadFiles);
     const newDownloadFiles = downloadFiles.filter((item) => item.filename !== name);
-    console.log(newDownloadFiles);
     setDownloadFiles(newDownloadFiles);
   };
 
   const handleUploadFile = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e);
     const { files } = e.target;
     if (files) {
       const newFile: IFormInputFile = {
