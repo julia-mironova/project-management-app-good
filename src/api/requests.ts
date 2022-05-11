@@ -48,10 +48,18 @@ const postColumn = async (boardId: string, columnBody: IColumnBody): Promise<Res
   return response;
 };
 
+const deleteColumnRequest = async (boardId: string, columnId: string): Promise<Response> => {
+  const token = localStorageGetUserToken();
+  const response = await fetch(`${BASE_URL}boards/${boardId}/columns/${columnId}`, {
+    method: 'Delete',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response;
+};
+
 //tasks
-
-//boards/06910c49-ad89-4fb9-8f4e-ca76781cf48e/columns/43b0cb12-c693-408c-a4d8-d6908bba60ee/tasks
-
 const getAllTasksRequest = async (boardId: string, columnId: string): Promise<Response> => {
   const token = localStorageGetUserToken();
   const response = await fetch(`${BASE_URL}boards/${boardId}/columns/${columnId}/tasks`, {
@@ -63,4 +71,11 @@ const getAllTasksRequest = async (boardId: string, columnId: string): Promise<Re
   return response;
 };
 
-export { getUserById, getBoardById, postColumn, getAllColumnsRequest, getAllTasksRequest };
+export {
+  getUserById,
+  getBoardById,
+  postColumn,
+  getAllColumnsRequest,
+  deleteColumnRequest,
+  getAllTasksRequest,
+};

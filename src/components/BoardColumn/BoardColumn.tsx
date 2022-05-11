@@ -13,6 +13,7 @@ import FormNewTask from '../FormNewTask';
 import { useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux.hooks';
 import { getAllTasks } from '../../store/slices/tasksSlice';
+import { deleteAsyncColumn } from '../../store/slices/columnSlice';
 
 type IFormInputChangeName = {
   title: string;
@@ -38,8 +39,8 @@ const BoardColumn = ({
 
   // const [dataTasks, setDataTasks] = React.useState(column.tasks);
   const { tasks } = useAppSelector((state) => state.tasks);
-  const dispatch = useAppDispatch();
   const { boardId } = useParams();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (boardId) {
@@ -47,10 +48,13 @@ const BoardColumn = ({
     }
   }, [boardId, column.id]);
 
-  // const handleDeleteColumn = async () => {
-  //   const newDataColumns = dataColumns.filter((col) => col.id !== column.id);
-  //   setDataColumns(newDataColumns);
-  // };
+  const handleDeleteColumn = async () => {
+    if (boardId) {
+      dispatch(deleteAsyncColumn({ boardId: boardId, columnId: column.id }));
+    }
+    // const newDataColumns = dataColumns.filter((col) => col.id !== column.id);
+    // setDataColumns(newDataColumns);
+  };
 
   // const changeNameColumn = async (e: IFormInputChangeName) => {
   //   const newDataColumns = dataColumns.map((col) => {
@@ -180,7 +184,7 @@ const BoardColumn = ({
               sx={{
                 p: 0,
               }}
-              // onClick={handleDeleteColumn}
+              onClick={handleDeleteColumn}
             >
               <DeleteIcon />
             </IconButton>
