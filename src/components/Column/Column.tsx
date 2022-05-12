@@ -14,8 +14,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import CancelIcon from '@mui/icons-material/Cancel';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-
-import { ITasksResp, IColumnsResp } from '../../types/board';
+import { ITasksResp, IColumnsResp, ITaskResp } from '../../types/board';
 import ModalWindow from '../ModalWindow';
 import FormNewTask from '../FormNewTask';
 import { useForm } from 'react-hook-form';
@@ -29,7 +28,7 @@ type IFormInputChangeName = {
   title: string;
 };
 
-const BoardColumn = ({ column }: { column: IColumnsResp }) => {
+const Column = ({ column }: { column: IColumnsResp }) => {
   const [isEdit, setIsEdit] = useState(false);
   const [isOpenModalAddNewTask, setisOpenModalAddNewTask] = React.useState(false);
   const {
@@ -251,4 +250,4 @@ const BoardColumn = ({ column }: { column: IColumnsResp }) => {
   );
 };
 
-export default BoardColumn;
+export default Column;

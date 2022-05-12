@@ -123,7 +123,9 @@ export const getSingleBoard = createAsyncThunk<IBoardFull, string, { rejectValue
         `bad server response, error code: ${resp?.statusCode} message: ${resp?.message}`
       );
     }
-    return await response.json();
+    const data = await response.json();
+    console.log(data);
+    return data;
   }
 );
 
