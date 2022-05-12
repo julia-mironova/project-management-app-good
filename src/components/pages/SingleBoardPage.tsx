@@ -10,17 +10,18 @@ import { useAppDispatch, useAppSelector } from '../../hooks/redux.hooks';
 import { useTranslation } from 'react-i18next';
 import { getAllColumns, updateAsyncColumn } from '../../store/slices/columnSlice';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
+import { getSingleBoard } from '../../store/slices/boardSlice';
 
 const SingleBoardPage = () => {
   const [isOpenModalAddNewColumn, setIsOpenModalAddNewColumn] = useState(false);
-  const { columns } = useAppSelector((state) => state.columns);
+  const { columns } = useAppSelector((state) => state.boards.singleBoard.columns);
   const dispatch = useAppDispatch();
   const { boardId } = useParams();
   const { t } = useTranslation();
 
   useEffect(() => {
     if (boardId) {
-      dispatch(getAllColumns(boardId));
+      dispatch(getSingleBoard(boardId));
     }
   }, [boardId, dispatch]);
 

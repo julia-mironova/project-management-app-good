@@ -88,6 +88,19 @@ const getAllTasksRequest = async (boardId: string, columnId: string): Promise<Re
   return response;
 };
 
+const postTask = async (boardId: string, columnBody: IColumnBody): Promise<Response> => {
+  const token = localStorageGetUserToken();
+  const response = await fetch(`${BASE_URL}boards/${boardId}/columns`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(columnBody),
+  });
+  return response;
+};
+
 export {
   getUserById,
   getBoardById,
@@ -96,4 +109,5 @@ export {
   deleteColumnRequest,
   updateColumnRequest,
   getAllTasksRequest,
+  postTask,
 };

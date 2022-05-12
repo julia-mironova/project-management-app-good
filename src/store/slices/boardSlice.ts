@@ -140,7 +140,7 @@ export const getSingleBoard = createAsyncThunk(
         );
       }
       const singleBoard: IBoardFull = await singleBoardResponse.json();
-      dispatch(setBoard(singleBoard));
+      dispatch(setSingleBoard(singleBoard));
     } catch (err) {
       const msg = (err as Error).message;
       return rejectWithValue(msg);
@@ -200,7 +200,8 @@ export const boardSlice = createSlice({
   },
 });
 
-export const { setAllBoards, setBoard, deleteBoard, updateBoard } = boardSlice.actions;
+export const { setAllBoards, setBoard, deleteBoard, updateBoard, setSingleBoard } =
+  boardSlice.actions;
 
 export default boardSlice.reducer;
 

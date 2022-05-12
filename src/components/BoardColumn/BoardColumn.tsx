@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import {
   Box,
@@ -42,15 +42,11 @@ const BoardColumn = ({ column }: { column: IColumnsResp }) => {
 
   const { t } = useTranslation();
   const [isOpenConformModal, setIsOpenConformModal] = React.useState(false);
-  const { tasks } = useAppSelector((state) => state.tasks);
+  const columns = useAppSelector((state) => state.boards.singleBoard.columns);
+  const columnTasks: ITaskResp[] = columns.filter((item) => item.id === column.id)[0].tasks;
+
   const { boardId } = useParams();
   const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    if (boardId) {
-      dispatch(getAllTasks({ boardId: boardId, columnId: column.id }));
-    }
-  }, [boardId, column.id, dispatch]);
 
   const handleDeleteColumn = async () => {
     if (boardId) {
