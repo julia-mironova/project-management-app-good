@@ -2,6 +2,7 @@ import { useParams } from 'react-router-dom';
 import { Button, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux.hooks';
 import { createAsyncTask } from '../../store/slices/tasksSlice';
+import { getSingleBoard } from '../../store/slices/boardSlice';
 import { localStorageGetUser } from '../../utils/localStorage';
 import { useForm } from 'react-hook-form';
 <<<<<<< HEAD
@@ -53,7 +54,9 @@ const FormNewTask = ({
 
     if (boardId) {
       dispatch(createAsyncTask({ boardId: boardId, columnId: columnId, taskBody: newTask }));
+      dispatch(getSingleBoard(boardId));
     }
+
     // setDataTasks([...dataTasks, newTask]);
     onClose();
   };
