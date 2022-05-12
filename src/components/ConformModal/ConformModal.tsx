@@ -9,9 +9,7 @@ type IConformModalWindowData = {
 
 const ConformModal = ({ isOpen, close, func }: IConformModalWindowData) => {
   const checkAnswer = (arg: boolean) => {
-    console.log('Check answer: ', arg);
     close();
-    console.log(arg);
     if (arg) {
       func();
     }

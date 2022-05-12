@@ -13,34 +13,24 @@ import FormNewTask from '../FormNewTask';
 import { useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux.hooks';
 import { getAllTasks } from '../../store/slices/tasksSlice';
-import { deleteAsyncColumn } from '../../store/slices/columnSlice';
+import { deleteAsyncColumn, updateAsyncColumn } from '../../store/slices/columnSlice';
 import ConformModal from '../ConformModal';
 
 type IFormInputChangeName = {
   title: string;
 };
 
-const BoardColumn = ({
-  column,
-}: // dataColumns,
-
-{
-  column: IColumnsResp;
-  // dataColumns: IColumn[];
-  // setDataColumns: React.Dispatch<React.SetStateAction<IColumn[]>>;
-}) => {
+const BoardColumn = ({ column }: { column: IColumnsResp }) => {
   const [isEdit, setIsEdit] = useState(false);
   const [isOpenModalAddNewTask, setisOpenModalAddNewTask] = React.useState(false);
 
   const {
     register,
-    // handleSubmit,
+    handleSubmit,
     formState: { errors },
   } = useForm<IFormInputChangeName>();
 
-  // const [dataTasks, setDataTasks] = React.useState(column.tasks);
   const [isOpenConformModal, setIsOpenConformModal] = React.useState(false);
-
   const { tasks } = useAppSelector((state) => state.tasks);
   const { boardId } = useParams();
   const dispatch = useAppDispatch();
@@ -55,20 +45,20 @@ const BoardColumn = ({
     if (boardId) {
       dispatch(deleteAsyncColumn({ boardId: boardId, columnId: column.id }));
     }
-    // const newDataColumns = dataColumns.filter((col) => col.id !== column.id);
-    // setDataColumns(newDataColumns);
   };
 
-  // const changeNameColumn = async (e: IFormInputChangeName) => {
-  //   const newDataColumns = dataColumns.map((col) => {
-  //     if (col.id === column.id) {
-  //       col.title = e.title;
-  //     }
-  //     return col;
-  //   });
-  //   setDataColumns(newDataColumns);
-  //   setIsEdit(false);
-  // };
+  const changeNameColumn = async (e: IFormInputChangeName) => {
+    if (boardId) {
+      dispatch(
+        updateAsyncColumn({
+          boardId: boardId,
+          columnId: column.id,
+          columnBody: { title: e.title, order: column.order },
+        })
+      );
+    }
+    setIsEdit(false);
+  };
 
   return (
     <Stack
@@ -85,9 +75,7 @@ const BoardColumn = ({
     >
       <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between', height: '33px' }}>
         {isEdit ? (
-          <form
-          // onSubmit={handleSubmit(changeNameColumn)}
-          >
+          <form onSubmit={handleSubmit(changeNameColumn)}>
             <Box
               sx={{
                 width: '300px',

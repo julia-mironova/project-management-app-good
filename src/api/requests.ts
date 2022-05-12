@@ -59,6 +59,23 @@ const deleteColumnRequest = async (boardId: string, columnId: string): Promise<R
   return response;
 };
 
+const updateColumnRequest = async (
+  boardId: string,
+  columnId: string,
+  columnBody: IColumnBody
+): Promise<Response> => {
+  const token = localStorageGetUserToken();
+  const response = await fetch(`${BASE_URL}boards/${boardId}/columns/${columnId}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(columnBody),
+  });
+  return response;
+};
+
 //tasks
 const getAllTasksRequest = async (boardId: string, columnId: string): Promise<Response> => {
   const token = localStorageGetUserToken();
@@ -77,5 +94,6 @@ export {
   postColumn,
   getAllColumnsRequest,
   deleteColumnRequest,
+  updateColumnRequest,
   getAllTasksRequest,
 };

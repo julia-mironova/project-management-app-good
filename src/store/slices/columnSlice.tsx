@@ -1,5 +1,10 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
-import { getAllColumnsRequest, postColumn, deleteColumnRequest } from '../../api/requests';
+import {
+  getAllColumnsRequest,
+  postColumn,
+  deleteColumnRequest,
+  updateColumnRequest,
+} from '../../api/requests';
 import { IColumnsResp, IColumnBody } from '../../types/board';
 
 const initialState: columnState = {
@@ -73,6 +78,30 @@ export const deleteAsyncColumn = createAsyncThunk(
   }
 );
 
+export const updateAsyncColumn = createAsyncThunk(
+  'column/updateAsyncColumn',
+
+  async (
+    data: { boardId: string; columnId: string; columnBody: IColumnBody },
+    { dispatch, rejectWithValue }
+  ) => {
+    try {
+      const response = await updateColumnRequest(data.boardId, data.columnId, data.columnBody);
+
+      if (!response.ok) {
+        const resp = await response.json();
+        throw new Error(
+          `bad server response, error code: ${resp?.statusCode} message: ${resp?.message}`
+        );
+      }
+      dispatch(updateColumn({ id: data.columnId, body: data.columnBody }));
+    } catch (err) {
+      const msg = (err as Error).message;
+      return rejectWithValue(msg);
+    }
+  }
+);
+
 const pending = (state: columnState) => {
   state.pending = true;
   state.rejectMsg = '';
@@ -98,6 +127,16 @@ export const columnSlice = createSlice({
     deleteColumn: (state: columnState, action: PayloadAction<string>) => {
       state.columns = state.columns.filter((column) => column.id !== action.payload);
     },
+    updateColumn: (
+      state: columnState,
+      action: PayloadAction<{ id: string; body: IColumnBody }>
+    ) => {
+      state.columns = state.columns.map((column) =>
+        column.id === action.payload.id
+          ? { ...column, title: action.payload.body.title }
+          : { ...column }
+      );
+    },
   },
   extraReducers: {
     [getAllColumns.pending.type]: pending,
@@ -109,10 +148,13 @@ export const columnSlice = createSlice({
     [deleteAsyncColumn.pending.type]: pending,
     [deleteAsyncColumn.rejected.type]: reject,
     [deleteAsyncColumn.fulfilled.type]: fulfilled,
+    [updateAsyncColumn.pending.type]: pending,
+    [updateAsyncColumn.rejected.type]: reject,
+    [updateAsyncColumn.fulfilled.type]: fulfilled,
   },
 });
 
-export const { setColumns, setSingleColumn, deleteColumn } = columnSlice.actions;
+export const { setColumns, setSingleColumn, deleteColumn, updateColumn } = columnSlice.actions;
 
 export default columnSlice.reducer;
 
