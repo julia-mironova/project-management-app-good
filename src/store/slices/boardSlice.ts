@@ -1,6 +1,5 @@
-import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction, createAsyncThunk, AnyAction } from '@reduxjs/toolkit';
 import { localStorageGetUserToken } from '../../utils/localStorage';
-import { getBoardById } from '../../api/requests';
 import { BASE_URL } from '../../constants/baseUrl';
 import { IBoardFull } from '../../types/board';
 
@@ -17,193 +16,164 @@ const initialState: boardState = {
   singleBoard: initialSingleBoard,
 };
 
-export const getAllBoards = createAsyncThunk(
-  'board/createAsyncUser',
-  async (_, { dispatch, rejectWithValue }) => {
-    try {
-      const token = localStorageGetUserToken();
-      const response = await fetch(`${BASE_URL}boards`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+export const getAllBoards = createAsyncThunk<IBoard[], undefined, { rejectValue: string }>(
+  'board/getAllBoards',
+  async (_, { rejectWithValue }) => {
+    const token = localStorageGetUserToken();
+    const response = await fetch(`${BASE_URL}boards`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
-      if (!response.ok) {
-        const resp = await response.json();
-        throw new Error(
-          `bad server response, error code: ${resp?.statusCode} message: ${resp?.message}`
-        );
-      }
-
-      const result: IBoard[] = await response.json();
-      dispatch(setAllBoards(result));
-    } catch (err) {
-      const msg = (err as Error).message;
-      return rejectWithValue(msg);
+    if (!response.ok) {
+      const resp = await response.json();
+      return rejectWithValue(
+        `bad server response, error code: ${resp?.statusCode} message: ${resp?.message}`
+      );
     }
+
+    return await response.json();
   }
 );
 
-export const createBoard = createAsyncThunk(
-  'board/createAsyncUser',
-  async (title: string, { dispatch, rejectWithValue }) => {
-    try {
-      const token = localStorageGetUserToken();
-      const response = await fetch(`${BASE_URL}boards`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ title: title }),
-      });
+export const createBoard = createAsyncThunk<IBoard, string, { rejectValue: string }>(
+  'board/createBoard',
+  async (title, { rejectWithValue }) => {
+    const token = localStorageGetUserToken();
+    const response = await fetch(`${BASE_URL}boards`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ title: title }),
+    });
 
-      if (!response.ok) {
-        const resp = await response.json();
-        throw new Error(
-          `bad server response, error code: ${resp?.statusCode} message: ${resp?.message}`
-        );
-      }
-
-      const result: IBoard = await response.json();
-      dispatch(setBoard(result));
-    } catch (err) {
-      const msg = (err as Error).message;
-      return rejectWithValue(msg);
+    if (!response.ok) {
+      const resp = await response.json();
+      return rejectWithValue(
+        `bad server response, error code: ${resp?.statusCode} message: ${resp?.message}`
+      );
     }
-  }
-);
-export const updateAsyncBoard = createAsyncThunk(
-  'board/updateAsyncBoard',
-  async (data: IBoard, { dispatch, rejectWithValue }) => {
-    try {
-      const token = localStorageGetUserToken();
-      const response = await fetch(`${BASE_URL}boards/${data.id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ title: data.title }),
-      });
 
-      if (!response.ok) {
-        const resp = await response.json();
-        throw new Error(
-          `bad server response, error code: ${resp?.statusCode} message: ${resp?.message}`
-        );
-      }
-
-      const result: IBoard = await response.json();
-      dispatch(updateBoard(result));
-    } catch (err) {
-      const msg = (err as Error).message;
-      return rejectWithValue(msg);
-    }
-  }
-);
-export const deleteAsyncBoard = createAsyncThunk(
-  'board/createAsyncUser',
-  async (id: string, { dispatch, rejectWithValue }) => {
-    try {
-      const token = localStorageGetUserToken();
-      const response = await fetch(`${BASE_URL}boards/${id}`, {
-        method: 'DELETE',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (!response.ok) {
-        const resp = await response.json();
-        throw new Error(
-          `bad server response, error code: ${resp?.statusCode} message: ${resp?.message}`
-        );
-      }
-      dispatch(deleteBoard(id));
-    } catch (err) {
-      const msg = (err as Error).message;
-      return rejectWithValue(msg);
-    }
+    return await response.json();
   }
 );
 
-export const getSingleBoard = createAsyncThunk(
+export const updateBoard = createAsyncThunk<IBoard, string, { rejectValue: string }>(
+  'board/updateBoard',
+  async (title, { rejectWithValue }) => {
+    const token = localStorageGetUserToken();
+    const response = await fetch(`${BASE_URL}boards`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ title: title }),
+    });
+
+    if (!response.ok) {
+      const resp = await response.json();
+      return rejectWithValue(
+        `bad server response, error code: ${resp?.statusCode} message: ${resp?.message}`
+      );
+    }
+
+    return await response.json();
+  }
+);
+
+export const deleteBoard = createAsyncThunk<string, string, { rejectValue: string }>(
+  'board/deleteBoard',
+  async (id, { rejectWithValue }) => {
+    const token = localStorageGetUserToken();
+    const response = await fetch(`${BASE_URL}boards/${id}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      const resp = await response.json();
+      return rejectWithValue(
+        `bad server response, error code: ${resp?.statusCode} message: ${resp?.message}`
+      );
+    }
+    return id;
+  }
+);
+
+export const getSingleBoard = createAsyncThunk<IBoardFull, string, { rejectValue: string }>(
   'board/getSingleBoard',
-  async (id: string, { dispatch, rejectWithValue }) => {
-    try {
-      const singleBoardResponse = await getBoardById(id);
-      if (!singleBoardResponse.ok) {
-        const resp = await singleBoardResponse.json();
-        throw new Error(
-          `bad server response, error code: ${resp?.statusCode} message: ${resp?.message}`
-        );
-      }
-      const singleBoard: IBoardFull = await singleBoardResponse.json();
-      dispatch(setSingleBoard(singleBoard));
-    } catch (err) {
-      const msg = (err as Error).message;
-      return rejectWithValue(msg);
+  async (id, { rejectWithValue }) => {
+    const token = localStorageGetUserToken();
+    const response = await fetch(`${BASE_URL}boards/${id}`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      const resp = await response.json();
+      return rejectWithValue(
+        `bad server response, error code: ${resp?.statusCode} message: ${resp?.message}`
+      );
     }
+    return await response.json();
   }
 );
-
-const pending = (state: boardState) => {
-  state.pending = true;
-  state.rejectMsg = '';
-};
-const reject = (state: boardState, action: PayloadAction<string>) => {
-  state.pending = false;
-  state.rejectMsg = action.payload;
-};
-const fulfilled = (state: boardState) => {
-  state.pending = false;
-};
 
 export const boardSlice = createSlice({
   name: 'board',
   initialState,
-  reducers: {
-    setAllBoards: (state: boardState, action: PayloadAction<IBoard[]>) => {
-      state.boards = action.payload;
-    },
-    setBoard: (state: boardState, action: PayloadAction<IBoard>) => {
-      state.boards = [...state.boards, action.payload];
-    },
-    updateBoard: (state: boardState, action: PayloadAction<IBoard>) => {
-      const index = state.boards.findIndex((board) => board.id === action.payload.id);
-      state.boards[index] = action.payload;
-    },
-    deleteBoard: (state: boardState, action: PayloadAction<string>) => {
-      state.boards = state.boards.filter((el) => el.id !== action.payload);
-    },
-    setSingleBoard: (state: boardState, action: PayloadAction<IBoardFull>) => {
-      state.singleBoard = action.payload;
-    },
-  },
-  extraReducers: {
-    [getAllBoards.pending.type]: pending,
-    [getAllBoards.rejected.type]: reject,
-    [getAllBoards.fulfilled.type]: fulfilled,
-    [createBoard.pending.type]: pending,
-    [createBoard.rejected.type]: reject,
-    [createBoard.fulfilled.type]: fulfilled,
-    [updateAsyncBoard.pending.type]: pending,
-    [updateAsyncBoard.rejected.type]: reject,
-    [updateAsyncBoard.fulfilled.type]: fulfilled,
-    [deleteAsyncBoard.pending.type]: pending,
-    [deleteAsyncBoard.rejected.type]: reject,
-    [deleteAsyncBoard.fulfilled.type]: fulfilled,
-    [getSingleBoard.pending.type]: pending,
-    [getSingleBoard.rejected.type]: reject,
-    [getSingleBoard.fulfilled.type]: fulfilled,
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(getAllBoards.fulfilled, (state, action) => {
+        state.boards = action.payload;
+        state.pending = false;
+      })
+      .addCase(createBoard.fulfilled, (state, action) => {
+        state.boards.push(action.payload);
+        state.pending = false;
+      })
+      .addCase(updateBoard.fulfilled, (state, action) => {
+        const cash = state.boards.map((el) => {
+          return el.id === action.payload.id ? action.payload : el;
+        });
+        state.boards = cash;
+        state.pending = false;
+      })
+      .addCase(deleteBoard.fulfilled, (state, action) => {
+        state.boards = state.boards.filter((el) => el.id !== action.payload);
+        state.pending = false;
+      })
+      .addCase(getSingleBoard.fulfilled, (state, action) => {
+        state.singleBoard = action.payload;
+        state.pending = false;
+      })
+      .addMatcher(isError, (state, action: PayloadAction<string>) => {
+        state.pending = false;
+        state.rejectMsg = action.payload;
+      })
+      .addMatcher(isPending, (state) => {
+        state.pending = true;
+      });
   },
 });
 
-export const { setAllBoards, setBoard, deleteBoard, updateBoard, setSingleBoard } =
-  boardSlice.actions;
-
 export default boardSlice.reducer;
+
+function isError(action: AnyAction) {
+  return action.type.endsWith('rejected');
+}
+function isPending(action: AnyAction) {
+  return action.type.endsWith('pending');
+}
 
 interface boardState {
   boards: IBoard[];
