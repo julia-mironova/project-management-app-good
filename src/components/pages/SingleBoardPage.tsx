@@ -29,7 +29,7 @@ const SingleBoardPage = () => {
         direction={{ xs: 'column', sm: 'row' }}
         spacing={{ xs: 1, sm: 2, md: 4 }}
         justifyContent="flex-start"
-        sx={{ overflowX: 'scroll', overflowY: 'hidden' }}
+        sx={{ overflowX: 'auto', overflowY: 'hidden' }}
       >
         {columns
           // .sort((a, b) => a.order - b.order)
