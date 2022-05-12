@@ -16,6 +16,7 @@ const BoardsPage = () => {
   };
 
   const handlerDelete = (id: string) => {
+    console.log('Send request to delete board with id: ', id);
     dispatch(deleteAsyncBoard(id));
   };
 

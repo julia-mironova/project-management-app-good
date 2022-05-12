@@ -14,6 +14,7 @@ import { useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux.hooks';
 import { getAllTasks } from '../../store/slices/tasksSlice';
 import { deleteAsyncColumn } from '../../store/slices/columnSlice';
+import ConformModal from '../ConformModal';
 
 type IFormInputChangeName = {
   title: string;
@@ -38,6 +39,8 @@ const BoardColumn = ({
   } = useForm<IFormInputChangeName>();
 
   // const [dataTasks, setDataTasks] = React.useState(column.tasks);
+  const [isOpenConformModal, setIsOpenConformModal] = React.useState(false);
+
   const { tasks } = useAppSelector((state) => state.tasks);
   const { boardId } = useParams();
   const dispatch = useAppDispatch();
@@ -184,7 +187,7 @@ const BoardColumn = ({
               sx={{
                 p: 0,
               }}
-              onClick={handleDeleteColumn}
+              onClick={() => setIsOpenConformModal(true)}
             >
               <DeleteIcon />
             </IconButton>
@@ -218,6 +221,11 @@ const BoardColumn = ({
           // setDataTasks={tasks}
         />
       </ModalWindow>
+      <ConformModal
+        isOpen={isOpenConformModal}
+        close={() => setIsOpenConformModal(false)}
+        func={handleDeleteColumn}
+      />
     </Stack>
   );
 };
