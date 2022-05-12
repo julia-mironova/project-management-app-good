@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
-import { getAllTasksRequest } from '../../api/requests';
-import { ITasksResp } from '../../types/board';
+import { getAllTasksRequest, postTask } from '../../api/requests';
+import { ITasksResp, ITaskBody } from '../../types/board';
 
 const initialState: tasksState = {
   tasks: [],
@@ -23,6 +23,26 @@ export const getAllTasks = createAsyncThunk(
 
       const result: ITasksResp[] = await response.json();
       dispatch(setTasks(result));
+    } catch (err) {
+      const msg = (err as Error).message;
+      return rejectWithValue(msg);
+    }
+  }
+);
+
+export const createAsyncTask = createAsyncThunk(
+  'task/createTask',
+
+  async (data: { boardId: string; columnId: string; taskBody: ITaskBody }, { rejectWithValue }) => {
+    try {
+      const response = await postTask(data.boardId, data.columnId, data.taskBody);
+
+      if (!response.ok) {
+        const resp = await response.json();
+        throw new Error(
+          `bad server response, error code: ${resp?.statusCode} message: ${resp?.message}`
+        );
+      }
     } catch (err) {
       const msg = (err as Error).message;
       return rejectWithValue(msg);
@@ -54,6 +74,9 @@ export const tasksSlice = createSlice({
     [getAllTasks.pending.type]: pending,
     [getAllTasks.rejected.type]: reject,
     [getAllTasks.fulfilled.type]: fulfilled,
+    [createAsyncTask.pending.type]: pending,
+    [createAsyncTask.rejected.type]: reject,
+    [createAsyncTask.fulfilled.type]: fulfilled,
   },
 });
 

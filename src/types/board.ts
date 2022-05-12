@@ -24,6 +24,13 @@ export type ITasksResp = {
   id: string;
 };
 
+export type ITaskBody = {
+  title: string;
+  order: number;
+  description: string;
+  userId: string;
+};
+
 export type IColumn = {
   id: string;
   title: string;
@@ -47,3 +54,10 @@ export type IColumnBody = {
   title: string;
   order: number;
 };
+
+// {
+//   "title": "take onion",
+//   "order": 3,
+//   "description": "take onion 2 pcs",
+//   "userId": "c6d7428a-07e0-4317-8c99-96317807798c"
+// }

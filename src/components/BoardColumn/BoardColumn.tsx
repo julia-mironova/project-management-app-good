@@ -20,7 +20,6 @@ import ModalWindow from '../ModalWindow';
 import FormNewTask from '../FormNewTask';
 import { useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux.hooks';
-import { getAllTasks } from '../../store/slices/tasksSlice';
 import { deleteAsyncColumn, updateAsyncColumn } from '../../store/slices/columnSlice';
 import { Draggable } from 'react-beautiful-dnd';
 import ConformModal from '../ConformModal';
@@ -33,7 +32,6 @@ type IFormInputChangeName = {
 const BoardColumn = ({ column }: { column: IColumnsResp }) => {
   const [isEdit, setIsEdit] = useState(false);
   const [isOpenModalAddNewTask, setisOpenModalAddNewTask] = React.useState(false);
-
   const {
     register,
     handleSubmit,
@@ -218,10 +216,10 @@ const BoardColumn = ({ column }: { column: IColumnsResp }) => {
                 overflowX: 'hidden',
               }}
             >
-              {tasks
+              {columnTasks
                 // .sort((a, b) => a.order - b.order)
-                .map((task: ITasksResp) => (
-                  <p key={task.id}>{task.title}</p>
+                .map((task: ITasksResp, i) => (
+                  <p key={i}>{task.title}</p>
                   // <ColumnTask
                   //   key={task.id}
                   //   task={task}
@@ -235,6 +233,7 @@ const BoardColumn = ({ column }: { column: IColumnsResp }) => {
               onClose={() => setisOpenModalAddNewTask(false)}
             >
               <FormNewTask
+                columnId={column.id}
                 onClose={() => setisOpenModalAddNewTask(false)}
                 // dataTasks={tasks}
                 // setDataTasks={tasks}

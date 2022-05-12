@@ -1,4 +1,4 @@
-import { IColumnBody } from '../types/board';
+import { IColumnBody, ITaskBody } from '../types/board';
 import { localStorageGetUserToken } from '../utils/localStorage';
 import { BASE_URL } from '../constants/baseUrl';
 
@@ -88,15 +88,19 @@ const getAllTasksRequest = async (boardId: string, columnId: string): Promise<Re
   return response;
 };
 
-const postTask = async (boardId: string, columnBody: IColumnBody): Promise<Response> => {
+const postTask = async (
+  boardId: string,
+  columnId: string,
+  taskBody: ITaskBody
+): Promise<Response> => {
   const token = localStorageGetUserToken();
-  const response = await fetch(`${BASE_URL}boards/${boardId}/columns`, {
+  const response = await fetch(`${BASE_URL}boards/${boardId}/columns/${columnId}/tasks`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify(columnBody),
+    body: JSON.stringify(taskBody),
   });
   return response;
 };
