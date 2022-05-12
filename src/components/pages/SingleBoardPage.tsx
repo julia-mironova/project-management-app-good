@@ -25,33 +25,58 @@ const SingleBoardPage = () => {
     }
   }, [boardId, dispatch]);
 
-  console.log(columns);
+  const onDragEnd = async (result: DropResult) => {
+    const { destination, draggableId } = result;
 
-  const onDragEnd = (result: DropResult) => {
-    const { destination, source, draggableId } = result;
-    console.log(result);
-    console.log(destination);
-    console.log(draggableId);
     if (boardId && destination) {
-      columns.forEach((column) => {
-        if (column.id === draggableId) {
-          dispatch(
-            updateAsyncColumn({
-              boardId: boardId,
-              columnId: column.id,
-              columnBody: { title: column.title, order: destination.index },
-            })
-          );
-        } else if (column.order >= source.index) {
-          dispatch(
-            updateAsyncColumn({
-              boardId: boardId,
-              columnId: column.id,
-              columnBody: { title: column.title, order: column.order + 1 },
-            })
-          );
+      const draggableColumn = columns.find((column) => column.id === draggableId) as IColumnsResp;
+      const oldOrder = draggableColumn.order;
+      const newOrder = destination.index;
+      const numChangedColumns = draggableColumn?.order - newOrder;
+
+      await dispatch(
+        updateAsyncColumn({
+          boardId: boardId,
+          columnId: draggableColumn.id,
+          columnBody: { title: draggableColumn.title, order: 1000 },
+        })
+      );
+      if (numChangedColumns < 0) {
+        for (let i = oldOrder; i <= newOrder; i++) {
+          const column = columns.find((column) => column.order === i) as IColumnsResp;
+          if (column) {
+            await dispatch(
+              updateAsyncColumn({
+                boardId: boardId,
+                columnId: column.id,
+                columnBody: { title: column.title, order: column.order - 1 },
+              })
+            );
+          }
         }
-      });
+      } else if (numChangedColumns > 0) {
+        for (let i = oldOrder; i >= newOrder; i--) {
+          const column = columns.find((column) => column.order === i) as IColumnsResp;
+          if (column) {
+            await dispatch(
+              updateAsyncColumn({
+                boardId: boardId,
+                columnId: column.id,
+                columnBody: { title: column.title, order: column.order + 1 },
+              })
+            );
+          }
+        }
+      }
+
+      await dispatch(
+        updateAsyncColumn({
+          boardId: boardId,
+          columnId: draggableColumn.id,
+          columnBody: { title: draggableColumn.title, order: newOrder },
+        })
+      );
+
       dispatch(getAllColumns(boardId));
     }
   };
@@ -73,7 +98,6 @@ const SingleBoardPage = () => {
                 {...provided.droppableProps}
                 ref={provided.innerRef}
               >
-                {provided.placeholder}
                 {[...columns]
                   .sort((a, b) => a.order - b.order)
                   .map((column: IColumnsResp) => (
@@ -86,6 +110,7 @@ const SingleBoardPage = () => {
                       // this.props.onUpdateSalary(salary, id)
                     />
                   ))}
+                {provided.placeholder}
                 <Button
                   variant="outlined"
                   size="large"

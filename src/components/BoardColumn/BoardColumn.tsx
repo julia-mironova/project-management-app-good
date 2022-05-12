@@ -75,6 +75,12 @@ const BoardColumn = ({ column }: { column: IColumnsResp }) => {
     <Draggable draggableId={column.id} index={column.order}>
       {(provided) => (
         <ListItem
+          sx={{
+            width: '400px',
+            minWidth: '400px',
+            m: 0,
+            p: 0,
+          }}
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
