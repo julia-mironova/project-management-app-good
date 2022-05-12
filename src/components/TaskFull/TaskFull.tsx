@@ -22,6 +22,7 @@ import { IFileAttached, ITaskResp } from '../../types/board';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import DeleteIcon from '@mui/icons-material/Delete';
+import ConformModal from '../ConformModal';
 
 type IFormTaskData = {
   title: string;
@@ -36,17 +37,14 @@ type IFormInputFile = {
   fileSize: number;
 };
 
-const TaskFull = ({
-  onClose,
-  task,
-  dataTasks,
-  setDataTasks,
-}: {
+type IPropsTaskFull = {
   onClose: () => void;
   task: ITaskResp;
   dataTasks: ITaskResp[];
   setDataTasks: React.Dispatch<React.SetStateAction<ITaskResp[]>>;
-}) => {
+};
+
+const TaskFull = ({ onClose, task, dataTasks, setDataTasks }: IPropsTaskFull) => {
   const {
     register,
     handleSubmit,
@@ -54,6 +52,7 @@ const TaskFull = ({
   } = useForm<IFormTaskData>();
 
   const [downloadFiles, setDownloadFiles] = React.useState<IFormInputFile[]>(task.files);
+  const [isOpenConformModal, setIsOpenConformModal] = React.useState(false);
   // const [checkedDone, setCheckedDone] = React.useState(task.done);
 
   const onSubmit = (data: IFormTaskData) => {
@@ -204,12 +203,17 @@ const TaskFull = ({
           </Button>
         </DialogContent>
         <DialogActions>
-          <Button onClick={onDelete} sx={{ color: 'red' }}>
+          <Button onClick={() => setIsOpenConformModal(true)} sx={{ color: 'red' }}>
             Delete task
           </Button>
           <Button onClick={onClose}>Cancel</Button>
           <Button type="submit">Ok</Button>
         </DialogActions>
+        <ConformModal
+          isOpen={isOpenConformModal}
+          close={() => setIsOpenConformModal(false)}
+          func={onDelete}
+        />
       </Box>
     </form>
   );

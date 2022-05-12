@@ -5,12 +5,14 @@ import React, { FC } from 'react';
 import dataPictures from '../../dataPictures';
 import { useNavigate } from 'react-router-dom';
 import { IBoard } from '../../store/slices/boardSlice';
+import ConformModal from '../ConformModal';
 
 const BoardPreview: FC<{ board: IBoard; handlerDelete: (id: string) => void }> = ({
   board,
   handlerDelete,
 }) => {
   const [isEdit, setIsEdit] = React.useState(false);
+  const [isOpenConformModal, setIsOpenConformModal] = React.useState(false);
   const navigate = useNavigate();
 
   const handleEditBoard = async () => {
@@ -40,13 +42,18 @@ const BoardPreview: FC<{ board: IBoard; handlerDelete: (id: string) => void }> =
           }}
           onSubmit={handleEditBoard}
         />
-        <IconButton aria-label="delete" onClick={() => handlerDelete(board.id)}>
+        <IconButton aria-label="delete" onClick={() => setIsOpenConformModal(true)}>
           <DeleteIcon />
         </IconButton>
         <IconButton aria-label="edit" onClick={() => setIsEdit(true)}>
           <EditIcon />
         </IconButton>
       </CardContent>
+      <ConformModal
+        isOpen={isOpenConformModal}
+        close={() => setIsOpenConformModal(false)}
+        func={() => handlerDelete(board.id)}
+      />
     </Card>
   );
 };
