@@ -1,3 +1,13 @@
+export interface boardState {
+  boards: IBoardPreview[];
+  rejectMsg: string;
+  pending: boolean;
+  singleBoard: IBoard;
+}
+export type IBoardPreview = {
+  id: string;
+  title: string;
+};
 export type IBoard = {
   id: string;
   title: string;

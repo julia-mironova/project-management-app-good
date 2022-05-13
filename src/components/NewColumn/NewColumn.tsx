@@ -2,12 +2,8 @@ import { Box, Button, DialogActions, DialogContent, DialogTitle, TextField } fro
 import { useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux.hooks';
-<<<<<<< HEAD:src/components/FormNewColumn/FormNewColumn.tsx
-import { createColumn } from '../../store/slices/columnSlice';
 import { useTranslation } from 'react-i18next';
-=======
 import { createColumn } from '../../store/slices/columnReducer';
->>>>>>> 96de855... refactor: column reduser:src/components/NewColumn/NewColumn.tsx
 
 type formData = {
   title: string;
@@ -20,13 +16,8 @@ const NewColumn = ({ onClose }: { onClose: () => void }) => {
     formState: { errors },
   } = useForm<formData>();
 
-<<<<<<< HEAD:src/components/FormNewColumn/FormNewColumn.tsx
   const { t } = useTranslation();
-
-  const { columns } = useAppSelector((state) => state.columns);
-=======
   const { columns } = useAppSelector((state) => state.boards.singleBoard);
->>>>>>> 96de855... refactor: column reduser:src/components/NewColumn/NewColumn.tsx
   const dispatch = useAppDispatch();
   const { boardId } = useParams();
 
@@ -49,15 +40,7 @@ const NewColumn = ({ onClose }: { onClose: () => void }) => {
             error={errors.title ? true : false}
             helperText={errors.title ? errors.title.message : ''}
             {...register('title', {
-<<<<<<< HEAD:src/components/FormNewColumn/FormNewColumn.tsx
               required: { value: true, message: `${t('FORM.REQUIRE_MSG')}` },
-=======
-              required: { value: true, message: 'this field is required' },
-              minLength: {
-                value: 2,
-                message: 'Your column name must be at least 2 characters long.',
-              },
->>>>>>> 96de855... refactor: column reduser:src/components/NewColumn/NewColumn.tsx
             })}
           />
         </DialogContent>

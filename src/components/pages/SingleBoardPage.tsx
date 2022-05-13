@@ -3,16 +3,17 @@ import { useParams } from 'react-router-dom';
 import { Button, Container, Stack } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux.hooks';
 import { useTranslation } from 'react-i18next';
-import { getAllColumns, updateAsyncColumn } from '../../store/slices/columnSlice';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import { getSingleBoard } from '../../store/slices/boardSlice';
+import { updateColumn } from '../../store/slices/columnReducer';
 import NewColumn from '../NewColumn';
 import ModalWindow from '../ModalWindow';
 import Column from '../Column';
+import { IColumnsResp } from '../../utils/types/board';
 
 const SingleBoardPage = () => {
   const [isOpenModalAddNewColumn, setIsOpenModalAddNewColumn] = useState(false);
-  const { columns } = useAppSelector((state) => state.boards.singleBoard.columns);
+  const { columns } = useAppSelector((state) => state.boards.singleBoard);
   const dispatch = useAppDispatch();
   const { boardId } = useParams();
   const { t } = useTranslation();
@@ -30,37 +31,40 @@ const SingleBoardPage = () => {
       const draggableColumn = columns.find((column) => column.id === draggableId) as IColumnsResp;
       const oldOrder = draggableColumn.order;
       const newOrder = destination.index;
-      const numChangedColumns = draggableColumn?.order - newOrder;
+      const numChangedColumns = oldOrder - newOrder;
 
       await dispatch(
-        updateAsyncColumn({
+        updateColumn({
           boardId: boardId,
           columnId: draggableColumn.id,
-          columnBody: { title: draggableColumn.title, order: 1000 },
+          title: draggableColumn.title,
+          order: 1000,
         })
       );
       if (numChangedColumns < 0) {
-        for (let i = oldOrder; i <= newOrder; i++) {
+        for (let i = oldOrder + 1; i <= newOrder; i++) {
           const column = columns.find((column) => column.order === i) as IColumnsResp;
           if (column) {
             await dispatch(
-              updateAsyncColumn({
+              updateColumn({
                 boardId: boardId,
                 columnId: column.id,
-                columnBody: { title: column.title, order: column.order - 1 },
+                title: column.title,
+                order: column.order - 1,
               })
             );
           }
         }
       } else if (numChangedColumns > 0) {
-        for (let i = oldOrder; i >= newOrder; i--) {
+        for (let i = oldOrder - 1; i >= newOrder; i--) {
           const column = columns.find((column) => column.order === i) as IColumnsResp;
           if (column) {
             await dispatch(
-              updateAsyncColumn({
+              updateColumn({
                 boardId: boardId,
                 columnId: column.id,
-                columnBody: { title: column.title, order: column.order + 1 },
+                title: column.title,
+                order: column.order + 1,
               })
             );
           }
@@ -68,18 +72,15 @@ const SingleBoardPage = () => {
       }
 
       await dispatch(
-        updateAsyncColumn({
+        updateColumn({
           boardId: boardId,
           columnId: draggableColumn.id,
-          columnBody: { title: draggableColumn.title, order: newOrder },
+          title: draggableColumn.title,
+          order: newOrder,
         })
       );
-
-      dispatch(getAllColumns(boardId));
     }
   };
-
-  // const [dataColumns, setDataColumns] = React.useState<IColumn[]>(startDataBoard.columns);
 
   return (
     <Container maxWidth={false} sx={{ mt: '1rem', height: '83.5vh' }}>
@@ -99,8 +100,7 @@ const SingleBoardPage = () => {
                 {[...columns]
                   .sort((a, b) => a.order - b.order)
                   .map((column: IColumnsResp) => (
-                    // <p key={column.id} onClick=>{column.title}</p>
-                    <BoardColumn
+                    <Column
                       key={column.id}
                       column={column}
                       // dataColumns={dataColumns}

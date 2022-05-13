@@ -9,7 +9,6 @@ import {
 import { UserInfo } from '../../types/types';
 import { UserResponse } from '../../types/auth';
 import { BASE_URL } from '../../constants/baseUrl';
-import { getUserById } from '../../api/requests';
 import { parseJwt } from '../../utils/parseJWT';
 
 const initialUser: UserInfo = localStorageGetUser() || undefined;
@@ -86,15 +85,20 @@ export const getSingleUser = createAsyncThunk(
   'auth/getSingleUser',
   async (data: ISingleUser, { dispatch, rejectWithValue }) => {
     try {
-      const singleUserResponse = await getUserById(data.id, data.token);
+      const response = await fetch(`${BASE_URL}users/${data.id}`, {
+        headers: {
+          Accept: 'application/json',
+          Authorization: `Bearer ${data.token}`,
+        },
+      });
 
-      if (!singleUserResponse.ok) {
-        const resp = await singleUserResponse.json();
+      if (!response.ok) {
+        const resp = await response.json();
         throw new Error(
           `bad server response, error code: ${resp?.statusCode} message: ${resp?.message}`
         );
       }
-      const singleUser: UserResponse = await singleUserResponse.json();
+      const singleUser: UserResponse = await response.json();
       dispatch(setUser(singleUser));
       localStorageSetUser({ id: singleUser.id, name: singleUser.name });
     } catch (err) {

@@ -1,15 +1,10 @@
 import { useParams } from 'react-router-dom';
 import { Button, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux.hooks';
-import { createAsyncTask } from '../../store/slices/tasksSlice';
-import { getSingleBoard } from '../../store/slices/boardSlice';
 import { localStorageGetUser } from '../../utils/localStorage';
 import { useForm } from 'react-hook-form';
-<<<<<<< HEAD
 // import { useAppSelector } from '../../hooks/redux.hooks';
 import { useTranslation } from 'react-i18next';
-=======
->>>>>>> e3056d3... feat: add create task action
 
 type IFormInputNewTask = {
   title: string;
@@ -32,12 +27,9 @@ const FormNewTask = ({
     handleSubmit,
     formState: { errors },
   } = useForm<IFormInputNewTask>();
-<<<<<<< HEAD
   const { t } = useTranslation();
-=======
   const dispatch = useAppDispatch();
   const { boardId } = useParams();
->>>>>>> e3056d3... feat: add create task action
   // const { id } = useAppSelector((state) => state.auth);
   const { singleBoard } = useAppSelector((state) => state.boards);
 
@@ -62,15 +54,8 @@ const FormNewTask = ({
   };
 
   return (
-<<<<<<< HEAD
-    <form
-    // onSubmit={handleSubmit(onSubmit)}
-    >
-      <DialogTitle>{t('TASK.CREATE_TASK_HEADER')}</DialogTitle>
-=======
     <form onSubmit={handleSubmit(onSubmit)}>
       <DialogTitle>Create new task</DialogTitle>
->>>>>>> e3056d3... feat: add create task action
       <DialogContent>
         <TextField
           label={t('TITLE')}

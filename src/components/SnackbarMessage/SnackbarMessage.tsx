@@ -11,13 +11,12 @@ const SnackbarMessage = () => {
   const [open, setOpen] = useState(false);
   const { rejectMsg: rejectMsgAuth } = useAppSelector((state) => state.auth);
   const { rejectMsg: rejectMsgBoards } = useAppSelector((state) => state.boards);
-  const { rejectMsg: rejectMsgTasks } = useAppSelector((state) => state.tasks);
 
   useEffect(() => {
-    if (rejectMsgAuth || rejectMsgBoards || rejectMsgTasks) {
+    if (rejectMsgAuth || rejectMsgBoards) {
       setOpen(true);
     }
-  }, [rejectMsgAuth, rejectMsgBoards, rejectMsgTasks]);
+  }, [rejectMsgAuth, rejectMsgBoards]);
 
   const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
     if (reason === 'clickaway') {
@@ -30,7 +29,7 @@ const SnackbarMessage = () => {
     <Stack spacing={2} sx={{ width: '100%' }}>
       <Snackbar open={open} autoHideDuration={5000} onClose={handleClose}>
         <Alert onClose={handleClose} severity="warning" sx={{ width: '100%' }}>
-          {rejectMsgAuth || rejectMsgBoards || rejectMsgTasks}
+          {rejectMsgAuth || rejectMsgBoards}
         </Alert>
       </Snackbar>
     </Stack>

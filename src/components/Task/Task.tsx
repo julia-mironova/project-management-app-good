@@ -2,20 +2,12 @@ import { Paper, styled } from '@mui/material';
 import ModalWindow from '../ModalWindow';
 import TaskFull from '../TaskFull';
 import React from 'react';
-import { ITaskResp } from '../../types/board';
+import { ITask } from '../../types/board';
 
-const ColumnTask = ({
-  task,
-  dataTasks,
-  setDataTasks,
-}: {
-  task: ITaskResp;
-  dataTasks: ITaskResp[];
-  setDataTasks: React.Dispatch<React.SetStateAction<ITaskResp[]>>;
-}) => {
+const Task = ({ task }: { task: ITask }) => {
   const [isOpenModalTaskFull, setIsOpenModalTaskFull] = React.useState(false);
 
-  const Task = styled(Paper)(({ theme }) => ({
+  const TitleTask = styled(Paper)(({ theme }) => ({
     ...theme.typography.h6,
     textAlign: 'left',
     paddingLeft: theme.spacing(2),
@@ -29,17 +21,12 @@ const ColumnTask = ({
 
   return (
     <>
-      <Task onClick={() => setIsOpenModalTaskFull(true)}>{task.title}</Task>
+      <TitleTask onClick={() => setIsOpenModalTaskFull(true)}>{task.title}</TitleTask>
       <ModalWindow open={isOpenModalTaskFull} onClose={() => setIsOpenModalTaskFull(false)}>
-        <TaskFull
-          onClose={() => setIsOpenModalTaskFull(false)}
-          task={task}
-          dataTasks={dataTasks}
-          setDataTasks={setDataTasks}
-        />
+        <TaskFull onClose={() => setIsOpenModalTaskFull(false)} task={task} />
       </ModalWindow>
     </>
   );
 };
 
-export default ColumnTask;
+export default Task;

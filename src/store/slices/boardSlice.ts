@@ -1,7 +1,8 @@
+import { createTask } from './taskResucer';
 import { createSlice, PayloadAction, createAsyncThunk, AnyAction } from '@reduxjs/toolkit';
 import { localStorageGetUserToken } from '../../utils/localStorage';
 import { BASE_URL } from '../../constants/baseUrl';
-import { IBoard } from '../../types/board';
+import { boardState, IBoard, IBoardPreview } from '../../types/board';
 import { createColumn, deleteColumn, updateColumn } from './columnReducer';
 
 const initialSingleBoard: IBoard = {
@@ -124,7 +125,13 @@ export const getSingleBoard = createAsyncThunk<IBoard, string, { rejectValue: st
         `bad server response, error code: ${resp?.statusCode} message: ${resp?.message}`
       );
     }
-    const data = await response.json();
+    const data: IBoard = await response.json();
+    data.columns.sort((a, b) => {
+      if (a.order < b.order) return -1;
+      if (a.order > b.order) return 1;
+      return 0;
+    });
+
     return data;
   }
 );
@@ -160,15 +167,29 @@ export const boardSlice = createSlice({
       /* column reducer */
       .addCase(createColumn.fulfilled, (state, action) => {
         state.singleBoard.columns.push(action.payload);
+        state.pending = false;
       })
       .addCase(deleteColumn.fulfilled, (state, action) => {
-        state.singleBoard.columns = state.singleBoard.columns.filter(
-          (el) => el.id !== action.payload
-        );
+        state.singleBoard.columns = action.payload;
+        state.pending = false;
       })
       .addCase(updateColumn.fulfilled, (state, action) => {
+        state.pending = false;
         state.singleBoard.columns = state.singleBoard.columns.map((el) => {
           return el.id === action.payload.id ? action.payload : el;
+        });
+      })
+      /* tasks reducer */
+      .addCase(createTask.fulfilled, (state, action) => {
+        state.singleBoard.columns = state.singleBoard.columns.map((el) => {
+          if (el.id === action.payload.columnId) {
+            el.tasks?.map((el) => {
+              return el.id === action.payload.id ? action.payload : el;
+            });
+            return el;
+          } else {
+            return el;
+          }
         });
       })
       .addMatcher(isError, (state, action: PayloadAction<string>) => {
@@ -190,13 +211,23 @@ function isPending(action: AnyAction) {
   return action.type.endsWith('pending');
 }
 
-interface boardState {
-  boards: IBoardPreview[];
-  rejectMsg: string;
-  pending: boolean;
-  singleBoard: IBoard;
-}
-export type IBoardPreview = {
-  id: string;
-  title: string;
-};
+/* const cash = [] as IColumn[];
+          action.payload.forEach((payloadElement, idx) => {
+            state.singleBoard.columns.forEach((column) => {
+              if (column.id === payloadElement.id) {
+                cash.push({
+                  id: action.payload[idx].id,
+                  order: action.payload[idx].order,
+                  title: action.payload[idx].title,
+                  tasks: column.tasks,
+                });
+              }
+            });
+          });
+
+          state.singleBoard.columns = cash;
+          state.singleBoard.columns = state.singleBoard.columns.filter(
+            (el) => el.id !== action.payload
+          );
+        } else {
+          state.singleBoard.columns.pop();*/
