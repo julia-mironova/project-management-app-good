@@ -18,6 +18,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { useAppSelector, useAppDispatch } from '../../hooks/redux.hooks';
 import { generateUserInitials } from '../../utils/generateUserInitials';
 import { logOut } from '../../store/slices/authSlice';
+import LanguageMenu from '../../components/LanguageMenu';
 
 const pages = [
   { page: 'Welcome', path: '/' },
@@ -155,6 +156,9 @@ const Header = () => {
             ))}
           </Box>
 
+          <Box sx={{ flexGrow: 0 }}>
+            <LanguageMenu />
+          </Box>
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton
