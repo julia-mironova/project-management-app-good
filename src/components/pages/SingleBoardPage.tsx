@@ -9,8 +9,7 @@ import { IColumnsResp } from '../../types/board';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux.hooks';
 import { useTranslation } from 'react-i18next';
 import { getAllColumns, updateAsyncColumn } from '../../store/slices/columnSlice';
-import { DragDropContext, Droppable } from 'react-beautiful-dnd';
-import { DropResult } from 'react-beautiful-dnd';
+import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 
 const SingleBoardPage = () => {
   const [isOpenModalAddNewColumn, setIsOpenModalAddNewColumn] = useState(false);
