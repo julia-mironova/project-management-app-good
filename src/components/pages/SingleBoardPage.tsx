@@ -8,12 +8,14 @@ import BoardColumn from '../BoardColumn';
 import { IColumnsResp } from '../../types/board';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux.hooks';
 import { getAllColumns } from '../../store/slices/columnSlice';
+import { useTranslation } from 'react-i18next';
 
 const SingleBoardPage = () => {
   const [isOpenModalAddNewColumn, setIsOpenModalAddNewColumn] = useState(false);
   const { columns } = useAppSelector((state) => state.columns);
   const dispatch = useAppDispatch();
   const { boardId } = useParams();
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (boardId) {
@@ -49,7 +51,7 @@ const SingleBoardPage = () => {
           sx={{ height: 50, minWidth: 300 }}
           onClick={() => setIsOpenModalAddNewColumn(true)}
         >
-          + new colomn
+          {t('COLUMN.NEW_COLUMN')}
         </Button>
       </Stack>
       <ModalWindow open={isOpenModalAddNewColumn} onClose={() => setIsOpenModalAddNewColumn(false)}>

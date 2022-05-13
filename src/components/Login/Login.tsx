@@ -18,6 +18,7 @@ import SendIcon from '@mui/icons-material/Send';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux.hooks';
 import { createToken } from '../../store/slices/authSlice';
+import { useTranslation } from 'react-i18next';
 
 export const Login = () => {
   const {
@@ -26,6 +27,7 @@ export const Login = () => {
     formState: { errors },
   } = useForm<propsSubmitLogin>({ mode: 'onSubmit' });
 
+  const { t } = useTranslation();
   const state = useAppSelector((state) => state.auth);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -61,7 +63,7 @@ export const Login = () => {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h4">
-          Login
+          {t('LOGIN.HEADER')}
         </Typography>
         <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate sx={{ mt: 1 }}>
           <TextField
@@ -71,14 +73,14 @@ export const Login = () => {
             required
             fullWidth
             id="email"
-            label="Email Address"
+            label={t('FORM.EMAIL')}
             autoFocus
             {...register('email', {
-              required: { value: true, message: 'this field is required' },
+              required: { value: true, message: `${t('FORM.REQUIRE_MSG')}` },
               pattern: {
                 value:
                   /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-                message: 'incorrect email',
+                message: `${t('FORM.INCORRECT_EMAIL')}`,
               },
             })}
           />
@@ -88,7 +90,7 @@ export const Login = () => {
             margin="normal"
             required
             fullWidth
-            label="Password"
+            label={t('FORM.PASSWORD')}
             type={showPassword ? 'text' : 'password'}
             id="password"
             InputProps={{
@@ -101,10 +103,10 @@ export const Login = () => {
               ),
             }}
             {...register('password', {
-              required: { value: true, message: 'this field is required' },
+              required: { value: true, message: `${t('FORM.REQUIRE_MSG')}` },
               minLength: {
                 value: 6,
-                message: 'Your password must be at least 6 characters long',
+                message: `${t('FORM.PASSWORD_LIMIT')}`,
               },
             })}
           />
@@ -117,10 +119,10 @@ export const Login = () => {
             loading={state.pending}
             loadingPosition="end"
           >
-            Login
+            {t('LOGIN.HEADER')}
           </LoadingButton>
           <Button component={NavLink} to={'/signup'}>
-            <Typography variant="subtitle2">{"Don't have an account? Sign Up"}</Typography>
+            <Typography variant="subtitle2">{t('LOGIN.ACCOUNT_ABSENCE_MSG')}</Typography>
           </Button>
         </Box>
       </Box>

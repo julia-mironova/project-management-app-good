@@ -15,6 +15,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks/redux.hooks';
 import { getAllTasks } from '../../store/slices/tasksSlice';
 import { deleteAsyncColumn, updateAsyncColumn } from '../../store/slices/columnSlice';
 import ConformModal from '../ConformModal';
+import { useTranslation } from 'react-i18next';
 
 type IFormInputChangeName = {
   title: string;
@@ -30,6 +31,7 @@ const BoardColumn = ({ column }: { column: IColumnsResp }) => {
     formState: { errors },
   } = useForm<IFormInputChangeName>();
 
+  const { t } = useTranslation();
   const [isOpenConformModal, setIsOpenConformModal] = React.useState(false);
   const { tasks } = useAppSelector((state) => state.tasks);
   const { boardId } = useParams();
@@ -100,10 +102,10 @@ const BoardColumn = ({ column }: { column: IColumnsResp }) => {
                   pl: 1,
                 }}
                 {...register('title', {
-                  required: { value: true, message: 'this field is required' },
+                  required: { value: true, message: `${t('FORM.REQUIRE_MSG')}` },
                   minLength: {
                     value: 6,
-                    message: 'must be at least 6 characters long',
+                    message: `${t('FORM.PASSWORD_LIMIT')}`,
                   },
                 })}
               />
@@ -153,7 +155,7 @@ const BoardColumn = ({ column }: { column: IColumnsResp }) => {
         )}
 
         <Box>
-          <Tooltip title="Add new task">
+          <Tooltip title={t('TASK.ADD_BTN')}>
             <IconButton
               aria-label="add new task"
               color="primary"
@@ -167,7 +169,7 @@ const BoardColumn = ({ column }: { column: IColumnsResp }) => {
               <AddIcon />
             </IconButton>
           </Tooltip>
-          <Tooltip title="Delete column">
+          <Tooltip title={t('COLUMN.DELETE_BTN')}>
             <IconButton
               aria-label="delete column"
               color="primary"

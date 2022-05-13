@@ -2,14 +2,23 @@ import { useState } from 'react';
 import { Box, MenuItem } from '@mui/material';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { indigo } from '@mui/material/colors';
+import { useTranslation, TFuncKey } from 'react-i18next';
 
-const lngs: Array<string> = ['En', 'Ua', 'Ru'];
+type languages = 'en' | 'ru';
+const lngs: Record<languages, TFuncKey> = {
+  en: 'LANGUAGES.EN',
+  ru: 'LANGUAGES.RU',
+};
+
+type languagesKeys = keyof typeof lngs;
 
 const LanguageMenu = () => {
-  const [lng, setLng] = useState('En');
+  const { t, i18n } = useTranslation();
+  const [lng, setLng] = useState('en');
 
   const handleChange = (event: SelectChangeEvent) => {
     setLng(event.target.value as string);
+    i18n.changeLanguage(event.target.value);
   };
 
   return (
@@ -33,9 +42,9 @@ const LanguageMenu = () => {
           },
         }}
       >
-        {lngs.map((lng) => (
+        {Object.keys(lngs).map((lng) => (
           <MenuItem key={lng} value={lng}>
-            {lng}
+            {t(`${lngs[lng as languagesKeys]}`)}
           </MenuItem>
         ))}
       </Select>

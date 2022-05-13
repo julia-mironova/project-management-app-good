@@ -1,0 +1,60 @@
+{
+    "HEADER": {
+        "WELCOME": "Welcome",
+        "BOARDS": "Boards",
+        "EDIT_PROFILE": "Edit profile",
+        "OPEN_SETTINGS": "Open settings"
+    },
+    "AUTH": {
+        "LOG_IN": "Log in",
+        "SIGN_UP": "Sign up"
+    },
+    "LANGUAGES": {
+		"EN": "En",
+		"RU": "Ру"
+    },
+    "WELCOME": {
+		"TITLE": "We help to organize your work!",
+		"SUBTITLE": "Welcome to project management application.",
+		"INFO": "We create for you a convenient way to plan your business.",
+		"DESCR": "Track all the tasks and miss nothing!"
+	},
+    "LOGIN": {
+        "HEADER": "Login",
+		"ACCOUNT_ABSENCE_MSG": "Don't have an account? Sign Up"
+	}, 
+    "SIGNUP": {
+		"NAME": "Name",
+        "HEADER": "Sign Up",
+        "ACCOUNT_EXIST_MSG": "Do you have an account? Login."
+	},
+    "FORM": {
+        "EMAIL": "Email Address",
+        "REQUIRE_MSG": "this field is required",
+		"INCORRECT_EMAIL": "incorrect email",
+		"PASSWORD": "Password",
+		"PASSWORD_LIMIT": "Your password must be at least 6 characters long",
+		"NAME_LIMIT": "Your name must be at least 3 characters long"
+    },
+    "BOARD": {
+        "CREATE": "Create new board",
+        "NAME": "Board name",
+        "CREATE_BTN": "Create board"
+    },
+    "COLUMN": {
+        "NEW_COLUMN": "+ new column",
+        "CREATE_COLUMN_BTN": "Create column",
+        "CREATE_COLUMN_HEADER": "Create new column",
+        "DELETE_BTN": "Delete column"
+    }, 
+    "TASK": {
+        "ADD_BTN": "Add new task",
+        "CREATE_TASK_HEADER": "Create new task",
+        "CONFIRM_DEL": "Are you sure you want to delete?",
+        "YES": "Yes",
+        "DESCR": "Description",
+        "CREATE": "Create task"
+    },
+    "TITLE": "Title", 
+    "CANCEL_BTN": "Cancel" 
+}

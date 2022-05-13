@@ -11,6 +11,7 @@ import {
 import React, { FC, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import dataPictures from '../../dataPictures';
+import { useTranslation } from 'react-i18next';
 
 interface IFormInput {
   title: string;
@@ -26,8 +27,9 @@ const FormCreateBoard: FC<{ onClose: () => void; handlerCreateBoard: (title: str
     formState: { errors },
   } = useForm<IFormInput>();
 
-  const [changedImg, setChangedImg] = useState(0);
+  const { t } = useTranslation();
 
+  const [changedImg, setChangedImg] = useState(0);
   const onSubmit = (data: IFormInput) => {
     const titleWithBoardNumber = `${String(changedImg).padStart(2, '0')}${data.title}`;
     handlerCreateBoard(titleWithBoardNumber);
@@ -36,7 +38,7 @@ const FormCreateBoard: FC<{ onClose: () => void; handlerCreateBoard: (title: str
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <DialogTitle>Create new board</DialogTitle>
+      <DialogTitle>{t('BOARD.CREATE')}</DialogTitle>
       <DialogContent>
         <ImageList sx={{ width: 500, height: 400, gap: 5 }} cols={4} rowHeight={130}>
           {dataPictures.map((item, i) => (
@@ -62,15 +64,15 @@ const FormCreateBoard: FC<{ onClose: () => void; handlerCreateBoard: (title: str
           autoFocus
           margin="dense"
           id="title"
-          label="Board name"
+          label={t('BOARD.NAME')}
           type="text"
           fullWidth
           variant="standard"
           {...register('title', {
-            required: { value: true, message: 'this field is required' },
+            required: { value: true, message: `${t('FORM.REQUIRE_MSG')}` },
             minLength: {
               value: 3,
-              message: 'Your board name must be at least 3 characters long.',
+              message: `${t('FORM.NAME_LIMIT')}`,
             },
           })}
         />
@@ -79,8 +81,8 @@ const FormCreateBoard: FC<{ onClose: () => void; handlerCreateBoard: (title: str
         </Typography>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose}>Cancel</Button>
-        <Button type="submit">Create board</Button>
+        <Button onClick={onClose}>{t('CANCEL_BTN')}</Button>
+        <Button type="submit">{t('BOARD.CREATE_BTN')}</Button>
       </DialogActions>
     </form>
   );

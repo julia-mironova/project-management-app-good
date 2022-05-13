@@ -1,8 +1,10 @@
 import { Container, Typography, Grid, CardMedia, CardContent, Link } from '@mui/material';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import bgImage from '../../assets/images/bg.jpg';
+import { useTranslation } from 'react-i18next';
 
 const WelcomePage = () => {
+  const { t } = useTranslation();
   return (
     <>
       <Container>
@@ -20,12 +22,12 @@ const WelcomePage = () => {
               color="primary.dark"
               sx={{ fontWeight: '700', marginBlock: '2rem' }}
             >
-              We help to organize your work!
+              {t('WELCOME.TITLE')}
             </Typography>
             <Typography variant="h6" component="div" color="primary.contrastText">
-              Welcome to project management application.
-              <Typography>We create for you a convenient way to plan your business.</Typography>
-              <Typography>Track all the tasks and miss nothing!</Typography>
+              {t('WELCOME.SUBTITLE')}
+              <Typography>{t('WELCOME.INFO')}</Typography>
+              <Typography>{t('WELCOME.DESCR')}</Typography>
             </Typography>
           </Grid>
           <Grid item sm={12} md={7} mt={1}>
