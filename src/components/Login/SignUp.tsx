@@ -151,7 +151,7 @@ export const SignUp = () => {
   );
 };
 
-type propsSubmitSignUp = {
+export type propsSubmitSignUp = {
   email: string;
   password: string;
   name: string;
