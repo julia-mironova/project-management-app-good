@@ -14,21 +14,27 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import CancelIcon from '@mui/icons-material/Cancel';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import { ITasksResp, IColumnsResp, ITaskResp } from '../../types/board';
 import ModalWindow from '../ModalWindow';
 import FormNewTask from '../FormNewTask';
 import { useForm } from 'react-hook-form';
+<<<<<<< HEAD
 import { useAppDispatch, useAppSelector } from '../../hooks/redux.hooks';
 import { deleteAsyncColumn, updateAsyncColumn } from '../../store/slices/columnSlice';
 import { Draggable } from 'react-beautiful-dnd';
 import ConformModal from '../ConformModal';
 import { useTranslation } from 'react-i18next';
+=======
+import { useAppDispatch } from '../../hooks/redux.hooks';
+import ConformModal from '../ConformModal';
+import { IColumn } from '../../types/board';
+import { deleteColumn, updateColumn } from '../../store/slices/columnReducer';
+>>>>>>> 96de855... refactor: column reduser
 
 type IFormInputChangeName = {
   title: string;
 };
 
-const Column = ({ column }: { column: IColumnsResp }) => {
+const Column = ({ column }: { column: IColumn }) => {
   const [isEdit, setIsEdit] = useState(false);
   const [isOpenModalAddNewTask, setisOpenModalAddNewTask] = React.useState(false);
   const {
@@ -36,30 +42,24 @@ const Column = ({ column }: { column: IColumnsResp }) => {
     handleSubmit,
     formState: { errors },
   } = useForm<IFormInputChangeName>();
+<<<<<<< HEAD
 
   const { t } = useTranslation();
+=======
+>>>>>>> 96de855... refactor: column reduser
   const [isOpenConformModal, setIsOpenConformModal] = React.useState(false);
-  const columns = useAppSelector((state) => state.boards.singleBoard.columns);
-  const columnTasks: ITaskResp[] = columns.filter((item) => item.id === column.id)[0].tasks;
-
   const { boardId } = useParams();
   const dispatch = useAppDispatch();
 
   const handleDeleteColumn = async () => {
     if (boardId) {
-      dispatch(deleteAsyncColumn({ boardId: boardId, columnId: column.id }));
+      dispatch(deleteColumn({ boardId: boardId, columnId: column.id }));
     }
   };
 
   const changeNameColumn = async (e: IFormInputChangeName) => {
     if (boardId) {
-      dispatch(
-        updateAsyncColumn({
-          boardId: boardId,
-          columnId: column.id,
-          columnBody: { title: e.title, order: column.order },
-        })
-      );
+      dispatch(updateColumn({ boardId, columnId: column.id, order: column.order, title: e.title }));
     }
     setIsEdit(false);
   };
@@ -231,6 +231,7 @@ const Column = ({ column }: { column: IColumnsResp }) => {
               open={isOpenModalAddNewTask}
               onClose={() => setisOpenModalAddNewTask(false)}
             >
+<<<<<<< HEAD
               <FormNewTask
                 columnId={column.id}
                 onClose={() => setisOpenModalAddNewTask(false)}
@@ -247,6 +248,49 @@ const Column = ({ column }: { column: IColumnsResp }) => {
         </ListItem>
       )}
     </Draggable>
+=======
+              <DeleteIcon />
+            </IconButton>
+          </Tooltip>
+        </Box>
+      </Box>
+      <Divider />
+      <Stack
+        spacing={2}
+        sx={{
+          overflowY: 'scroll',
+          overflowX: 'hidden',
+        }}
+      >
+        {column.tasks?.map((task) => (
+          <div key={task.id}>
+            <p>{task.title}</p>
+            <p>{task.description}</p>
+          </div>
+
+          // <ColumnTask
+          //   key={task.id}
+          //   task={task}
+          //   dataTasks={dataTasks}
+          //   setDataTasks={setDataTasks}
+          // />
+        ))}
+      </Stack>
+      <ModalWindow open={isOpenModalAddNewTask} onClose={() => setisOpenModalAddNewTask(false)}>
+        <FormNewTask
+          columnId={column.id}
+          onClose={() => setisOpenModalAddNewTask(false)}
+          // dataTasks={tasks}
+          // setDataTasks={tasks}
+        />
+      </ModalWindow>
+      <ConformModal
+        isOpen={isOpenConformModal}
+        close={() => setIsOpenConformModal(false)}
+        func={handleDeleteColumn}
+      />
+    </Stack>
+>>>>>>> 96de855... refactor: column reduser
   );
 };
 

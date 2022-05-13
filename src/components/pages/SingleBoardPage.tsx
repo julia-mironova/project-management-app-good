@@ -1,15 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Button, Container, Stack } from '@mui/material';
-/* import FormNewColumn from '../FormNewColumn';
-import ModalWindow from '../ModalWindow';
-import Column from '../Column'; */
 import { useAppDispatch, useAppSelector } from '../../hooks/redux.hooks';
 import { useTranslation } from 'react-i18next';
 import { getAllColumns, updateAsyncColumn } from '../../store/slices/columnSlice';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import { getSingleBoard } from '../../store/slices/boardSlice';
-import FormNewColumn from '../FormNewColumn';
+import NewColumn from '../NewColumn';
 import ModalWindow from '../ModalWindow';
 import Column from '../Column';
 
@@ -25,7 +22,6 @@ const SingleBoardPage = () => {
       dispatch(getSingleBoard(boardId));
     }
   }, [boardId, dispatch]);
-  console.log(singleBoard);
 
   const onDragEnd = async (result: DropResult) => {
     const { destination, draggableId } = result;
@@ -127,7 +123,7 @@ const SingleBoardPage = () => {
         </Droppable>
       </DragDropContext>
       <ModalWindow open={isOpenModalAddNewColumn} onClose={() => setIsOpenModalAddNewColumn(false)}>
-        <FormNewColumn onClose={() => setIsOpenModalAddNewColumn(false)} />
+        <NewColumn onClose={() => setIsOpenModalAddNewColumn(false)} />
       </ModalWindow>
     </Container>
   );

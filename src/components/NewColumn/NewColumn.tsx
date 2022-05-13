@@ -1,38 +1,38 @@
 import { Box, Button, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
-// import { IColumn } from '../../types/board';
-import React from 'react';
 import { useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux.hooks';
+<<<<<<< HEAD:src/components/FormNewColumn/FormNewColumn.tsx
 import { createColumn } from '../../store/slices/columnSlice';
 import { useTranslation } from 'react-i18next';
+=======
+import { createColumn } from '../../store/slices/columnReducer';
+>>>>>>> 96de855... refactor: column reduser:src/components/NewColumn/NewColumn.tsx
 
-type IFormInputNewTask = {
+type formData = {
   title: string;
-  description: string;
 };
 
-const FormNewColumn = ({ onClose }: { onClose: () => void }) => {
+const NewColumn = ({ onClose }: { onClose: () => void }) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<IFormInputNewTask>();
+  } = useForm<formData>();
 
+<<<<<<< HEAD:src/components/FormNewColumn/FormNewColumn.tsx
   const { t } = useTranslation();
 
   const { columns } = useAppSelector((state) => state.columns);
+=======
+  const { columns } = useAppSelector((state) => state.boards.singleBoard);
+>>>>>>> 96de855... refactor: column reduser:src/components/NewColumn/NewColumn.tsx
   const dispatch = useAppDispatch();
   const { boardId } = useParams();
 
-  const onSubmit = (data: IFormInputNewTask) => {
-    const maxOrder = columns.length;
-    const newColumn = {
-      title: data.title,
-      order: maxOrder + 1,
-    };
+  const onSubmit = ({ title }: formData) => {
     if (boardId) {
-      dispatch(createColumn({ boardId: boardId, columnBody: newColumn }));
+      dispatch(createColumn({ boardId: boardId, title, order: columns.length + 1 }));
     }
     onClose();
   };
@@ -49,7 +49,15 @@ const FormNewColumn = ({ onClose }: { onClose: () => void }) => {
             error={errors.title ? true : false}
             helperText={errors.title ? errors.title.message : ''}
             {...register('title', {
+<<<<<<< HEAD:src/components/FormNewColumn/FormNewColumn.tsx
               required: { value: true, message: `${t('FORM.REQUIRE_MSG')}` },
+=======
+              required: { value: true, message: 'this field is required' },
+              minLength: {
+                value: 2,
+                message: 'Your column name must be at least 2 characters long.',
+              },
+>>>>>>> 96de855... refactor: column reduser:src/components/NewColumn/NewColumn.tsx
             })}
           />
         </DialogContent>
@@ -62,4 +70,4 @@ const FormNewColumn = ({ onClose }: { onClose: () => void }) => {
   );
 };
 
-export default FormNewColumn;
+export default NewColumn;

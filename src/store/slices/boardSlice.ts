@@ -1,9 +1,10 @@
 import { createSlice, PayloadAction, createAsyncThunk, AnyAction } from '@reduxjs/toolkit';
 import { localStorageGetUserToken } from '../../utils/localStorage';
 import { BASE_URL } from '../../constants/baseUrl';
-import { IBoardFull } from '../../types/board';
+import { IBoard } from '../../types/board';
+import { createColumn, deleteColumn, updateColumn } from './columnReducer';
 
-const initialSingleBoard: IBoardFull = {
+const initialSingleBoard: IBoard = {
   id: '',
   title: '',
   columns: [],
@@ -16,7 +17,7 @@ const initialState: boardState = {
   singleBoard: initialSingleBoard,
 };
 
-export const getAllBoards = createAsyncThunk<IBoard[], undefined, { rejectValue: string }>(
+export const getAllBoards = createAsyncThunk<IBoardPreview[], undefined, { rejectValue: string }>(
   'board/getAllBoards',
   async (_, { rejectWithValue }) => {
     const token = localStorageGetUserToken();
@@ -37,7 +38,7 @@ export const getAllBoards = createAsyncThunk<IBoard[], undefined, { rejectValue:
   }
 );
 
-export const createBoard = createAsyncThunk<IBoard, string, { rejectValue: string }>(
+export const createBoard = createAsyncThunk<IBoardPreview, string, { rejectValue: string }>(
   'board/createBoard',
   async (title, { rejectWithValue }) => {
     const token = localStorageGetUserToken();
@@ -61,7 +62,7 @@ export const createBoard = createAsyncThunk<IBoard, string, { rejectValue: strin
   }
 );
 
-export const updateBoard = createAsyncThunk<IBoard, string, { rejectValue: string }>(
+export const updateBoard = createAsyncThunk<IBoardPreview, string, { rejectValue: string }>(
   'board/updateBoard',
   async (title, { rejectWithValue }) => {
     const token = localStorageGetUserToken();
@@ -106,7 +107,7 @@ export const deleteBoard = createAsyncThunk<string, string, { rejectValue: strin
   }
 );
 
-export const getSingleBoard = createAsyncThunk<IBoardFull, string, { rejectValue: string }>(
+export const getSingleBoard = createAsyncThunk<IBoard, string, { rejectValue: string }>(
   'board/getSingleBoard',
   async (id, { rejectWithValue }) => {
     const token = localStorageGetUserToken();
@@ -124,7 +125,6 @@ export const getSingleBoard = createAsyncThunk<IBoardFull, string, { rejectValue
       );
     }
     const data = await response.json();
-    console.log(data);
     return data;
   }
 );
@@ -144,10 +144,9 @@ export const boardSlice = createSlice({
         state.pending = false;
       })
       .addCase(updateBoard.fulfilled, (state, action) => {
-        const cash = state.boards.map((el) => {
+        state.boards = state.boards.map((el) => {
           return el.id === action.payload.id ? action.payload : el;
         });
-        state.boards = cash;
         state.pending = false;
       })
       .addCase(deleteBoard.fulfilled, (state, action) => {
@@ -157,6 +156,20 @@ export const boardSlice = createSlice({
       .addCase(getSingleBoard.fulfilled, (state, action) => {
         state.singleBoard = action.payload;
         state.pending = false;
+      })
+      /* column reducer */
+      .addCase(createColumn.fulfilled, (state, action) => {
+        state.singleBoard.columns.push(action.payload);
+      })
+      .addCase(deleteColumn.fulfilled, (state, action) => {
+        state.singleBoard.columns = state.singleBoard.columns.filter(
+          (el) => el.id !== action.payload
+        );
+      })
+      .addCase(updateColumn.fulfilled, (state, action) => {
+        state.singleBoard.columns = state.singleBoard.columns.map((el) => {
+          return el.id === action.payload.id ? action.payload : el;
+        });
       })
       .addMatcher(isError, (state, action: PayloadAction<string>) => {
         state.pending = false;
@@ -178,12 +191,12 @@ function isPending(action: AnyAction) {
 }
 
 interface boardState {
-  boards: IBoard[];
+  boards: IBoardPreview[];
   rejectMsg: string;
   pending: boolean;
-  singleBoard: IBoardFull;
+  singleBoard: IBoard;
 }
-export type IBoard = {
+export type IBoardPreview = {
   id: string;
   title: string;
 };
