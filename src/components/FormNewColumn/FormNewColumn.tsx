@@ -47,10 +47,6 @@ const FormNewColumn = ({ onClose }: { onClose: () => void }) => {
             helperText={errors.title ? errors.title.message : ''}
             {...register('title', {
               required: { value: true, message: 'this field is required' },
-              minLength: {
-                value: 6,
-                message: 'Your column name must be at least 6 characters long.',
-              },
             })}
           />
         </DialogContent>

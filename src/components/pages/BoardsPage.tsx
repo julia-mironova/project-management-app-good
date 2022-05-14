@@ -30,13 +30,30 @@ const BoardsPage = () => {
   return (
     <Container
       maxWidth="xl"
-      sx={{ mt: '1rem', display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: 5, p: 5 }}
+      sx={{
+        mb: 2,
+        display: 'flex',
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'flex-start',
+        alignItems: 'flex-start',
+        alignContent: 'flex-start',
+        gap: 5,
+        p: 4,
+        height: 'calc(100vh - 149px)',
+        overflowY: 'auto',
+      }}
     >
       {boards.map((item) => (
         <BoardPreview board={item} key={item.id} handlerDelete={handlerDelete} />
       ))}
-      <Button variant="contained" onClick={() => setOpenModal(true)}>
-        +
+      <Button
+        variant="outlined"
+        size="large"
+        sx={{ height: 50, minWidth: 450 }}
+        onClick={() => setOpenModal(true)}
+      >
+        + Create new board
       </Button>
       <ModalWindow open={openModal} onClose={handleOnClose}>
         <FormCreateBoard onClose={handleOnClose} handlerCreateBoard={handlerCreateBoard} />

@@ -7,7 +7,6 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 import { ITasksResp, IColumnsResp } from '../../types/board';
-// import ColumnTask from '../ColumnTask';
 import ModalWindow from '../ModalWindow';
 import FormNewTask from '../FormNewTask';
 import { useForm } from 'react-hook-form';
@@ -66,11 +65,11 @@ const BoardColumn = ({ column }: { column: IColumnsResp }) => {
       sx={{
         width: '400px',
         minWidth: '400px',
-        border: '1px solid LightGray',
+        border: '1px solid gainsboro',
         borderRadius: 2,
         padding: 2,
-        backgroundColor: 'Gainsboro',
-        height: '81vh',
+        backgroundColor: '#f5f5f5',
+        height: '77vh',
       }}
     >
       <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between', height: '33px' }}>
@@ -101,10 +100,6 @@ const BoardColumn = ({ column }: { column: IColumnsResp }) => {
                 }}
                 {...register('title', {
                   required: { value: true, message: 'this field is required' },
-                  minLength: {
-                    value: 6,
-                    message: 'must be at least 6 characters long',
-                  },
                 })}
               />
               <Box>
@@ -141,6 +136,7 @@ const BoardColumn = ({ column }: { column: IColumnsResp }) => {
           <Typography
             align="left"
             noWrap={true}
+            color="gray"
             sx={{
               width: '70%',
               fontSize: '1.5rem',
@@ -186,7 +182,7 @@ const BoardColumn = ({ column }: { column: IColumnsResp }) => {
       <Stack
         spacing={2}
         sx={{
-          overflowY: 'scroll',
+          overflowY: 'auto',
           overflowX: 'hidden',
         }}
       >
