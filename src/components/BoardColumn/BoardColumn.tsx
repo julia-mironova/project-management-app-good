@@ -69,7 +69,7 @@ const BoardColumn = ({ column }: { column: IColumnsResp }) => {
         borderRadius: 2,
         padding: 2,
         backgroundColor: '#f5f5f5',
-        height: '77vh',
+        height: '70vh',
       }}
     >
       <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between', height: '33px' }}>

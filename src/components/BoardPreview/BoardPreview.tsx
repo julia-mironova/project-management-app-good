@@ -41,11 +41,11 @@ const BoardPreview: FC<{ board: IBoard; handlerDelete: (id: string) => void }> =
   };
 
   return (
-    <Card sx={{ width: '28.5rem', maxWidth: '28.5rem', height: '17rem', border: 2 }}>
+    <Card sx={{ width: '21rem', maxWidth: '21rem', height: '15rem', border: 2 }}>
       <CardMedia
         onClick={() => navigate(`/boards/${board.id}`)}
         component="img"
-        height="200"
+        height="170"
         image={dataPictures[+board.title?.slice(0, 2)]}
         alt="background"
         sx={{ pt: 2, pl: 2, pr: 2, pb: 0 }}

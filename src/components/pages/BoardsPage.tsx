@@ -39,7 +39,7 @@ const BoardsPage = () => {
         alignItems: 'flex-start',
         alignContent: 'flex-start',
         gap: 5,
-        p: 4,
+        p: 3,
         height: 'calc(100vh - 149px)',
         overflowY: 'auto',
       }}
@@ -50,7 +50,7 @@ const BoardsPage = () => {
       <Button
         variant="outlined"
         size="large"
-        sx={{ height: 50, minWidth: 450 }}
+        sx={{ height: 50, minWidth: '21rem' }}
         onClick={() => setOpenModal(true)}
       >
         + Create new board
