@@ -19,6 +19,7 @@ import { createToken, createUser } from '../../store/slices/authSlice';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux.hooks';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { localStorageSetUser, localStorageSetUserToken } from '../../utils/localStorage';
+import { useTranslation } from 'react-i18next';
 
 export const SignUp = () => {
   const {
@@ -27,6 +28,7 @@ export const SignUp = () => {
     formState: { errors },
   } = useForm<propsSubmitSignUp>({ mode: 'onSubmit' });
 
+  const { t } = useTranslation();
   const [showPassword, setShowPassword] = useState(false);
   const { id, name, token, rejectMsg, pending } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
@@ -68,7 +70,7 @@ export const SignUp = () => {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h4">
-          Sign Up
+          {t('SIGNUP.HEADER')}
         </Typography>
         <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate sx={{ mt: 1 }}>
           <TextField
@@ -78,13 +80,13 @@ export const SignUp = () => {
             required
             fullWidth
             id="name"
-            label="Name"
+            label={t('SIGNUP.NAME')}
             autoFocus
             {...register('name', {
-              required: { value: true, message: 'this field is required' },
+              required: { value: true, message: `${t('FORM.REQUIRE_MSG')}` },
               minLength: {
                 value: 3,
-                message: 'Your name must be at least 3 characters long',
+                message: `${t('FORM.NAME_LIMIT')}`,
               },
             })}
           />
@@ -95,13 +97,13 @@ export const SignUp = () => {
             required
             fullWidth
             id="email"
-            label="Email Address"
+            label={t('FORM.EMAIL')}
             {...register('email', {
-              required: { value: true, message: 'this field is required' },
+              required: { value: true, message: `${t('FORM.REQUIRE_MSG')}` },
               pattern: {
                 value:
                   /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-                message: 'incorrect email',
+                message: `${t('FORM.INCORRECT_EMAIL')}`,
               },
             })}
           />
@@ -111,7 +113,7 @@ export const SignUp = () => {
             margin="normal"
             required
             fullWidth
-            label="Password"
+            label={t('FORM.PASSWORD')}
             type={showPassword ? 'text' : 'password'}
             id="password"
             InputProps={{
@@ -124,10 +126,10 @@ export const SignUp = () => {
               ),
             }}
             {...register('password', {
-              required: { value: true, message: 'this field is required' },
+              required: { value: true, message: `${t('FORM.REQUIRE_MSG')}` },
               minLength: {
                 value: 6,
-                message: 'Your password must be at least 6 characters long',
+                message: `${t('FORM.PASSWORD_LIMIT')}`,
               },
             })}
           />
@@ -140,10 +142,10 @@ export const SignUp = () => {
             loading={pending}
             loadingPosition="end"
           >
-            Sign Up
+            {t('SIGNUP.HEADER')}
           </LoadingButton>
           <Button component={NavLink} to={'/login'}>
-            <Typography variant="body2">{'You have an account? Login.'}</Typography>
+            <Typography variant="body2">{t('SIGNUP.ACCOUNT_EXIST_MSG')}</Typography>
           </Button>
         </Box>
       </Box>
@@ -151,7 +153,7 @@ export const SignUp = () => {
   );
 };
 
-type propsSubmitSignUp = {
+export type propsSubmitSignUp = {
   email: string;
   password: string;
   name: string;

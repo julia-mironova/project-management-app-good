@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux.hooks';
 import { createColumn } from '../../store/slices/columnSlice';
+import { useTranslation } from 'react-i18next';
 
 type IFormInputNewTask = {
   title: string;
@@ -17,6 +18,8 @@ const FormNewColumn = ({ onClose }: { onClose: () => void }) => {
     handleSubmit,
     formState: { errors },
   } = useForm<IFormInputNewTask>();
+
+  const { t } = useTranslation();
 
   const { columns } = useAppSelector((state) => state.columns);
   const dispatch = useAppDispatch();
@@ -37,22 +40,22 @@ const FormNewColumn = ({ onClose }: { onClose: () => void }) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Box sx={{ width: '400px' }}>
-        <DialogTitle>Create new column</DialogTitle>
+        <DialogTitle>{t('COLUMN.CREATE_COLUMN_HEADER')}</DialogTitle>
         <DialogContent>
           <TextField
-            label="Title"
+            label={t('TITLE')}
             fullWidth={true}
             variant="outlined"
             error={errors.title ? true : false}
             helperText={errors.title ? errors.title.message : ''}
             {...register('title', {
-              required: { value: true, message: 'this field is required' },
+              required: { value: true, message: `${t('FORM.REQUIRE_MSG')}` },
             })}
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={onClose}>Cancel</Button>
-          <Button type="submit">Create column</Button>
+          <Button onClick={onClose}>{t('CANCEL_BTN')}</Button>
+          <Button type="submit">{t('COLUMN.CREATE_COLUMN_BTN')}</Button>
         </DialogActions>
       </Box>
     </form>

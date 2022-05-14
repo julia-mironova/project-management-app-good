@@ -9,6 +9,7 @@ import { theme } from './utils';
 import './index.css';
 
 import { store } from './store/store';
+import './setupi18n';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(

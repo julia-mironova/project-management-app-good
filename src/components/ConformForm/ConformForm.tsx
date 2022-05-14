@@ -1,13 +1,14 @@
 import { Box, Button, DialogActions, DialogTitle } from '@mui/material';
-import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 const ConformForm = ({ choose }: { choose: (arg: boolean) => void }) => {
+  const { t } = useTranslation();
   return (
     <Box sx={{ width: '400px' }}>
-      <DialogTitle>Are you sure you want to delete?</DialogTitle>
+      <DialogTitle>{t('TASK.CONFIRM_DEL')}</DialogTitle>
       <DialogActions>
-        <Button onClick={() => choose(false)}>Cancel</Button>
-        <Button onClick={() => choose(true)}>Yes</Button>
+        <Button onClick={() => choose(false)}>{t('CANCEL_BTN')}</Button>
+        <Button onClick={() => choose(true)}>{t('TASK.YES')}</Button>
       </DialogActions>
     </Box>
   );

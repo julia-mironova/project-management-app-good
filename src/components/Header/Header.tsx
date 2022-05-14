@@ -18,19 +18,11 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { useAppSelector, useAppDispatch } from '../../hooks/redux.hooks';
 import { generateUserInitials } from '../../utils/generateUserInitials';
 import { logOut } from '../../store/slices/authSlice';
-
-const pages = [
-  { page: 'Welcome', path: '/' },
-  { page: 'Board', path: '/boards' },
-  { page: 'Edit Profile', path: '/edit-profile' },
-];
-
-const settings = [
-  { page: 'Log In', path: '/login' },
-  { page: 'Sign Up', path: '/signup' },
-];
+import LanguageMenu from '../../components/LanguageMenu';
+import { useTranslation, TFuncKey } from 'react-i18next';
 
 const Header = () => {
+  const { t } = useTranslation();
   const location = useLocation();
   const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
@@ -68,6 +60,17 @@ const Header = () => {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+  const pages: Array<{ page: TFuncKey; path: string }> = [
+    { page: 'HEADER.WELCOME', path: '/' },
+    { page: 'HEADER.BOARDS', path: '/boards' },
+    { page: 'HEADER.EDIT_PROFILE', path: '/edit-profile' },
+  ];
+
+  const settings: Array<{ page: TFuncKey; path: string }> = [
+    { page: 'AUTH.LOG_IN', path: '/login' },
+    { page: 'AUTH.SIGN_UP', path: '/signup' },
+  ];
 
   return (
     <AppBar
@@ -121,7 +124,7 @@ const Header = () => {
             >
               {pages.map(({ page, path }) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu} component={NavLink} to={path}>
-                  <Typography textAlign="center">{page}</Typography>
+                  <Typography textAlign="center">{t(`${page}`)}</Typography>
                 </MenuItem>
               ))}
             </Menu>
@@ -150,13 +153,16 @@ const Header = () => {
                 component={NavLink}
                 to={path}
               >
-                {page}
+                {t(`${page}`)}
               </Button>
             ))}
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
+            <LanguageMenu />
+          </Box>
+          <Box sx={{ flexGrow: 0 }}>
+            <Tooltip title={t('HEADER.OPEN_SETTINGS')}>
               <IconButton
                 onClick={(e) => {
                   isLoggedIn ? navigate('/edit-profile') : handleOpenUserMenu(e);
@@ -239,7 +245,7 @@ const Header = () => {
             >
               {settings.map(({ page, path }) => (
                 <MenuItem key={page} onClick={handleCloseUserMenu} component={NavLink} to={path}>
-                  <Typography textAlign="center">{page}</Typography>
+                  <Typography textAlign="center">{t(`${page}`)}</Typography>
                 </MenuItem>
               ))}
             </Menu>
