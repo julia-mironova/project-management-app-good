@@ -12,12 +12,13 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import React, { FC } from 'react';
 import dataPictures from '../../dataPictures';
 import { useNavigate } from 'react-router-dom';
-import { IBoard, updateAsyncBoard } from '../../store/slices/boardSlice';
+import { updateBoard } from '../../store/slices/boardSlice';
 import ConformModal from '../ConformModal';
 import CancelIcon from '@mui/icons-material/Cancel';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { useForm } from 'react-hook-form';
 import { useAppDispatch } from '../../hooks/redux.hooks';
+import { IBoard } from '../../types/board';
 
 const BoardPreview: FC<{ board: IBoard; handlerDelete: (id: string) => void }> = ({
   board,
@@ -36,7 +37,7 @@ const BoardPreview: FC<{ board: IBoard; handlerDelete: (id: string) => void }> =
 
   const changeNameColumn = async (e: IFormInputChangeName) => {
     const newTitle = board.title.slice(0, 2) + e.title;
-    dispatch(updateAsyncBoard({ ...board, title: newTitle }));
+    dispatch(updateBoard(newTitle));
     setIsEdit(false);
   };
 

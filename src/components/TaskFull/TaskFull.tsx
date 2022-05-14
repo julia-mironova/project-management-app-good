@@ -18,7 +18,7 @@ import {
   TextField,
   Tooltip,
 } from '@mui/material';
-import { IFileAttached, ITaskResp } from '../../types/board';
+import { IFileAttached, ITask } from '../../types/board';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -39,12 +39,10 @@ type IFormInputFile = {
 
 type IPropsTaskFull = {
   onClose: () => void;
-  task: ITaskResp;
-  dataTasks: ITaskResp[];
-  setDataTasks: React.Dispatch<React.SetStateAction<ITaskResp[]>>;
+  task: ITask;
 };
 
-const TaskFull = ({ onClose, task, dataTasks, setDataTasks }: IPropsTaskFull) => {
+const TaskFull = ({ onClose, task }: IPropsTaskFull) => {
   const {
     register,
     handleSubmit,

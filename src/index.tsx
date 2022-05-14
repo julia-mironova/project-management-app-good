@@ -1,15 +1,13 @@
-import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
 import { ThemeProvider } from '@mui/material';
+import reportWebVitals from './reportWebVitals';
+import App from './App';
 import { theme } from './utils';
-import './index.css';
-
 import { store } from './store/store';
 import './setupi18n';
+import './index.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(

@@ -1,49 +1,46 @@
-export type IFileAttached = {
-  filename: string;
-  fileSize: number;
-};
-
-export type ITaskResp = {
+export interface boardState {
+  boards: IBoardPreview[];
+  rejectMsg: string;
+  pending: boolean;
+  singleBoard: IBoard;
+}
+export type IBoardPreview = {
   id: string;
   title: string;
-  order: number;
-  description: string;
-  userId: string;
-  boardId: string;
-  columnId: string;
-  files: IFileAttached[];
 };
-
-export type ITasksResp = {
-  title: string;
-  order: number;
-  description: string;
-  userId: string;
-  boardId: string;
-  columnId: string;
+export type IBoard = {
   id: string;
+  title: string;
+  columns: IColumn[];
 };
 
 export type IColumn = {
   id: string;
   title: string;
   order: number;
-  tasks: ITaskResp[];
+  tasks?: ITask[];
 };
 
-export type IBoardFull = {
-  id: string;
-  title: string;
-  columns: IColumn[];
-};
-
-export type IColumnsResp = {
+export type ITask = {
   id: string;
   title: string;
   order: number;
+  description: string;
+  userId: string;
+  files?: IFileAttached[];
 };
 
-export type IColumnBody = {
+export type ITaskResponse = {
+  id: string;
   title: string;
   order: number;
+  description: string;
+  userId: string;
+  boardId: string;
+  columnId: string;
+};
+
+export type IFileAttached = {
+  filename: string;
+  fileSize: number;
 };

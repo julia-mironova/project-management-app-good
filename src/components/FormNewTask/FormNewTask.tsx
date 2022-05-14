@@ -1,6 +1,7 @@
+import { useParams } from 'react-router-dom';
 import { Button, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
-// import { ITaskResp } from '../../types/board';
-import React from 'react';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux.hooks';
+import { localStorageGetUser } from '../../utils/localStorage';
 import { useForm } from 'react-hook-form';
 // import { useAppSelector } from '../../hooks/redux.hooks';
 import { useTranslation } from 'react-i18next';
@@ -11,44 +12,50 @@ type IFormInputNewTask = {
 };
 
 const FormNewTask = ({
+  columnId,
   onClose,
 }: // dataTasks,
 // setDataTasks,
 {
+  columnId: string;
   onClose: () => void;
   // dataTasks: ITaskResp[];
   // setDataTasks: React.Dispatch<React.SetStateAction<ITaskResp[]>>;
 }) => {
   const {
     register,
-    // handleSubmit,
+    handleSubmit,
     formState: { errors },
   } = useForm<IFormInputNewTask>();
   const { t } = useTranslation();
+  const dispatch = useAppDispatch();
+  const { boardId } = useParams();
   // const { id } = useAppSelector((state) => state.auth);
+  const { singleBoard } = useAppSelector((state) => state.boards);
 
-  // const onSubmit = (data: IFormInputNewTask) => {
-  // const maxOrder = dataTasks.reduce((acc, curr) => (acc > curr.order ? acc : curr.order), 0);
+  const onSubmit = (data: IFormInputNewTask) => {
+    // const maxOrder = dataTasks.reduce((acc, curr) => (acc > curr.order ? acc : curr.order), 0);
+    const maxOrder = singleBoard.columns.filter((item) => item.id === columnId)[0].tasks.length;
+    const userId = localStorageGetUser().id;
+    const newTask = {
+      title: data.title,
+      order: maxOrder + 1,
+      description: data.description,
+      userId: userId,
+    };
 
-  // const newTask = {
-  //   id: `${Math.random()}`,
-  //   title: data.title,
-  //   description: data.description,
-  //   order: maxOrder + 1,
-  //   done: false,
-  //   userId: id,
-  //   files: [],
-  // };
+    if (boardId) {
+      dispatch(createAsyncTask({ boardId: boardId, columnId: columnId, taskBody: newTask }));
+      dispatch(getSingleBoard(boardId));
+    }
 
-  // setDataTasks([...dataTasks, newTask]);
-  // onClose();
-  // };
+    // setDataTasks([...dataTasks, newTask]);
+    onClose();
+  };
 
   return (
-    <form
-    // onSubmit={handleSubmit(onSubmit)}
-    >
-      <DialogTitle>{t('TASK.CREATE_TASK_HEADER')}</DialogTitle>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <DialogTitle>Create new task</DialogTitle>
       <DialogContent>
         <TextField
           label={t('TITLE')}

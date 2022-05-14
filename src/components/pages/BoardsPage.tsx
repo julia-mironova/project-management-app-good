@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import ModalWindow from '../ModalWindow';
 import FormCreateBoard from '../FormCreateBoard';
 import { useAppSelector, useAppDispatch } from '../../hooks/redux.hooks';
-import { getAllBoards, deleteAsyncBoard, createBoard } from '../../store/slices/boardSlice';
+import { getAllBoards, deleteBoard, createBoard } from '../../store/slices/boardSlice';
 
 const BoardsPage = () => {
   const [openModal, setOpenModal] = useState(false);
@@ -16,7 +16,7 @@ const BoardsPage = () => {
   };
 
   const handlerDelete = (id: string) => {
-    dispatch(deleteAsyncBoard(id));
+    dispatch(deleteBoard(id));
   };
 
   const handlerCreateBoard = (title: string) => {

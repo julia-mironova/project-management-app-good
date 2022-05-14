@@ -1,38 +1,29 @@
 import { Box, Button, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
-// import { IColumn } from '../../types/board';
-import React from 'react';
 import { useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux.hooks';
-import { createColumn } from '../../store/slices/columnSlice';
 import { useTranslation } from 'react-i18next';
+import { createColumn } from '../../store/slices/columnReducer';
 
-type IFormInputNewTask = {
+type formData = {
   title: string;
-  description: string;
 };
 
-const FormNewColumn = ({ onClose }: { onClose: () => void }) => {
+const NewColumn = ({ onClose }: { onClose: () => void }) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<IFormInputNewTask>();
+  } = useForm<formData>();
 
   const { t } = useTranslation();
-
-  const { columns } = useAppSelector((state) => state.columns);
+  const { columns } = useAppSelector((state) => state.boards.singleBoard);
   const dispatch = useAppDispatch();
   const { boardId } = useParams();
 
-  const onSubmit = (data: IFormInputNewTask) => {
-    const maxOrder = columns.length;
-    const newColumn = {
-      title: data.title,
-      order: maxOrder + 1,
-    };
+  const onSubmit = ({ title }: formData) => {
     if (boardId) {
-      dispatch(createColumn({ boardId: boardId, columnBody: newColumn }));
+      dispatch(createColumn({ boardId: boardId, title, order: columns.length + 1 }));
     }
     onClose();
   };
@@ -62,4 +53,4 @@ const FormNewColumn = ({ onClose }: { onClose: () => void }) => {
   );
 };
 
-export default FormNewColumn;
+export default NewColumn;

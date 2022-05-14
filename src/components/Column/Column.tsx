@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import {
   Box,
@@ -14,26 +14,24 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import CancelIcon from '@mui/icons-material/Cancel';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-
-import { ITasksResp, IColumnsResp } from '../../types/board';
 import ModalWindow from '../ModalWindow';
 import FormNewTask from '../FormNewTask';
 import { useForm } from 'react-hook-form';
-import { useAppDispatch, useAppSelector } from '../../hooks/redux.hooks';
-import { getAllTasks } from '../../store/slices/tasksSlice';
-import { deleteAsyncColumn, updateAsyncColumn } from '../../store/slices/columnSlice';
 import { Draggable } from 'react-beautiful-dnd';
 import ConformModal from '../ConformModal';
 import { useTranslation } from 'react-i18next';
+import { useAppDispatch } from '../../hooks/redux.hooks';
+import { IColumn } from '../../types/board';
+import { deleteColumn, updateColumn } from '../../store/slices/columnReducer';
+import Task from '../Task';
 
 type IFormInputChangeName = {
   title: string;
 };
 
-const BoardColumn = ({ column }: { column: IColumnsResp }) => {
+const Column = ({ column }: { column: IColumn }) => {
   const [isEdit, setIsEdit] = useState(false);
   const [isOpenModalAddNewTask, setisOpenModalAddNewTask] = React.useState(false);
-
   const {
     register,
     handleSubmit,
@@ -42,31 +40,18 @@ const BoardColumn = ({ column }: { column: IColumnsResp }) => {
 
   const { t } = useTranslation();
   const [isOpenConformModal, setIsOpenConformModal] = React.useState(false);
-  const { tasks } = useAppSelector((state) => state.tasks);
   const { boardId } = useParams();
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    if (boardId) {
-      dispatch(getAllTasks({ boardId: boardId, columnId: column.id }));
-    }
-  }, [boardId, column.id, dispatch]);
-
   const handleDeleteColumn = async () => {
     if (boardId) {
-      dispatch(deleteAsyncColumn({ boardId: boardId, columnId: column.id }));
+      dispatch(deleteColumn({ boardId: boardId, columnId: column.id, order: column.order }));
     }
   };
 
   const changeNameColumn = async (e: IFormInputChangeName) => {
     if (boardId) {
-      dispatch(
-        updateAsyncColumn({
-          boardId: boardId,
-          columnId: column.id,
-          columnBody: { title: e.title, order: column.order },
-        })
-      );
+      dispatch(updateColumn({ boardId, columnId: column.id, order: column.order, title: e.title }));
     }
     setIsEdit(false);
   };
@@ -222,23 +207,16 @@ const BoardColumn = ({ column }: { column: IColumnsResp }) => {
                 overflowX: 'hidden',
               }}
             >
-              {tasks
-                // .sort((a, b) => a.order - b.order)
-                .map((task: ITasksResp) => (
-                  <p key={task.id}>{task.title}</p>
-                  // <ColumnTask
-                  //   key={task.id}
-                  //   task={task}
-                  //   dataTasks={dataTasks}
-                  //   setDataTasks={setDataTasks}
-                  // />
-                ))}
+              {column.tasks?.map((task) => (
+                <Task key={task.id} task={task} />
+              ))}
             </Stack>
             <ModalWindow
               open={isOpenModalAddNewTask}
               onClose={() => setisOpenModalAddNewTask(false)}
             >
               <FormNewTask
+                columnId={column.id}
                 onClose={() => setisOpenModalAddNewTask(false)}
                 // dataTasks={tasks}
                 // setDataTasks={tasks}
@@ -256,4 +234,4 @@ const BoardColumn = ({ column }: { column: IColumnsResp }) => {
   );
 };
 
-export default BoardColumn;
+export default Column;
