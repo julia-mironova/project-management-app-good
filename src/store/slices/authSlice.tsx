@@ -104,6 +104,61 @@ export const getSingleUser = createAsyncThunk(
   }
 );
 
+export const deleteCurrentUser = createAsyncThunk(
+  'auth/deleteUser',
+  async (id: string, { rejectWithValue }) => {
+    const token = localStorageGetUserToken();
+    try {
+      const singleUserResponse = await fetch(`${BASE_URL}users/${id}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!singleUserResponse.ok) {
+        const resp = await singleUserResponse.json();
+        throw new Error(
+          `bad server response, error code: ${resp?.statusCode} message: ${resp?.message}`
+        );
+      }
+    } catch (err) {
+      const msg = (err as Error).message;
+      return rejectWithValue(msg);
+    }
+  }
+);
+
+export const updateUser = createAsyncThunk(
+  'auth/updateUser',
+  async (data: ICreateUser, { dispatch, rejectWithValue }) => {
+    const token = localStorageGetUserToken();
+    const user = localStorageGetUser();
+    try {
+      const singleUserResponse = await fetch(`${BASE_URL}users/${user.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(data),
+      });
+      if (!singleUserResponse.ok) {
+        const resp = await singleUserResponse.json();
+        throw new Error(
+          `bad server response, error code: ${resp?.statusCode} message: ${resp?.message}`
+        );
+      }
+      const singleUser: UserResponse = await singleUserResponse.json();
+      dispatch(setUser(singleUser));
+      localStorageSetUser({ id: singleUser.id, name: singleUser.name });
+    } catch (err) {
+      const msg = (err as Error).message;
+      return rejectWithValue(msg);
+    }
+  }
+);
+
 const pending = (state: AuthState) => {
   state.pending = true;
   state.rejectMsg = '';
