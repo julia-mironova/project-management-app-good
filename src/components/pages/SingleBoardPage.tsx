@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { Button, Container, Stack } from '@mui/material';
+import { Button, Container, Stack, Typography } from '@mui/material';
 import FormNewColumn from '../FormNewColumn';
 import ModalWindow from '../ModalWindow';
 
@@ -26,7 +26,10 @@ const SingleBoardPage = () => {
   // const [dataColumns, setDataColumns] = React.useState<IColumn[]>(startDataBoard.columns);
 
   return (
-    <Container maxWidth={false} sx={{ mt: '1rem', height: '83.5vh' }}>
+    <Container maxWidth={false} sx={{ mt: '1rem', height: 'calc(100vh - 149px)' }}>
+      <Typography variant="h6" align="center" sx={{ mb: 1 }}>
+        Name of board
+      </Typography>
       <Stack
         direction={{ xs: 'column', sm: 'row' }}
         spacing={{ xs: 1, sm: 2, md: 4 }}

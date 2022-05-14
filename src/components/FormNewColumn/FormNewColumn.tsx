@@ -50,10 +50,6 @@ const FormNewColumn = ({ onClose }: { onClose: () => void }) => {
             helperText={errors.title ? errors.title.message : ''}
             {...register('title', {
               required: { value: true, message: `${t('FORM.REQUIRE_MSG')}` },
-              minLength: {
-                value: 6,
-                message: `${t('FORM.PASSWORD_LIMIT')}`,
-              },
             })}
           />
         </DialogContent>

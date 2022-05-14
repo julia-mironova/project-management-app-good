@@ -74,17 +74,17 @@ export const createBoard = createAsyncThunk(
   }
 );
 export const updateAsyncBoard = createAsyncThunk(
-  'board/createAsyncUser',
-  async (title: string, { dispatch, rejectWithValue }) => {
+  'board/updateAsyncBoard',
+  async (data: IBoard, { dispatch, rejectWithValue }) => {
     try {
       const token = localStorageGetUserToken();
-      const response = await fetch(`${BASE_URL}boards`, {
+      const response = await fetch(`${BASE_URL}boards/${data.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ title: title }),
+        body: JSON.stringify({ title: data.title }),
       });
 
       if (!response.ok) {
@@ -95,7 +95,7 @@ export const updateAsyncBoard = createAsyncThunk(
       }
 
       const result: IBoard = await response.json();
-      dispatch(setBoard(result));
+      dispatch(updateBoard(result));
     } catch (err) {
       const msg = (err as Error).message;
       return rejectWithValue(msg);
@@ -171,8 +171,8 @@ export const boardSlice = createSlice({
       state.boards = [...state.boards, action.payload];
     },
     updateBoard: (state: boardState, action: PayloadAction<IBoard>) => {
-      const cash = state.boards.filter((el) => el.id !== action.payload.id);
-      state.boards = [...cash, action.payload];
+      const index = state.boards.findIndex((board) => board.id === action.payload.id);
+      state.boards[index] = action.payload;
     },
     deleteBoard: (state: boardState, action: PayloadAction<string>) => {
       state.boards = state.boards.filter((el) => el.id !== action.payload);
