@@ -3,6 +3,7 @@ import { Button, DialogActions, DialogContent, DialogTitle, TextField } from '@m
 import React from 'react';
 import { useForm } from 'react-hook-form';
 // import { useAppSelector } from '../../hooks/redux.hooks';
+import { useTranslation } from 'react-i18next';
 
 type IFormInputNewTask = {
   title: string;
@@ -23,6 +24,7 @@ const FormNewTask = ({
     // handleSubmit,
     formState: { errors },
   } = useForm<IFormInputNewTask>();
+  const { t } = useTranslation();
   // const { id } = useAppSelector((state) => state.auth);
 
   // const onSubmit = (data: IFormInputNewTask) => {
@@ -46,25 +48,25 @@ const FormNewTask = ({
     <form
     // onSubmit={handleSubmit(onSubmit)}
     >
-      <DialogTitle>Create new task</DialogTitle>
+      <DialogTitle>{t('TASK.CREATE_TASK_HEADER')}</DialogTitle>
       <DialogContent>
         <TextField
-          label="Title"
+          label={t('TITLE')}
           fullWidth={true}
           variant="outlined"
           error={errors.title ? true : false}
           helperText={errors.title ? errors.title.message : ''}
           sx={{ mb: 5 }}
           {...register('title', {
-            required: { value: true, message: 'this field is required' },
+            required: { value: true, message: `${t('FORM.REQUIRE_MSG')}` },
             minLength: {
               value: 6,
-              message: 'Your task name must be at least 6 characters long.',
+              message: `${t('FORM.PASSWORD_LIMIT')}`,
             },
           })}
         />
         <TextField
-          label="Description"
+          label={t('TASK.DESCR')}
           fullWidth={true}
           multiline={true}
           rows={4}
@@ -73,8 +75,8 @@ const FormNewTask = ({
         />
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose}>Cancel</Button>
-        <Button type="submit">Create task</Button>
+        <Button onClick={onClose}>{t('CANCEL_BTN')}</Button>
+        <Button type="submit">{t('TASK.CREATE')}</Button>
       </DialogActions>
     </form>
   );
