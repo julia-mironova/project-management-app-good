@@ -77,7 +77,7 @@ const Column = ({ column }: { column: IColumn }) => {
               border: '1px solid Gray',
               borderRadius: 2,
               padding: 2,
-              backgroundColor: 'gainsboro',
+              backgroundColor: 'rgba(213, 217, 233, .7)',
               height: '73vh',
             }}
           >

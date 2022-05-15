@@ -9,6 +9,7 @@ import NewColumn from '../NewColumn';
 import ModalWindow from '../ModalWindow';
 import Column from '../Column';
 import { IColumnsResp } from '../../utils/types/board';
+import { useTranslation } from 'react-i18next';
 
 const SingleBoardPage = () => {
   const [isOpenModalAddNewColumn, setIsOpenModalAddNewColumn] = useState(false);
@@ -21,6 +22,8 @@ const SingleBoardPage = () => {
       dispatch(getSingleBoard(boardId));
     }
   }, [boardId, dispatch]);
+
+  const { t } = useTranslation();
 
   const onDragEnd = async (result: DropResult) => {
     const { destination, draggableId } = result;
@@ -98,8 +101,8 @@ const SingleBoardPage = () => {
         backgroundPosition: 'center',
       }}
     >
-      <Typography align="left" variant="h5" sx={{ p: 1, fontWeight: 'bold' }}>
-        Board: {title.slice(2)}
+      <Typography align="left" variant="h5" color="white" sx={{ p: 1, fontWeight: 'bold' }}>
+        {t('BOARD.BOARD')} {title.slice(2)}
       </Typography>
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="columns" direction="horizontal">
@@ -123,10 +126,15 @@ const SingleBoardPage = () => {
                 <Button
                   variant="outlined"
                   size="large"
-                  sx={{ height: 50, minWidth: 300 }}
+                  sx={{
+                    height: 50,
+                    minWidth: 300,
+                    backgroundColor: 'rgba(213, 217, 233, .7)',
+                    '&:hover': { backgroundColor: 'rgb(213, 217, 233)' },
+                  }}
                   onClick={() => setIsOpenModalAddNewColumn(true)}
                 >
-                  + new colomn
+                  {t('COLUMN.NEW_COLUMN')}
                 </Button>
               </Stack>
             );
