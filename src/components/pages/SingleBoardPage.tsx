@@ -4,7 +4,7 @@ import { Button, Container, Stack, Typography } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux.hooks';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import { getSingleBoard } from '../../store/slices/boardSlice';
-import { updateColumn } from '../../store/slices/columnReducer';
+import { updateColumn, updateDrag } from '../../store/slices/columnReducer';
 import NewColumn from '../NewColumn';
 import ModalWindow from '../ModalWindow';
 import Column from '../Column';
@@ -39,6 +39,24 @@ const SingleBoardPage = () => {
       const oldOrder = draggableColumn.order;
       const newOrder = destination.index;
       const numChangedColumns = oldOrder - newOrder;
+
+      if (numChangedColumns < 0) {
+        const other = columns.filter((el) => el.id !== draggableColumn.id);
+        const allNewColumns = other.map((el) =>
+          el.order <= newOrder && el.order > oldOrder ? { ...el, order: el.order - 1 } : el
+        );
+        const oldColumn = Object.assign({}, draggableColumn, { order: newOrder });
+        allNewColumns.push(oldColumn);
+        dispatch(updateDrag(allNewColumns));
+      } else if (numChangedColumns > 0) {
+        const other = columns.filter((el) => el.id !== draggableColumn.id);
+        const allNewColumns = other.map((el) =>
+          el.order >= newOrder && el.order < oldOrder ? { ...el, order: el.order + 1 } : el
+        );
+        const oldColumn = Object.assign({}, draggableColumn, { order: newOrder });
+        allNewColumns.push(oldColumn);
+        dispatch(updateDrag(allNewColumns));
+      }
 
       await dispatch(
         updateColumn({

@@ -47,9 +47,7 @@ export const createTask = createAsyncThunk<ITaskResponse, ITaskResponse, { rejec
         `bad server response, error code: ${resp?.statusCode} message: ${resp?.message}`
       );
     }
-    const resp: ITaskResponse = await response.json();
-
-    return resp;
+    return await response.json();
   }
 );
 
@@ -77,8 +75,8 @@ export const deleteTask = createAsyncThunk<
     );
   }
   const orderDeleteTask = data.tasks.find((task) => task.id === data.taskId)?.order || 0;
-  const TasksWhithoutDelete = data.tasks.filter((el) => el.id !== data.taskId);
-  const filterTasks = TasksWhithoutDelete.filter((el) => el.order > orderDeleteTask);
+  const TasksWithoutDelete = data.tasks.filter((el) => el.id !== data.taskId);
+  const filterTasks = TasksWithoutDelete.filter((el) => el.order > orderDeleteTask);
   decreaseOrdersOnServer(filterTasks, data.boardId, data.columnId);
   return await response.json();
 });
