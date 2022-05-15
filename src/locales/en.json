@@ -26,7 +26,8 @@
     "SIGNUP": {
 		"NAME": "Name",
         "HEADER": "Sign Up",
-        "ACCOUNT_EXIST_MSG": "Do you have an account? Login."
+        "ACCOUNT_EXIST_MSG": "Do you have an account? Login.",
+        "DELETE": "Delete user"
 	},
     "FORM": {
         "EMAIL": "Email Address",
@@ -62,5 +63,6 @@
     "TITLE": "Title", 
     "DESCR": "Description", 
     "CANCEL_BTN": "Cancel",
-    "UPDATE_BTN": "Update" 
+    "UPDATE_BTN": "Update",
+    "EDIT_PROFILE": "Edit profile"
 }
