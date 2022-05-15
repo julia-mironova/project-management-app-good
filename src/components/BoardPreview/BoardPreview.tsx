@@ -18,9 +18,9 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { useForm } from 'react-hook-form';
 import { useAppDispatch } from '../../hooks/redux.hooks';
-import { IBoard } from '../../types/board';
+import { IBoardPreview } from '../../types/board';
 
-const BoardPreview: FC<{ board: IBoard; handlerDelete: (id: string) => void }> = ({
+const BoardPreview: FC<{ board: IBoardPreview; handlerDelete: (id: string) => void }> = ({
   board,
   handlerDelete,
 }) => {
@@ -37,7 +37,8 @@ const BoardPreview: FC<{ board: IBoard; handlerDelete: (id: string) => void }> =
 
   const changeNameColumn = async (e: IFormInputChangeName) => {
     const newTitle = board.title.slice(0, 2) + e.title;
-    dispatch(updateBoard(newTitle));
+    console.log('Update board', newTitle);
+    dispatch(updateBoard({ title: newTitle, id: board.id }));
     setIsEdit(false);
   };
 
