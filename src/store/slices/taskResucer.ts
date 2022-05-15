@@ -47,8 +47,9 @@ export const createTask = createAsyncThunk<ITaskResponse, ITaskResponse, { rejec
         `bad server response, error code: ${resp?.statusCode} message: ${resp?.message}`
       );
     }
+    const resp: ITaskResponse = await response.json();
 
-    return await response.json();
+    return resp;
   }
 );
 

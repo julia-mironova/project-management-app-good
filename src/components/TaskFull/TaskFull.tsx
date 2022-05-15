@@ -24,7 +24,7 @@ import ConformModal from '../ConformModal';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux.hooks';
 import { deleteTask, updateTask } from '../../store/slices/taskResucer';
 import { localStorageGetUser } from '../../utils/localStorage';
-
+import { useTranslation } from 'react-i18next';
 type IFormTaskData = {
   title: string;
   description: string;
@@ -53,8 +53,8 @@ const TaskFull = ({ onClose, task }: IPropsTaskFull) => {
 
   const [downloadFiles, setDownloadFiles] = React.useState<IFileAttached[]>(task.files || []);
   const [isOpenConformModal, setIsOpenConformModal] = React.useState(false);
-
   const { id, columns } = useAppSelector((state) => state.boards.singleBoard);
+  const { t } = useTranslation();
 
   const onSubmit = (data: IFormTaskData) => {
     const userId = localStorageGetUser()?.id;
@@ -121,11 +121,7 @@ const TaskFull = ({ onClose, task }: IPropsTaskFull) => {
             error={Boolean(errors.title)}
             helperText={errors.title ? errors.title.message : ''}
             {...register('title', {
-              required: { value: true, message: 'this field is required' },
-              minLength: {
-                value: 6,
-                message: 'Your task name must be at least 6 characters long.',
-              },
+              required: { value: true, message: `${t('FORM.REQUIRE_MSG')}` },
             })}
           />
           <TextField
