@@ -26,7 +26,8 @@
     "SIGNUP": {
 		"NAME": "Name",
         "HEADER": "Sign Up",
-        "ACCOUNT_EXIST_MSG": "Do you have an account? Login."
+        "ACCOUNT_EXIST_MSG": "Do you have an account? Login.",
+        "DELETE": "Delete user"
 	},
     "FORM": {
         "EMAIL": "Email Address",
@@ -37,6 +38,8 @@
 		"NAME_LIMIT": "Your name must be at least 3 characters long"
     },
     "BOARD": {
+        "BOARD": "Board:",
+        "NEW_BOARD": "+ Create new board",
         "CREATE": "Create new board",
         "NAME": "Board name",
         "CREATE_BTN": "Create board"
@@ -52,9 +55,14 @@
         "CREATE_TASK_HEADER": "Create new task",
         "CONFIRM_DEL": "Are you sure you want to delete?",
         "YES": "Yes",
-        "DESCR": "Description",
-        "CREATE": "Create task"
+        "CREATE": "Create task",
+        "EDIT": "Edit task",
+        "DELETE": "Delete task",
+        "ADD_FILE": "+ Add File"
     },
     "TITLE": "Title", 
-    "CANCEL_BTN": "Cancel" 
+    "DESCR": "Description", 
+    "CANCEL_BTN": "Cancel",
+    "UPDATE_BTN": "Update",
+    "EDIT_PROFILE": "Edit profile"
 }

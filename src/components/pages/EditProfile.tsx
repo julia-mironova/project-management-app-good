@@ -23,6 +23,7 @@ import SendIcon from '@mui/icons-material/Send';
 import { deleteCurrentUser, logOut, updateUser } from '../../store/slices/authSlice';
 import ConformModal from '../ConformModal';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const EditProfile = () => {
   const {
@@ -36,6 +37,7 @@ const EditProfile = () => {
   const { id, name, token, pending } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const onSubmit = async (data: propsSubmitSignUp) => {
     await dispatch(
@@ -72,7 +74,7 @@ const EditProfile = () => {
         }}
       >
         <Typography component="h1" variant="h4">
-          Edit profile
+          {t('EDIT_PROFILE')}
         </Typography>
         <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate sx={{ mt: 1 }}>
           <TextField
@@ -82,14 +84,14 @@ const EditProfile = () => {
             required
             fullWidth
             id="name"
-            label="Name"
+            label={t('SIGNUP.NAME')}
             autoFocus
             defaultValue={name}
             {...register('name', {
-              required: { value: true, message: 'this field is required' },
+              required: { value: true, message: `${t('FORM.REQUIRE_MSG')}` },
               minLength: {
                 value: 3,
-                message: 'Your name must be at least 3 characters long',
+                message: `${t('FORM.NAME_LIMIT')}`,
               },
             })}
           />
@@ -100,14 +102,14 @@ const EditProfile = () => {
             required
             fullWidth
             id="email"
-            label="Email Address"
+            label={t('FORM.EMAIL')}
             defaultValue={() => localStorageGetUser().id}
             {...register('email', {
-              required: { value: true, message: 'this field is required' },
+              required: { value: true, message: `${t('FORM.REQUIRE_MSG')}` },
               pattern: {
                 value:
                   /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-                message: 'incorrect email',
+                message: `${t('FORM.INCORRECT_EMAIL')}`,
               },
             })}
           />
@@ -117,7 +119,7 @@ const EditProfile = () => {
             margin="normal"
             required
             fullWidth
-            label="Password"
+            label={t('FORM.PASSWORD')}
             type={showPassword ? 'text' : 'password'}
             id="password"
             InputProps={{
@@ -130,10 +132,10 @@ const EditProfile = () => {
               ),
             }}
             {...register('password', {
-              required: { value: true, message: 'this field is required' },
+              required: { value: true, message: `${t('FORM.REQUIRE_MSG')}` },
               minLength: {
                 value: 6,
-                message: 'Your password must be at least 6 characters long',
+                message: `${t('FORM.PASSWORD_LIMIT')}`,
               },
             })}
           />
@@ -146,7 +148,7 @@ const EditProfile = () => {
             loading={pending}
             loadingPosition="end"
           >
-            Update info
+            {t('UPDATE_BTN')}
           </LoadingButton>
           <Button
             variant="outlined"
@@ -154,7 +156,7 @@ const EditProfile = () => {
             fullWidth
             onClick={() => setIsOpenConformModal(true)}
           >
-            Delete user
+            {t('SIGNUP.DELETE')}
           </Button>
           <ConformModal
             isOpen={isOpenConformModal}

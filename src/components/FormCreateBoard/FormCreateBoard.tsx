@@ -32,6 +32,7 @@ const FormCreateBoard: FC<{ onClose: () => void; handlerCreateBoard: (title: str
   const [changedImg, setChangedImg] = useState(0);
   const onSubmit = (data: IFormInput) => {
     const titleWithBoardNumber = `${String(changedImg).padStart(2, '0')}${data.title}`;
+
     handlerCreateBoard(titleWithBoardNumber);
     onClose();
   };

@@ -136,7 +136,7 @@ const columnLoop = async (
   boardId: string,
   columns: IColumn[],
   token: string,
-  rejectWithValue: any
+  rejectWithValue: (value: string) => void
 ) => {
   let i = 0;
   const acc = [] as IColumn[];

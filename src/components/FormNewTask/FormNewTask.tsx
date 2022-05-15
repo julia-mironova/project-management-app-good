@@ -57,7 +57,7 @@ const FormNewTask = ({
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <DialogTitle>Create new task</DialogTitle>
+      <DialogTitle>{t('TASK.CREATE_TASK_HEADER')}</DialogTitle>
       <DialogContent>
         <TextField
           label={t('TITLE')}
@@ -71,7 +71,7 @@ const FormNewTask = ({
           })}
         />
         <TextField
-          label={t('TASK.DESCR')}
+          label={t('DESCR')}
           fullWidth={true}
           multiline={true}
           rows={4}

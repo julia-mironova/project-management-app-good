@@ -5,11 +5,13 @@ import ModalWindow from '../ModalWindow';
 import FormCreateBoard from '../FormCreateBoard';
 import { useAppSelector, useAppDispatch } from '../../hooks/redux.hooks';
 import { getAllBoards, deleteBoard, createBoard } from '../../store/slices/boardSlice';
+import { useTranslation } from 'react-i18next';
 
 const BoardsPage = () => {
   const [openModal, setOpenModal] = useState(false);
   const dispatch = useAppDispatch();
   const { boards, pending } = useAppSelector((state) => state.boards);
+  const { t } = useTranslation();
 
   const handleOnClose = () => {
     setOpenModal(false);
@@ -53,7 +55,7 @@ const BoardsPage = () => {
         sx={{ height: 50, minWidth: '21rem' }}
         onClick={() => setOpenModal(true)}
       >
-        + Create new board
+        {t('BOARD.NEW_BOARD')}
       </Button>
       <ModalWindow open={openModal} onClose={handleOnClose}>
         <FormCreateBoard onClose={handleOnClose} handlerCreateBoard={handlerCreateBoard} />
