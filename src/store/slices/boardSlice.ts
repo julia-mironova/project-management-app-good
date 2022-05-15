@@ -63,17 +63,17 @@ export const createBoard = createAsyncThunk<IBoardPreview, string, { rejectValue
   }
 );
 
-export const updateBoard = createAsyncThunk<IBoardPreview, string, { rejectValue: string }>(
+export const updateBoard = createAsyncThunk<IBoardPreview, IBoardPreview, { rejectValue: string }>(
   'board/updateBoard',
-  async (title, { rejectWithValue }) => {
+  async (data, { rejectWithValue }) => {
     const token = localStorageGetUserToken();
-    const response = await fetch(`${BASE_URL}boards`, {
+    const response = await fetch(`${BASE_URL}boards/${data.id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ title: title }),
+      body: JSON.stringify({ title: data.title }),
     });
 
     if (!response.ok) {

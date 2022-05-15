@@ -19,11 +19,11 @@ import FormNewTask from '../FormNewTask';
 import { useForm } from 'react-hook-form';
 import { Draggable } from 'react-beautiful-dnd';
 import ConformModal from '../ConformModal';
-import { useTranslation } from 'react-i18next';
 import { useAppDispatch } from '../../hooks/redux.hooks';
 import { IColumn } from '../../types/board';
 import { deleteColumn, updateColumn } from '../../store/slices/columnReducer';
 import Task from '../Task';
+import { t } from 'i18next';
 
 type IFormInputChangeName = {
   title: string;
@@ -38,7 +38,6 @@ const Column = ({ column }: { column: IColumn }) => {
     formState: { errors },
   } = useForm<IFormInputChangeName>();
 
-  const { t } = useTranslation();
   const [isOpenConformModal, setIsOpenConformModal] = React.useState(false);
   const { boardId } = useParams();
   const dispatch = useAppDispatch();
@@ -69,18 +68,17 @@ const Column = ({ column }: { column: IColumn }) => {
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
-          // className={snapshot.isDragging ? classes.draggingListItem : ''}
         >
           <Stack
             spacing={2}
             sx={{
               width: '400px',
               minWidth: '400px',
-              border: '1px solid LightGray',
+              border: '1px solid Gray',
               borderRadius: 2,
               padding: 2,
-              backgroundColor: 'Gainsboro',
-              height: '81vh',
+              backgroundColor: 'gainsboro',
+              height: '73vh',
             }}
           >
             <Box
@@ -117,11 +115,7 @@ const Column = ({ column }: { column: IColumn }) => {
                         pl: 1,
                       }}
                       {...register('title', {
-                        required: { value: true, message: 'this field is required' },
-                        minLength: {
-                          value: 6,
-                          message: 'must be at least 6 characters long',
-                        },
+                        required: { value: true, message: `${t('FORM.REQUIRE_MSG')}` },
                       })}
                     />
                     <Box>
@@ -159,6 +153,7 @@ const Column = ({ column }: { column: IColumn }) => {
                   align="left"
                   noWrap={true}
                   sx={{
+                    color: 'gray',
                     width: '70%',
                     fontSize: '1.5rem',
                     fontWeight: 'bold',
@@ -203,24 +198,20 @@ const Column = ({ column }: { column: IColumn }) => {
             <Stack
               spacing={2}
               sx={{
-                overflowY: 'scroll',
+                overflowY: 'auto',
                 overflowX: 'hidden',
               }}
             >
-              {column.tasks?.map((task) => (
-                <Task key={task.id} task={task} />
-              ))}
+              {column.tasks &&
+                [...column.tasks]
+                  .sort((a, b) => a.order - b.order)
+                  .map((task) => <Task key={task.id} task={task} />)}
             </Stack>
             <ModalWindow
               open={isOpenModalAddNewTask}
               onClose={() => setisOpenModalAddNewTask(false)}
             >
-              <FormNewTask
-                columnId={column.id}
-                onClose={() => setisOpenModalAddNewTask(false)}
-                // dataTasks={tasks}
-                // setDataTasks={tasks}
-              />
+              <FormNewTask columnId={column.id} onClose={() => setisOpenModalAddNewTask(false)} />
             </ModalWindow>
             <ConformModal
               isOpen={isOpenConformModal}

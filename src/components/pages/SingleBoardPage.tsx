@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Button, Container, Stack } from '@mui/material';
+import { Button, Container, Stack, Typography } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux.hooks';
-import { useTranslation } from 'react-i18next';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import { getSingleBoard } from '../../store/slices/boardSlice';
 import { updateColumn } from '../../store/slices/columnReducer';
@@ -13,10 +12,9 @@ import { IColumnsResp } from '../../utils/types/board';
 
 const SingleBoardPage = () => {
   const [isOpenModalAddNewColumn, setIsOpenModalAddNewColumn] = useState(false);
-  const { columns } = useAppSelector((state) => state.boards.singleBoard);
+  const { columns, title } = useAppSelector((state) => state.boards.singleBoard);
   const dispatch = useAppDispatch();
   const { boardId } = useParams();
-  const { t } = useTranslation();
 
   useEffect(() => {
     if (boardId) {
@@ -83,7 +81,10 @@ const SingleBoardPage = () => {
   };
 
   return (
-    <Container maxWidth={false} sx={{ mt: '1rem', height: '83.5vh' }}>
+    <Container maxWidth={false} sx={{ mb: '1rem', height: 'calc(100vh - 157px)' }}>
+      <Typography align="left" variant="h5" sx={{ m: 1, p: 0, fontWeight: 'bold' }}>
+        {title.slice(2)}
+      </Typography>
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="columns" direction="horizontal">
           {(provided) => {
@@ -100,13 +101,7 @@ const SingleBoardPage = () => {
                 {[...columns]
                   .sort((a, b) => a.order - b.order)
                   .map((column: IColumnsResp) => (
-                    <Column
-                      key={column.id}
-                      column={column}
-                      // dataColumns={dataColumns}
-                      // setCurColumnId={tCurColumnId(column.id)}
-                      // this.props.onUpdateSalary(salary, id)
-                    />
+                    <Column key={column.id} column={column} />
                   ))}
                 {provided.placeholder}
                 <Button

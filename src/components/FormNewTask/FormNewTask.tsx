@@ -5,6 +5,8 @@ import { localStorageGetUser } from '../../utils/localStorage';
 import { useForm } from 'react-hook-form';
 // import { useAppSelector } from '../../hooks/redux.hooks';
 import { useTranslation } from 'react-i18next';
+import { createTask } from '../../store/slices/taskResucer';
+import { ITaskResponse } from '../../types/board';
 
 type IFormInputNewTask = {
   title: string;
@@ -34,22 +36,22 @@ const FormNewTask = ({
   const { singleBoard } = useAppSelector((state) => state.boards);
 
   const onSubmit = (data: IFormInputNewTask) => {
-    // const maxOrder = dataTasks.reduce((acc, curr) => (acc > curr.order ? acc : curr.order), 0);
-    const maxOrder = singleBoard.columns.filter((item) => item.id === columnId)[0].tasks.length;
+    const currentColumn = singleBoard?.columns?.find((item) => item.id === columnId);
+    const maxOrder = currentColumn?.tasks?.length || 0;
     const userId = localStorageGetUser().id;
-    const newTask = {
-      title: data.title,
-      order: maxOrder + 1,
-      description: data.description,
-      userId: userId,
-    };
-
     if (boardId) {
-      dispatch(createAsyncTask({ boardId: boardId, columnId: columnId, taskBody: newTask }));
-      dispatch(getSingleBoard(boardId));
+      const newTask: ITaskResponse = {
+        id: '',
+        title: data.title,
+        order: maxOrder + 1,
+        description: data.description,
+        userId: userId,
+        boardId: boardId,
+        columnId: columnId,
+      };
+      dispatch(createTask(newTask));
     }
 
-    // setDataTasks([...dataTasks, newTask]);
     onClose();
   };
 
@@ -67,7 +69,7 @@ const FormNewTask = ({
           {...register('title', {
             required: { value: true, message: `${t('FORM.REQUIRE_MSG')}` },
             minLength: {
-              value: 6,
+              value: 3,
               message: `${t('FORM.PASSWORD_LIMIT')}`,
             },
           })}
@@ -78,7 +80,11 @@ const FormNewTask = ({
           multiline={true}
           rows={4}
           variant="outlined"
-          {...register('description', { required: false })}
+          error={errors.title ? true : false}
+          helperText={errors.title ? errors.title.message : ''}
+          {...register('description', {
+            required: { value: true, message: `${t('FORM.REQUIRE_MSG')}` },
+          })}
         />
       </DialogContent>
       <DialogActions>

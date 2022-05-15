@@ -1,12 +1,10 @@
 import {
   Box,
   Button,
-  Checkbox,
   DialogActions,
   DialogContent,
   DialogTitle,
   Divider,
-  FormControlLabel,
   IconButton,
   Paper,
   Table,
@@ -23,6 +21,9 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ConformModal from '../ConformModal';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux.hooks';
+import { deleteTask, updateTask } from '../../store/slices/taskResucer';
+import { localStorageGetUser } from '../../utils/localStorage';
 
 type IFormTaskData = {
   title: string;
@@ -48,35 +49,41 @@ const TaskFull = ({ onClose, task }: IPropsTaskFull) => {
     handleSubmit,
     formState: { errors },
   } = useForm<IFormTaskData>();
+  const dispatch = useAppDispatch();
 
-  const [downloadFiles, setDownloadFiles] = React.useState<IFormInputFile[]>(task.files);
+  const [downloadFiles, setDownloadFiles] = React.useState<IFileAttached[]>(task.files || []);
   const [isOpenConformModal, setIsOpenConformModal] = React.useState(false);
-  // const [checkedDone, setCheckedDone] = React.useState(task.done);
+
+  const { id, columns } = useAppSelector((state) => state.boards.singleBoard);
 
   const onSubmit = (data: IFormTaskData) => {
-    const newFiles: IFileAttached[] = downloadFiles.map((item) => ({
-      filename: item.filename,
-      fileSize: item.fileSize,
-    }));
+    const userId = localStorageGetUser()?.id;
+    const indexColumns = columns.findIndex((item) => item.tasks?.find((t) => t.id === task.id));
 
-    const newDataTasks = dataTasks.map((item) => {
-      if (item.id === task.id) {
-        const newTask = { ...item };
-        newTask.title = data.title;
-        newTask.description = data.description;
-        // newTask.done = Boolean(data.done);
-        newTask.files = newFiles;
-        return newTask;
-      }
-      return item;
-    });
+    const newTask = {
+      ...task,
+      title: data.title,
+      description: data.description,
+      userId: userId,
+      boardId: id,
+      columnId: columns[indexColumns].id || '',
+    };
+
+    dispatch(updateTask(newTask));
     onClose();
-    setDataTasks(newDataTasks);
   };
 
-  const onDelete = () => {
-    const newDataTasks = dataTasks.filter((item) => item.id !== task.id);
-    setDataTasks(newDataTasks);
+  const onDelete = async () => {
+    const indexColumns = columns.findIndex((item) => item.tasks?.find((t) => t.id === task.id));
+
+    const data = {
+      tasks: columns[indexColumns]?.tasks || [],
+      boardId: id,
+      taskId: task.id,
+      columnId: columns[indexColumns].id || '',
+    };
+
+    dispatch(deleteTask(data));
     onClose();
   };
 
@@ -133,19 +140,6 @@ const TaskFull = ({ onClose, task }: IPropsTaskFull) => {
             rows={4}
             {...register('description', { required: false })}
           />
-          <FormControlLabel
-            value={true}
-            control={
-              <Checkbox
-                // checked={checkedDone}
-                // onClick={() => setCheckedDone(!checkedDone)}
-                {...register('done', { required: false })}
-              />
-            }
-            label="Done"
-            labelPlacement="end"
-          />
-
           {downloadFiles.length > 0 && (
             <TableContainer component={Paper}>
               <Table size="small" aria-label="a dense table">
