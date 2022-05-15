@@ -80,10 +80,26 @@ const SingleBoardPage = () => {
     }
   };
 
+  const getImageNumber = (title: string) => {
+    const num = title.slice(0, 2);
+    return num[0] === '0' ? num[1] : num;
+  };
+
   return (
-    <Container maxWidth={false} sx={{ mb: '1rem', height: 'calc(100vh - 157px)' }}>
-      <Typography align="left" variant="h5" sx={{ m: 1, p: 0, fontWeight: 'bold' }}>
-        {title.slice(2)}
+    <Container
+      maxWidth={false}
+      sx={{
+        height: 'calc(100vh - 157px)',
+        background: `url('${process.env.PUBLIC_URL}/pictures/background${getImageNumber(
+          title
+        )}.jpg')`,
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+      }}
+    >
+      <Typography align="left" variant="h5" sx={{ p: 1, fontWeight: 'bold' }}>
+        Board: {title.slice(2)}
       </Typography>
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="columns" direction="horizontal">
