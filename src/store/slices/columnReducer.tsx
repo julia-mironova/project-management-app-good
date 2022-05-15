@@ -120,6 +120,7 @@ export const deleteColumn = createAsyncThunk<
       `bad server response, error code: ${resp?.statusCode} message: ${resp?.message}`
     );
   }
+  //type reject = ReturnType<typeof rejectWithValue>;
 
   columnLoop(data.boardId, filteredColumn, token, rejectWithValue);
   return magics(filteredColumn);

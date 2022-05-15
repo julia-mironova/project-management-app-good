@@ -68,10 +68,6 @@ const FormNewTask = ({
           sx={{ mb: 5 }}
           {...register('title', {
             required: { value: true, message: `${t('FORM.REQUIRE_MSG')}` },
-            minLength: {
-              value: 3,
-              message: `${t('FORM.PASSWORD_LIMIT')}`,
-            },
           })}
         />
         <TextField

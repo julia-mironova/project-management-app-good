@@ -2,7 +2,7 @@ import { createTask } from './taskResucer';
 import { createSlice, PayloadAction, createAsyncThunk, AnyAction } from '@reduxjs/toolkit';
 import { localStorageGetUserToken } from '../../utils/localStorage';
 import { BASE_URL } from '../../constants/baseUrl';
-import { boardState, IBoard, IBoardPreview } from '../../types/board';
+import { boardState, IBoard, IBoardPreview, ITask } from '../../types/board';
 import { createColumn, deleteColumn, updateColumn } from './columnReducer';
 
 const initialSingleBoard: IBoard = {
@@ -181,16 +181,22 @@ export const boardSlice = createSlice({
       })
       /* tasks reducer */
       .addCase(createTask.fulfilled, (state, action) => {
-        state.singleBoard.columns = state.singleBoard.columns.map((el) => {
-          if (el.id === action.payload.columnId) {
-            el.tasks?.map((el) => {
-              return el.id === action.payload.id ? action.payload : el;
-            });
-            return el;
-          } else {
-            return el;
-          }
-        });
+        const newTask: ITask = {
+          id: action.payload.id,
+          title: action.payload.title,
+          order: action.payload.order,
+          description: action.payload.description,
+          userId: action.payload.userId,
+        };
+
+        const indexColumn = state.singleBoard.columns.findIndex(
+          (column) => column.id === action.payload.columnId
+        );
+        if (state.singleBoard.columns[indexColumn].tasks) {
+          state.singleBoard.columns[indexColumn].tasks?.push(newTask);
+        } else {
+          state.singleBoard.columns[indexColumn].tasks = [newTask];
+        }
       })
       .addMatcher(isError, (state, action: PayloadAction<string>) => {
         state.pending = false;
