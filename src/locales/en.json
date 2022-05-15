@@ -37,6 +37,7 @@
 		"NAME_LIMIT": "Your name must be at least 3 characters long"
     },
     "BOARD": {
+        "NEW_BOARD": "+ Create new board",
         "CREATE": "Create new board",
         "NAME": "Board name",
         "CREATE_BTN": "Create board"
