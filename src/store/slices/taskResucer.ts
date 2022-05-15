@@ -139,5 +139,5 @@ const decreaseOrdersOnServer = async (tasks: ITask[], boardId: string, columnId:
   });
 
   const response = await Promise.all(resultPromise);
-  console.log(response);
+  return response;
 };

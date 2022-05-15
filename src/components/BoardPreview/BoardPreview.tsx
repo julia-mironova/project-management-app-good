@@ -37,7 +37,6 @@ const BoardPreview: FC<{ board: IBoardPreview; handlerDelete: (id: string) => vo
 
   const changeNameColumn = async (e: IFormInputChangeName) => {
     const newTitle = board.title.slice(0, 2) + e.title;
-    console.log('Update board', newTitle);
     dispatch(updateBoard({ title: newTitle, id: board.id }));
     setIsEdit(false);
   };
