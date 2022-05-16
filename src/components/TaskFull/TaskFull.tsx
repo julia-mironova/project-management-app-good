@@ -15,6 +15,7 @@ import {
   TableRow,
   TextField,
   Tooltip,
+  Typography,
 } from '@mui/material';
 import { IFileAttached, ITask } from '../../types/board';
 import React from 'react';
@@ -55,6 +56,10 @@ const TaskFull = ({ onClose, task }: IPropsTaskFull) => {
   const [isOpenConformModal, setIsOpenConformModal] = React.useState(false);
   const { id, columns } = useAppSelector((state) => state.boards.singleBoard);
   const { t } = useTranslation();
+  const { usersAll } = useAppSelector((state) => state.boards);
+
+  const currentUser =
+    usersAll?.find((user) => user.id === task.userId)?.name || 'Неизвестный пользователь';
 
   const onSubmit = (data: IFormTaskData) => {
     const userId = localStorageGetUser()?.id;
@@ -107,7 +112,19 @@ const TaskFull = ({ onClose, task }: IPropsTaskFull) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Box sx={{ width: '500px' }}>
-        <DialogTitle>{t('TASK.EDIT')}</DialogTitle>
+        <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between' }}>
+          {t('TASK.EDIT')}
+          <Typography
+            variant="body1"
+            sx={{
+              m: 0,
+              p: 0,
+            }}
+          >
+            created by user: <span style={{ color: 'blue' }}>{currentUser}</span>
+          </Typography>
+        </DialogTitle>
+
         <DialogContent sx={{ pb: 0 }}>
           <TextField
             autoFocus

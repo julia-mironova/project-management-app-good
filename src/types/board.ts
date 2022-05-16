@@ -1,8 +1,11 @@
+import { UserResponse } from './auth';
+
 export interface boardState {
   boards: IBoardPreview[];
   rejectMsg: string;
   pending: boolean;
   singleBoard: IBoard;
+  usersAll: UserResponse[];
 }
 export type IBoardPreview = {
   id: string;

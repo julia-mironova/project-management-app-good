@@ -4,6 +4,7 @@ import { localStorageGetUserToken } from '../../utils/localStorage';
 import { BASE_URL } from '../../constants/baseUrl';
 import { boardState, IBoard, IBoardPreview, ITask } from '../../types/board';
 import { createColumn, deleteColumn, updateColumn } from './columnReducer';
+import { getAllUsers } from './userReducer';
 
 const initialSingleBoard: IBoard = {
   id: '',
@@ -16,6 +17,7 @@ const initialState: boardState = {
   rejectMsg: '',
   pending: false,
   singleBoard: initialSingleBoard,
+  usersAll: [],
 };
 
 export const getAllBoards = createAsyncThunk<IBoardPreview[], undefined, { rejectValue: string }>(
@@ -197,6 +199,11 @@ export const boardSlice = createSlice({
         } else {
           state.singleBoard.columns[indexColumn].tasks = [newTask];
         }
+      })
+      /* users reducer */
+      .addCase(getAllUsers.fulfilled, (state, action) => {
+        state.pending = false;
+        state.usersAll = action.payload;
       })
       .addMatcher(isError, (state, action: PayloadAction<string>) => {
         state.pending = false;
