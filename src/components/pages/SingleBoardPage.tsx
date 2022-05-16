@@ -99,7 +99,8 @@ const SingleBoardPage = () => {
     <Container
       maxWidth={false}
       sx={{
-        height: 'calc(100vh - 157px)',
+        // height: 'calc(100vh - 157px)',
+        p: 0,
         background: `url('${process.env.PUBLIC_URL}/pictures/background${getImageNumber(
           title
         )}.jpg')`,

@@ -17,8 +17,8 @@ const Footer = () => {
     <footer>
       <Box bgcolor={isMainPage ? 'primary.dark' : 'primary.main'} color="white">
         <Container maxWidth="xl">
-          <Grid container spacing={1} justifyContent="space-between">
-            <Grid item xs={12} md={6} lg={4}>
+          <Grid container justifyContent="space-between">
+            <Grid item xs={12} md={6} lg={4} p={0}>
               <BottomNavigation
                 sx={{
                   backgroundColor: isMainPage ? 'primary.dark' : 'primary.main',
