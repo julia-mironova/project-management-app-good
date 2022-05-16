@@ -3,21 +3,17 @@ import { ITask, ITaskResponse } from '../../types/board';
 import { BASE_URL } from '../../constants/baseUrl';
 import { localStorageGetUser, localStorageGetUserToken } from '../../utils/localStorage';
 
-// type ITaskResponse = {
-//   id: string;
-//   title: string;
-//   order: number;
-//   description: string;
-//   userId: string;
-//   boardId: string;
-//   columnId: string;
-// };
-
 type IDataDeleteTask = {
   tasks: ITask[];
   boardId: string;
   columnId: string;
   taskId: string;
+  indexColumns: number;
+};
+
+type responseDeleteTask = {
+  resultTask: ITask[];
+  indexColumns: number;
 };
 
 export const createTask = createAsyncThunk<ITaskResponse, ITaskResponse, { rejectValue: string }>(
@@ -52,10 +48,11 @@ export const createTask = createAsyncThunk<ITaskResponse, ITaskResponse, { rejec
 );
 
 export const deleteTask = createAsyncThunk<
-  IDataDeleteTask,
+  responseDeleteTask,
   IDataDeleteTask,
   { rejectValue: string }
 >('board/deleteTask', async (data, { rejectWithValue }) => {
+  const { indexColumns, tasks } = data;
   const token = localStorageGetUserToken();
 
   const response = await fetch(
@@ -74,36 +71,45 @@ export const deleteTask = createAsyncThunk<
       `bad server response, error code: ${resp?.statusCode} message: ${resp?.message}`
     );
   }
-  const orderDeleteTask = data.tasks.find((task) => task.id === data.taskId)?.order || 0;
-  const TasksWithoutDelete = data.tasks.filter((el) => el.id !== data.taskId);
-  const filterTasks = TasksWithoutDelete.filter((el) => el.order > orderDeleteTask);
-  decreaseOrdersOnServer(filterTasks, data.boardId, data.columnId);
-  return await response.json();
+  const orderDeleteTask = tasks.find((task) => task.id === data.taskId)?.order || 1;
+  const TasksWithoutDelete = tasks.filter((el) => el.id !== data.taskId);
+  const taskForDecrease = TasksWithoutDelete.filter((el) => el.order > orderDeleteTask);
+  const restTask = TasksWithoutDelete.filter((el) => el.order < orderDeleteTask);
+  decreaseOrdersOnServer(taskForDecrease, data.boardId, data.columnId);
+  const result = decreaseOrderOnState(taskForDecrease, restTask);
+  return { indexColumns, resultTask: result };
 });
 
-export const updateTask = createAsyncThunk<ITaskResponse, ITaskResponse, { rejectValue: string }>(
+type updateTask = {
+  newTask: ITaskResponse;
+  indexColumns: number;
+};
+type updateTaskResponse = {
+  newTask: ITask;
+  indexColumns: number;
+};
+
+export const updateTask = createAsyncThunk<updateTaskResponse, updateTask, { rejectValue: string }>(
   'board/updateTask',
   async (data, { rejectWithValue }) => {
+    const { id, columnId, boardId, userId, title, order, description } = data.newTask;
     const token = localStorageGetUserToken();
 
-    const response = await fetch(
-      `${BASE_URL}boards/${data.boardId}/columns/${data.columnId}/tasks/${data.id}`,
-      {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          title: data.title,
-          order: data.order,
-          description: data.description,
-          userId: data.userId,
-          boardId: data.boardId,
-          columnId: data.columnId,
-        }),
-      }
-    );
+    const response = await fetch(`${BASE_URL}boards/${boardId}/columns/${columnId}/tasks/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        title,
+        order,
+        description,
+        userId,
+        boardId,
+        columnId,
+      }),
+    });
 
     if (!response.ok) {
       const resp = await response.json();
@@ -111,10 +117,20 @@ export const updateTask = createAsyncThunk<ITaskResponse, ITaskResponse, { rejec
         `bad server response, error code: ${resp?.statusCode} message: ${resp?.message}`
       );
     }
-
-    return await response.json();
+    const updatedTask = await response.json();
+    return { newTask: updatedTask, indexColumns: data.indexColumns };
   }
 );
+
+const decreaseOrderOnState = (decreaseTask: ITask[], restTasks: ITask[]) => {
+  const decrease = decreaseTask.map((task) => {
+    return {
+      ...task,
+      order: task.order - 1,
+    };
+  });
+  return [...restTasks, ...decrease];
+};
 
 const decreaseOrdersOnServer = async (tasks: ITask[], boardId: string, columnId: string) => {
   const token = localStorageGetUserToken();
@@ -136,7 +152,6 @@ const decreaseOrdersOnServer = async (tasks: ITask[], boardId: string, columnId:
       }),
     });
   });
-
-  const response = await Promise.all(resultPromise);
-  return response;
+  const results = await Promise.all(resultPromise.map((el) => el.then((resp) => resp.json())));
+  return results;
 };

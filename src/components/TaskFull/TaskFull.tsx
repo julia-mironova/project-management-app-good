@@ -66,7 +66,8 @@ const TaskFull = ({ onClose, task }: IPropsTaskFull) => {
     const indexColumns = columns.findIndex((item) => item.tasks?.find((t) => t.id === task.id));
 
     const newTask = {
-      ...task,
+      id: task.id,
+      order: task.order,
       title: data.title,
       description: data.description,
       userId: userId,
@@ -74,7 +75,7 @@ const TaskFull = ({ onClose, task }: IPropsTaskFull) => {
       columnId: columns[indexColumns].id || '',
     };
 
-    dispatch(updateTask(newTask));
+    dispatch(updateTask({ newTask, indexColumns }));
     onClose();
   };
 
@@ -86,6 +87,7 @@ const TaskFull = ({ onClose, task }: IPropsTaskFull) => {
       boardId: id,
       taskId: task.id,
       columnId: columns[indexColumns].id || '',
+      indexColumns: indexColumns || 0,
     };
 
     dispatch(deleteTask(data));
