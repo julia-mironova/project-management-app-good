@@ -99,7 +99,7 @@ const SingleBoardPage = () => {
     <Container
       maxWidth={false}
       sx={{
-        // height: 'calc(100vh - 157px)',
+        height: 'calc(100vh - 132.5px)',
         p: 0,
         background: `url('${process.env.PUBLIC_URL}/pictures/background${getImageNumber(
           title
@@ -107,9 +107,11 @@ const SingleBoardPage = () => {
         backgroundRepeat: 'no-repeat',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
+        overflowX: 'auto',
+        overflowY: 'hidden',
       }}
     >
-      <Typography align="left" variant="h5" color="white" sx={{ p: 1, fontWeight: 'bold' }}>
+      <Typography align="left" variant="h5" color="white" sx={{ fontWeight: 'bold' }}>
         {t('BOARD.BOARD')} {title.slice(2)}
       </Typography>
       <DragDropContext onDragEnd={onDragEnd}>
@@ -121,7 +123,7 @@ const SingleBoardPage = () => {
                 spacing={{ xs: 1, sm: 2, md: 4 }}
                 justifyContent="flex-start"
                 alignItems="flex-start"
-                sx={{ overflowX: 'auto', overflowY: 'hidden' }}
+                // sx={{ overflowX: 'auto', overflowY: 'hidden' }}
                 {...provided.droppableProps}
                 ref={provided.innerRef}
               >

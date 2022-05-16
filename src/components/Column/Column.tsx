@@ -78,7 +78,7 @@ const Column = ({ column }: { column: IColumn }) => {
               borderRadius: 2,
               padding: 2,
               backgroundColor: 'rgba(213, 217, 233, .7)',
-              height: '73vh',
+              // height: '73vh',
             }}
           >
             <Box
