@@ -2,8 +2,8 @@ import { createTask } from './taskResucer';
 import { createSlice, PayloadAction, createAsyncThunk, AnyAction } from '@reduxjs/toolkit';
 import { localStorageGetUserToken } from '../../utils/localStorage';
 import { BASE_URL } from '../../constants/baseUrl';
-import { boardState, IBoard, IBoardPreview, ITask } from '../../types/board';
-import { createColumn, deleteColumn, updateColumn } from './columnReducer';
+import { boardState, IBoard, IBoardPreview } from '../../types/board';
+import { createColumn, deleteColumn, updateColumn, updateDrag } from './columnReducer';
 import { getAllUsers } from './userReducer';
 
 const initialSingleBoard: IBoard = {
@@ -175,25 +175,18 @@ export const boardSlice = createSlice({
         state.singleBoard.columns = action.payload;
         state.pending = false;
       })
-      .addCase(updateColumn.fulfilled, (state, action) => {
+      .addCase(updateDrag.fulfilled, (state, action) => {
+        state.singleBoard.columns = action.payload;
         state.pending = false;
-        state.singleBoard.columns = state.singleBoard.columns.map((el) => {
-          return el.id === action.payload.id ? action.payload : el;
-        });
+      })
+      .addCase(updateColumn.fulfilled, (state) => {
+        state.pending = false;
       })
       /* tasks reducer */
       .addCase(createTask.fulfilled, (state, action) => {
-        const newTask: ITask = {
-          id: action.payload.id,
-          title: action.payload.title,
-          order: action.payload.order,
-          description: action.payload.description,
-          userId: action.payload.userId,
-        };
+        const { columnId, ...newTask } = Object.assign({}, action.payload);
+        const indexColumn = state.singleBoard.columns.findIndex((column) => column.id === columnId);
 
-        const indexColumn = state.singleBoard.columns.findIndex(
-          (column) => column.id === action.payload.columnId
-        );
         if (state.singleBoard.columns[indexColumn].tasks) {
           state.singleBoard.columns[indexColumn].tasks?.push(newTask);
         } else {
@@ -223,24 +216,3 @@ function isError(action: AnyAction) {
 function isPending(action: AnyAction) {
   return action.type.endsWith('pending');
 }
-
-/* const cash = [] as IColumn[];
-          action.payload.forEach((payloadElement, idx) => {
-            state.singleBoard.columns.forEach((column) => {
-              if (column.id === payloadElement.id) {
-                cash.push({
-                  id: action.payload[idx].id,
-                  order: action.payload[idx].order,
-                  title: action.payload[idx].title,
-                  tasks: column.tasks,
-                });
-              }
-            });
-          });
-
-          state.singleBoard.columns = cash;
-          state.singleBoard.columns = state.singleBoard.columns.filter(
-            (el) => el.id !== action.payload
-          );
-        } else {
-          state.singleBoard.columns.pop();*/

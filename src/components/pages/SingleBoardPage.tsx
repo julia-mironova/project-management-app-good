@@ -4,7 +4,7 @@ import { Button, Container, Stack, Typography } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux.hooks';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import { getSingleBoard } from '../../store/slices/boardSlice';
-import { updateColumn } from '../../store/slices/columnReducer';
+import { updateColumn, updateDrag } from '../../store/slices/columnReducer';
 import NewColumn from '../NewColumn';
 import ModalWindow from '../ModalWindow';
 import Column from '../Column';
@@ -26,10 +26,9 @@ const SingleBoardPage = () => {
 
   useEffect(() => {
     dispatch(getAllUsers());
-  }, []);
+  }, [dispatch]);
 
   const { t } = useTranslation();
-
 
   const onDragEnd = async (result: DropResult) => {
     const { destination, draggableId } = result;
@@ -39,6 +38,8 @@ const SingleBoardPage = () => {
       const oldOrder = draggableColumn.order;
       const newOrder = destination.index;
       const numChangedColumns = oldOrder - newOrder;
+
+      dispatch(updateDrag({ columns, draggableColumn, newOrder, oldOrder }));
 
       await dispatch(
         updateColumn({

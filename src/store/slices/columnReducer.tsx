@@ -72,32 +72,58 @@ export const createColumn = createAsyncThunk<
   return await response.json();
 });
 
-export const updateColumn = createAsyncThunk<
-  responseCreateColumn,
-  updateColumn,
-  { rejectValue: string; state: { boards: boardState } }
->('column/updateColumn', async (data, { rejectWithValue, getState }) => {
-  const columns = getState().boards.singleBoard.columns;
-  const target = columns.find((el) => el.id === data.columnId);
+export const updateColumn = createAsyncThunk<undefined, updateColumn, { rejectValue: string }>(
+  'column/updateColumn',
+  async (data, { rejectWithValue }) => {
+    const token = localStorageGetUserToken();
+    const response = await fetch(`${BASE_URL}boards/${data.boardId}/columns/${data.columnId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ title: data.title, order: data.order }),
+    });
 
-  const token = localStorageGetUserToken();
-  const response = await fetch(`${BASE_URL}boards/${data.boardId}/columns/${data.columnId}`, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify({ title: data.title, order: data.order }),
-  });
-
-  if (!response.ok) {
-    const resp = await response.json();
-    return rejectWithValue(
-      `bad server response, error code: ${resp?.statusCode} message: ${resp?.message}`
-    );
+    if (!response.ok) {
+      const resp = await response.json();
+      return rejectWithValue(
+        `bad server response, error code: ${resp?.statusCode} message: ${resp?.message}`
+      );
+    }
   }
-  return Object.assign({}, target, { order: data.order });
-});
+);
+
+type updDragColumn = {
+  draggableColumn: IColumn;
+  oldOrder: number;
+  newOrder: number;
+  columns: IColumn[];
+};
+export const updateDrag = createAsyncThunk<IColumn[], updDragColumn>(
+  'column/updateDrag',
+  async (data) => {
+    if (data.oldOrder - data.newOrder < 0) {
+      const filtered = data.columns.filter((el) => el.id !== data.draggableColumn.id);
+      const updatedColumns = filtered.map((el) =>
+        el.order <= data.newOrder && el.order > data.oldOrder ? { ...el, order: el.order - 1 } : el
+      );
+      const columnWichDrag = Object.assign({}, data.draggableColumn, { order: data.newOrder });
+      updatedColumns.push(columnWichDrag);
+      return updatedColumns;
+    } else if (data.oldOrder - data.newOrder > 0) {
+      const filtered = data.columns.filter((el) => el.id !== data.draggableColumn.id);
+      const updatedColumns = filtered.map((el) =>
+        el.order >= data.newOrder && el.order < data.oldOrder ? { ...el, order: el.order + 1 } : el
+      );
+      const columnWichDrag = Object.assign({}, data.draggableColumn, { order: data.newOrder });
+      updatedColumns.push(columnWichDrag);
+      return updatedColumns;
+    } else {
+      return data.columns;
+    }
+  }
+);
 
 export const deleteColumn = createAsyncThunk<
   IColumn[],
@@ -106,7 +132,9 @@ export const deleteColumn = createAsyncThunk<
 >('column/deleteColumn', async (data, { rejectWithValue, getState }) => {
   const token = localStorageGetUserToken();
   const columns = getState().boards.singleBoard.columns;
-  const filteredColumn = columns.filter((el) => el.id !== data.columnId);
+  // const filtered: IColumn[] = columns.filter((el) => el.id !== data.columnId);
+  const columnForUpdate = columns.filter((el) => el.order > data.order);
+  const columnWithoutUpdate = columns.filter((el) => el.order < data.order);
 
   const response = await fetch(`${BASE_URL}boards/${data.boardId}/columns/${data.columnId}`, {
     method: 'DELETE',
@@ -120,15 +148,16 @@ export const deleteColumn = createAsyncThunk<
       `bad server response, error code: ${resp?.statusCode} message: ${resp?.message}`
     );
   }
-  //type reject = ReturnType<typeof rejectWithValue>;
 
-  columnLoop(data.boardId, filteredColumn, token, rejectWithValue);
-  return magics(filteredColumn);
+  columnLoop(data.boardId, columnForUpdate, token, rejectWithValue, columnWithoutUpdate.length);
+  const updater = magics(columnForUpdate, columnWithoutUpdate.length);
+  const result = [...columnWithoutUpdate, ...updater];
+  return result;
 });
 
-const magics = (arr: Array<IColumn>) => {
+const magics = (arr: Array<IColumn>, order: number) => {
   return arr.map((el, i) => {
-    return Object.assign({}, el, { order: i + 1 });
+    return Object.assign({}, el, { order: order + 1 + i });
   });
 };
 
@@ -136,11 +165,12 @@ const columnLoop = async (
   boardId: string,
   columns: IColumn[],
   token: string,
-  rejectWithValue: (value: string) => void
+  rejectWithValue: (value: string) => void,
+  length: number
 ) => {
   let i = 0;
   const acc = [] as IColumn[];
-  for (const item of columns) {
+  for await (const item of columns) {
     i++;
     const response = await fetch(`${BASE_URL}boards/${boardId}/columns/${item.id}`, {
       method: 'PUT',
@@ -148,7 +178,7 @@ const columnLoop = async (
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ title: item.title, order: i }),
+      body: JSON.stringify({ title: item.title, order: length + i }),
     });
     if (!response.ok) {
       const resp = await response.json();
@@ -161,22 +191,3 @@ const columnLoop = async (
   }
   return acc;
 };
-
-/*
-
-if (columns.length !== data.order) {
-  await Promise.all(
-    filteredColumn.map(async (el, index) => {
-      await dispatch(
-        updateColumn({
-          boardId: data.boardId,
-          columnId: el.id,
-          order: index + 1,
-          title: el.title,
-        })
-      );
-    })
-  );
-  return data.columnId;
-}
-return undefined; */
