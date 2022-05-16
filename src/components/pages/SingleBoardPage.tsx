@@ -10,6 +10,7 @@ import ModalWindow from '../ModalWindow';
 import Column from '../Column';
 import { IColumnsResp } from '../../utils/types/board';
 import { getAllUsers } from '../../store/slices/userReducer';
+import { useTranslation } from 'react-i18next';
 
 const SingleBoardPage = () => {
   const [isOpenModalAddNewColumn, setIsOpenModalAddNewColumn] = useState(false);
@@ -26,6 +27,9 @@ const SingleBoardPage = () => {
   useEffect(() => {
     dispatch(getAllUsers());
   }, []);
+
+  const { t } = useTranslation();
+
 
   const onDragEnd = async (result: DropResult) => {
     const { destination, draggableId } = result;
@@ -85,10 +89,26 @@ const SingleBoardPage = () => {
     }
   };
 
+  const getImageNumber = (title: string) => {
+    const num = title.slice(0, 2);
+    return num[0] === '0' ? num[1] : num;
+  };
+
   return (
-    <Container maxWidth={false} sx={{ mb: '1rem', height: 'calc(100vh - 157px)' }}>
-      <Typography align="left" variant="h5" sx={{ m: 1, p: 0, fontWeight: 'bold' }}>
-        {title.slice(2)}
+    <Container
+      maxWidth={false}
+      sx={{
+        height: 'calc(100vh - 157px)',
+        background: `url('${process.env.PUBLIC_URL}/pictures/background${getImageNumber(
+          title
+        )}.jpg')`,
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+      }}
+    >
+      <Typography align="left" variant="h5" color="white" sx={{ p: 1, fontWeight: 'bold' }}>
+        {t('BOARD.BOARD')} {title.slice(2)}
       </Typography>
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="columns" direction="horizontal">
@@ -112,10 +132,15 @@ const SingleBoardPage = () => {
                 <Button
                   variant="outlined"
                   size="large"
-                  sx={{ height: 50, minWidth: 300 }}
+                  sx={{
+                    height: 50,
+                    minWidth: 300,
+                    backgroundColor: 'rgba(213, 217, 233, .7)',
+                    '&:hover': { backgroundColor: 'rgb(213, 217, 233)' },
+                  }}
                   onClick={() => setIsOpenModalAddNewColumn(true)}
                 >
-                  + new colomn
+                  {t('COLUMN.NEW_COLUMN')}
                 </Button>
               </Stack>
             );

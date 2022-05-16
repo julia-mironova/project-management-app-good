@@ -113,7 +113,7 @@ const TaskFull = ({ onClose, task }: IPropsTaskFull) => {
     <form onSubmit={handleSubmit(onSubmit)}>
       <Box sx={{ width: '500px' }}>
         <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between' }}>
-          Edit task
+          {t('TASK.EDIT')}
           <Typography
             variant="body1"
             sx={{
@@ -124,13 +124,14 @@ const TaskFull = ({ onClose, task }: IPropsTaskFull) => {
             created by user: <span style={{ color: 'blue' }}>{currentUser}</span>
           </Typography>
         </DialogTitle>
+
         <DialogContent sx={{ pb: 0 }}>
           <TextField
             autoFocus
             defaultValue={task.title}
             margin="dense"
             id="title"
-            label="Title"
+            label={t('TITLE')}
             type="text"
             fullWidth
             variant="outlined"
@@ -144,7 +145,7 @@ const TaskFull = ({ onClose, task }: IPropsTaskFull) => {
             defaultValue={task.description}
             margin="dense"
             id="description"
-            label="Description"
+            label={t('DESCR')}
             type="text"
             fullWidth
             variant="outlined"
@@ -197,7 +198,7 @@ const TaskFull = ({ onClose, task }: IPropsTaskFull) => {
           )}
           <Divider />
           <Button variant="outlined" component="label" sx={{ mt: 1 }}>
-            + Add File
+            {t('TASK.ADD_FILE')}
             <input
               type="file"
               hidden
@@ -208,10 +209,10 @@ const TaskFull = ({ onClose, task }: IPropsTaskFull) => {
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setIsOpenConformModal(true)} sx={{ color: 'red' }}>
-            Delete task
+            {t('TASK.DELETE')}
           </Button>
-          <Button onClick={onClose}>Cancel</Button>
-          <Button type="submit">Ok</Button>
+          <Button onClick={onClose}>{t('CANCEL_BTN')}</Button>
+          <Button type="submit">{t('UPDATE_BTN')}</Button>
         </DialogActions>
         <ConformModal
           isOpen={isOpenConformModal}

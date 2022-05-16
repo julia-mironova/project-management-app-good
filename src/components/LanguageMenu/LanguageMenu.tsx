@@ -14,7 +14,7 @@ type languagesKeys = keyof typeof lngs;
 
 const LanguageMenu = () => {
   const { t, i18n } = useTranslation();
-  const [lng, setLng] = useState('en');
+  const [lng, setLng] = useState(localStorage.getItem('i18nextLng') || 'en');
 
   const handleChange = (event: SelectChangeEvent) => {
     setLng(event.target.value as string);
