@@ -1,7 +1,7 @@
 import { createTask } from './taskResucer';
 import { createSlice, PayloadAction, createAsyncThunk, AnyAction } from '@reduxjs/toolkit';
 import { localStorageGetUserToken } from '../../utils/localStorage';
-import { BASE_URL } from '../../constants/baseUrl';
+import { BASE_URL } from '../../constants/constants';
 import { boardState, IBoard, IBoardPreview } from '../../types/board';
 import { createColumn, deleteColumn, updateColumn, updateDrag } from './columnReducer';
 import { getAllUsers } from './userReducer';

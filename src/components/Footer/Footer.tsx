@@ -9,6 +9,7 @@ import {
 } from '@mui/material';
 import { useLocation } from 'react-router-dom';
 import rsLogo from '../../assets/svg/rs_school.svg';
+import { DEVELOPERS_GH } from '../../constants/constants';
 
 const Footer = () => {
   const location = useLocation();
@@ -18,51 +19,35 @@ const Footer = () => {
       <Box bgcolor={isMainPage ? 'primary.dark' : 'primary.main'} color="white">
         <Container maxWidth="xl">
           <Grid container justifyContent="space-between">
-            <Grid item xs={12} md={6} lg={4} p={0}>
+            <Grid container item xs={12} md={6} lg={4} p={0}>
               <BottomNavigation
                 sx={{
                   backgroundColor: isMainPage ? 'primary.dark' : 'primary.main',
+                  width: '50rem',
+                  display: 'flex',
+                  justifyContent: 'start',
                 }}
               >
-                <BottomNavigationAction
-                  sx={{ transition: '.4s', '&:hover': { transform: 'scale(1.2)' } }}
-                  icon={
-                    <Link
-                      href="https://github.com/BlackHatMan"
-                      underline="none"
-                      rel="noopener"
-                      color="secondary.contrastText"
-                    >
-                      BlackHatMan
-                    </Link>
-                  }
-                />
-                <BottomNavigationAction
-                  sx={{ transition: '.4s', '&:hover': { transform: 'scale(1.2)' } }}
-                  icon={
-                    <Link
-                      href="https://github.com/EVG777-prog"
-                      underline="none"
-                      rel="noopener"
-                      color="secondary.contrastText"
-                    >
-                      EVG777-prog
-                    </Link>
-                  }
-                />
-                <BottomNavigationAction
-                  sx={{ transition: '.4s', '&:hover': { transform: 'scale(1.2)' } }}
-                  icon={
-                    <Link
-                      href="https://github.com/VolhaBukhal"
-                      underline="none"
-                      rel="noopener"
-                      color="secondary.contrastText"
-                    >
-                      VolhaBukhal
-                    </Link>
-                  }
-                />
+                {DEVELOPERS_GH.map((dev) => (
+                  <BottomNavigationAction
+                    key={dev.name}
+                    sx={{
+                      transition: '.4s',
+                      '&:hover': { transform: 'scale(1.2)' },
+                    }}
+                    icon={
+                      <Link
+                        href={dev.lingGH}
+                        underline="none"
+                        rel="noopener"
+                        color="secondary.contrastText"
+                        target="_blank"
+                      >
+                        {dev.name}
+                      </Link>
+                    }
+                  />
+                ))}
               </BottomNavigation>
             </Grid>
             <Grid

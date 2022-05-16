@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { boardState, IColumn } from '../../types/board';
-import { BASE_URL } from '../../constants/baseUrl';
+import { BASE_URL } from '../../constants/constants';
 import { localStorageGetUserToken } from '../../utils/localStorage';
 
 type createColumn = {

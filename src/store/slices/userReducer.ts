@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { BASE_URL } from '../../constants/baseUrl';
+import { BASE_URL } from '../../constants/constants';
 import { localStorageGetUserToken } from '../../utils/localStorage';
 
 export type IUserResp = {
