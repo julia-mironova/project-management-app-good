@@ -9,6 +9,7 @@ import NewColumn from '../NewColumn';
 import ModalWindow from '../ModalWindow';
 import Column from '../Column';
 import { IColumnsResp } from '../../utils/types/board';
+import { getAllUsers } from '../../store/slices/userReducer';
 
 const SingleBoardPage = () => {
   const [isOpenModalAddNewColumn, setIsOpenModalAddNewColumn] = useState(false);
@@ -21,6 +22,10 @@ const SingleBoardPage = () => {
       dispatch(getSingleBoard(boardId));
     }
   }, [boardId, dispatch]);
+
+  useEffect(() => {
+    dispatch(getAllUsers());
+  }, []);
 
   const onDragEnd = async (result: DropResult) => {
     const { destination, draggableId } = result;

@@ -5,7 +5,6 @@ import ModalWindow from '../ModalWindow';
 import FormCreateBoard from '../FormCreateBoard';
 import { useAppSelector, useAppDispatch } from '../../hooks/redux.hooks';
 import { getAllBoards, deleteBoard, createBoard } from '../../store/slices/boardSlice';
-import { getAllUsers } from '../../store/slices/userReducer';
 
 const BoardsPage = () => {
   const [openModal, setOpenModal] = useState(false);
@@ -27,10 +26,6 @@ const BoardsPage = () => {
   useEffect(() => {
     if (boards.length === 0) dispatch(getAllBoards());
   }, [boards.length, dispatch]);
-
-  useEffect(() => {
-    dispatch(getAllUsers());
-  }, []);
 
   return (
     <Container
