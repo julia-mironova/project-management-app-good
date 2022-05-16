@@ -75,9 +75,6 @@ export const createColumn = createAsyncThunk<
 export const updateColumn = createAsyncThunk<undefined, updateColumn, { rejectValue: string }>(
   'column/updateColumn',
   async (data, { rejectWithValue }) => {
-    //const columns = getState().boards.singleBoard.columns;
-    //const target = columns.find((el) => el.id === data.columnId);
-
     const token = localStorageGetUserToken();
     const response = await fetch(`${BASE_URL}boards/${data.boardId}/columns/${data.columnId}`, {
       method: 'PUT',
@@ -94,17 +91,37 @@ export const updateColumn = createAsyncThunk<undefined, updateColumn, { rejectVa
         `bad server response, error code: ${resp?.statusCode} message: ${resp?.message}`
       );
     }
-    // return Object.assign({}, target, { order: data.order });
   }
 );
 
-export const updateDrag = createAsyncThunk<IColumn[], IColumn[]>(
+type updDragColumn = {
+  draggableColumn: IColumn;
+  oldOrder: number;
+  newOrder: number;
+  columns: IColumn[];
+};
+export const updateDrag = createAsyncThunk<IColumn[], updDragColumn>(
   'column/updateDrag',
   async (data) => {
-    /*  const columns = getState().boards.singleBoard.columns;
-    const target = columns.find((el) => el.id === data.columnId);
-    const a = Object.assign({}, target, { order: data.order }); */
-    return data;
+    if (data.oldOrder - data.newOrder < 0) {
+      const filtered = data.columns.filter((el) => el.id !== data.draggableColumn.id);
+      const updatedColumns = filtered.map((el) =>
+        el.order <= data.newOrder && el.order > data.oldOrder ? { ...el, order: el.order - 1 } : el
+      );
+      const columnWichDrag = Object.assign({}, data.draggableColumn, { order: data.newOrder });
+      updatedColumns.push(columnWichDrag);
+      return updatedColumns;
+    } else if (data.oldOrder - data.newOrder > 0) {
+      const filtered = data.columns.filter((el) => el.id !== data.draggableColumn.id);
+      const updatedColumns = filtered.map((el) =>
+        el.order >= data.newOrder && el.order < data.oldOrder ? { ...el, order: el.order + 1 } : el
+      );
+      const columnWichDrag = Object.assign({}, data.draggableColumn, { order: data.newOrder });
+      updatedColumns.push(columnWichDrag);
+      return updatedColumns;
+    } else {
+      return data.columns;
+    }
   }
 );
 
@@ -148,7 +165,8 @@ const columnLoop = async (
   boardId: string,
   columns: IColumn[],
   token: string,
-  rejectWithValue: (value: string) => void
+  rejectWithValue: (value: string) => void,
+  length: number
 ) => {
   let i = 0;
   const acc = [] as IColumn[];

@@ -2,8 +2,8 @@ import { createTask } from './taskResucer';
 import { createSlice, PayloadAction, createAsyncThunk, AnyAction } from '@reduxjs/toolkit';
 import { localStorageGetUserToken } from '../../utils/localStorage';
 import { BASE_URL } from '../../constants/baseUrl';
-import { boardState, IBoard, IBoardPreview, ITask } from '../../types/board';
-import { createColumn, deleteColumn, updateColumn } from './columnReducer';
+import { boardState, IBoard, IBoardPreview } from '../../types/board';
+import { createColumn, deleteColumn, updateColumn, updateDrag } from './columnReducer';
 import { getAllUsers } from './userReducer';
 
 const initialSingleBoard: IBoard = {
@@ -176,12 +176,12 @@ export const boardSlice = createSlice({
         state.pending = false;
       })
       .addCase(updateDrag.fulfilled, (state, action) => {
-        state.pending = false;
         state.singleBoard.columns = action.payload;
-      })
-      /* .addCase(updateColumn, (state) => {
         state.pending = false;
-      }) */
+      })
+      .addCase(updateColumn.fulfilled, (state) => {
+        state.pending = false;
+      })
       /* tasks reducer */
       .addCase(createTask.fulfilled, (state, action) => {
         const { columnId, ...newTask } = Object.assign({}, action.payload);
