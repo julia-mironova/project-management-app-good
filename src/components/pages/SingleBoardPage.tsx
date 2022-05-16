@@ -30,7 +30,15 @@ const SingleBoardPage = () => {
 
   const { t } = useTranslation();
 
-  const onDragEnd = async (result: DropResult) => {
+  const onDragEndTask = (result: DropResult) => {
+    console.log('boardId', boardId);
+    console.log('columns', columns);
+    // const { destination, source, draggableId } = result;
+
+    console.log('DnD tasks', result);
+  };
+
+  const onDragEndColumn = async (result: DropResult) => {
     const { destination, draggableId } = result;
 
     if (boardId && destination) {
@@ -95,29 +103,49 @@ const SingleBoardPage = () => {
     return num[0] === '0' ? num[1] : num;
   };
 
+  const onDragEnd = (result: DropResult) => {
+    const { destination, source } = result;
+
+    if (!destination) {
+      return;
+    }
+
+    if (destination.droppableId === source.droppableId && destination.index === source.index) {
+      return;
+    }
+
+    if (destination.droppableId === 'board') {
+      onDragEndColumn(result);
+    } else {
+      onDragEndTask(result);
+    }
+  };
+
   return (
     <Container
       maxWidth={false}
       sx={{
-        height: 'calc(100vh - 157px)',
+        height: 'calc(100vh - 133px)',
         background: `url('${process.env.PUBLIC_URL}/pictures/background${getImageNumber(
           title
         )}.jpg')`,
         backgroundRepeat: 'no-repeat',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
+        overflow: 'hidden',
       }}
     >
       <Typography align="left" variant="h5" color="white" sx={{ p: 1, fontWeight: 'bold' }}>
         {t('BOARD.BOARD')} {title.slice(2)}
       </Typography>
       <DragDropContext onDragEnd={onDragEnd}>
-        <Droppable droppableId="columns" direction="horizontal">
+        <Droppable droppableId="board" direction="horizontal">
           {(provided) => {
             return (
               <Stack
                 direction={{ xs: 'column', sm: 'row' }}
                 spacing={{ xs: 1, sm: 2, md: 4 }}
+                component="ul"
                 justifyContent="flex-start"
                 alignItems="flex-start"
                 sx={{ overflowX: 'auto', overflowY: 'hidden' }}
