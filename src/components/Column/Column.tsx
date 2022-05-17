@@ -78,7 +78,7 @@ const Column = ({ column }: { column: IColumn }) => {
               borderRadius: 2,
               padding: 2,
               backgroundColor: 'rgba(213, 217, 233, .7)',
-              // height: '73vh',
+              maxHeight: '73vh',
             }}
           >
             <Box
@@ -198,8 +198,20 @@ const Column = ({ column }: { column: IColumn }) => {
             <Stack
               spacing={2}
               sx={{
+                paddingRight: '1rem',
                 overflowY: 'auto',
                 overflowX: 'hidden',
+                '&::-webkit-scrollbar': {
+                  width: '.8rem',
+                  backgroundColor: '#f1f1f1',
+                },
+                '&::-webkit-scrollbar-thumb ': {
+                  backgroundColor: '#c8c8c8',
+                  height: '2rem',
+                },
+                '&::-webkit-scrollbar-thumb:hover ': {
+                  backgroundColor: '#a8a8a8',
+                },
               }}
             >
               {column.tasks &&
