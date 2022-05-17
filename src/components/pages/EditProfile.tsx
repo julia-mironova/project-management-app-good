@@ -63,14 +63,15 @@ const EditProfile = () => {
   }, [id, name, token]);
 
   return (
-    <Container maxWidth="xs" sx={{ mt: '1rem', pb: 3, height: 'calc(100vh - 140px)' }}>
+    <Container maxWidth="xs">
       <CssBaseline />
       <Box
         sx={{
-          marginTop: 8,
+          height: 'calc(100vh - 132.5px)',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
+          justifyContent: 'center',
         }}
       >
         <Typography component="h1" variant="h4">

@@ -58,11 +58,30 @@
         "CREATE": "Create task",
         "EDIT": "Edit task",
         "DELETE": "Delete task",
-        "ADD_FILE": "+ Add File"
+        "ADD_FILE": "+ Add File",
+        "CREATE_BY": "created by user:",
+        "FILENAME": "Filename",
+        "SIZE": "Size"
+    },
+    "DEVELOPERS": {
+        "TEAM": "Out team",
+        "VICTOR": "Victor",
+        "EVGENIY": "Evgeniy",
+        "OLGA": "Olga",
+        "TEAM_L": "Team Lead",
+        "DEVELOPER": "Developer",
+        "DESCR_VICTOR": "Victor info",
+        "DESCR_EVGENIY": "Evgeniy info",
+        "DESCR_OLGA": "Olga info"
     },
     "TITLE": "Title", 
     "DESCR": "Description", 
     "CANCEL_BTN": "Cancel",
     "UPDATE_BTN": "Update",
-    "EDIT_PROFILE": "Edit profile"
+    "EDIT_PROFILE": "Edit profile",
+    "NOT_FOUND_PAGE": "Page not found. No match in url",
+    "BACK_TO_MAIN": "Back to main page"
 }
+
+
+  

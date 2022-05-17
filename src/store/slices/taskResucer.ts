@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { ITask, ITaskResponse } from '../../types/board';
-import { BASE_URL } from '../../constants/baseUrl';
+import { BASE_URL } from '../../constants/constants';
 import { localStorageGetUser, localStorageGetUserToken } from '../../utils/localStorage';
 
 // type ITaskResponse = {
