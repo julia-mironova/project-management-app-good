@@ -43,7 +43,7 @@ const FormNewTask = ({
       const newTask: ITaskResponse = {
         id: '',
         title: data.title,
-        order: maxOrder + 1,
+        order: maxOrder,
         description: data.description,
         userId: userId,
         boardId: boardId,

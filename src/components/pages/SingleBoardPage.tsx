@@ -12,6 +12,8 @@ import Column from '../Column';
 import { IColumnsResp } from '../../utils/types/board';
 import { getAllUsers } from '../../store/slices/userReducer';
 import { useTranslation } from 'react-i18next';
+import { moveTaskOnServer } from '../../store/slices/taskResucer';
+import { ITask } from '../../types/board';
 
 const SingleBoardPage = () => {
   const [isOpenModalAddNewColumn, setIsOpenModalAddNewColumn] = useState(false);
@@ -32,11 +34,37 @@ const SingleBoardPage = () => {
   const { t } = useTranslation();
 
   const onDragEndTask = (result: DropResult) => {
-    console.log('boardId', boardId);
-    console.log('columns', columns);
-    // const { destination, source, draggableId } = result;
+    const { destination, source, draggableId } = result;
 
-    console.log('DnD tasks', result);
+    const indexColumnFrom = columns.findIndex((el) => el.id === source.droppableId) as number;
+    const indexColumnTo = columns.findIndex((el) => el.id === destination?.droppableId);
+
+    const moveInColumnUp =
+      source.droppableId === destination?.droppableId && source.index < destination?.index;
+
+    const taskCopyColumnFrom = columns[indexColumnFrom]?.tasks?.slice(0);
+    const taskCopyColumnTo = columns[indexColumnTo]?.tasks?.slice(0);
+
+    const tasksFrom = taskCopyColumnFrom
+      ?.sort((a, b) => a.order - b.order)
+      .slice(source.index + 1) as ITask[];
+    const tasksTo = taskCopyColumnTo
+      ?.sort((a, b) => a.order - b.order)
+      .slice((destination?.index || 0) + (moveInColumnUp ? 1 : 0)) as ITask[];
+
+    const task = columns[indexColumnFrom].tasks?.find((el) => el.id === draggableId) as ITask;
+
+    const dataMoveTask = {
+      boardId: boardId || '',
+      columnIdFrom: source.droppableId,
+      columnIdTo: destination?.droppableId || '',
+      indexTaskTo: destination?.index || 0,
+      task: task,
+      tasksFrom: tasksFrom,
+      tasksTo: tasksTo || [],
+    };
+
+    dispatch(moveTaskOnServer(dataMoveTask));
   };
 
   const onDragEndColumn = async (result: DropResult) => {

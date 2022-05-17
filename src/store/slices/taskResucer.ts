@@ -11,6 +11,16 @@ type IDataDeleteTask = {
   indexColumns: number;
 };
 
+type IDataMoveTask = {
+  boardId: string;
+  columnIdFrom: string;
+  columnIdTo: string;
+  indexTaskTo: number;
+  task: ITask;
+  tasksFrom: ITask[];
+  tasksTo: ITask[];
+};
+
 type responseDeleteTask = {
   resultTask: ITask[];
   indexColumns: number;
@@ -89,6 +99,56 @@ type updateTaskResponse = {
   indexColumns: number;
 };
 
+type moveTaskResponse = {
+  newTask: ITask;
+};
+
+export const moveTaskOnServer = createAsyncThunk<
+  moveTaskResponse,
+  IDataMoveTask,
+  { rejectValue: string }
+>('board/moveTask', async (data) => {
+  const { boardId, columnIdFrom, columnIdTo, indexTaskTo, task, tasksFrom, tasksTo } = data;
+  const token = localStorageGetUserToken();
+
+  if (tasksFrom) {
+    await decreaseOrdersOnServer(tasksFrom, boardId, columnIdFrom);
+  }
+
+  if (tasksTo) {
+    await increaseOrdersOnServer(tasksTo, boardId, columnIdTo);
+  }
+
+  const response = await fetch(
+    `${BASE_URL}boards/${boardId}/columns/${columnIdFrom}/tasks/${task?.id}`,
+    {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        title: task?.title,
+        order: indexTaskTo,
+        description: task?.description,
+        userId: task?.userId,
+        boardId: boardId,
+        columnId: columnIdTo,
+      }),
+    }
+  );
+
+  if (!response.ok) {
+    const resp = await response.json();
+    throw new Error(
+      `bad server response, error code: ${resp?.statusCode} message: ${resp?.message}`
+    );
+  }
+  const updatedTask = await response.json();
+
+  return { newTask: updatedTask };
+});
+
 export const updateTask = createAsyncThunk<updateTaskResponse, updateTask, { rejectValue: string }>(
   'board/updateTask',
   async (data, { rejectWithValue }) => {
@@ -145,6 +205,30 @@ const decreaseOrdersOnServer = async (tasks: ITask[], boardId: string, columnId:
       body: JSON.stringify({
         title: item.title,
         order: item.order - 1,
+        description: item.description,
+        userId: userId,
+        boardId: boardId,
+        columnId: columnId,
+      }),
+    });
+  });
+  const results = await Promise.all(resultPromise.map((el) => el.then((resp) => resp.json())));
+  return results;
+};
+
+const increaseOrdersOnServer = async (tasks: ITask[], boardId: string, columnId: string) => {
+  const token = localStorageGetUserToken();
+  const userId = localStorageGetUser()?.id;
+  const resultPromise = tasks.map((item) => {
+    return fetch(`${BASE_URL}boards/${boardId}/columns/${columnId}/tasks/${item.id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        title: item.title,
+        order: item.order + 1,
         description: item.description,
         userId: userId,
         boardId: boardId,
