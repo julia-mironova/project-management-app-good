@@ -20,6 +20,7 @@ import { generateUserInitials } from '../../utils/generateUserInitials';
 import { logOut } from '../../store/slices/authSlice';
 import LanguageMenu from '../../components/LanguageMenu';
 import { useTranslation, TFuncKey } from 'react-i18next';
+import { LOGO } from '../../constants/constants';
 
 const Header = () => {
   const { t } = useTranslation();
@@ -90,7 +91,7 @@ const Header = () => {
             component="div"
             sx={{ mr: 2, display: { xs: 'none', md: 'flex' }, color: 'white' }}
           >
-            RSS-trello
+            {LOGO}
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -135,7 +136,7 @@ const Header = () => {
             component="div"
             sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' }, color: 'white' }}
           >
-            RSS-trello
+            {LOGO}
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map(({ page, path }) => (

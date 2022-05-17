@@ -8,7 +8,7 @@ import {
 } from '../../utils/localStorage';
 import { UserInfo } from '../../types/types';
 import { UserResponse } from '../../types/auth';
-import { BASE_URL } from '../../constants/baseUrl';
+import { BASE_URL } from '../../constants/constants';
 import { parseJwt } from '../../utils/parseJWT';
 
 const initialUser: UserInfo = localStorageGetUser() || undefined;

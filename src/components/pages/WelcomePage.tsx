@@ -5,6 +5,26 @@ import { useTranslation } from 'react-i18next';
 
 const WelcomePage = () => {
   const { t } = useTranslation();
+  const developers = [
+    {
+      name: `${t('DEVELOPERS.VICTOR')}`,
+      role: `${t('DEVELOPERS.TEAM_L')}`,
+      lingGH: 'https://github.com/BlackHatMan',
+      description: `${t('DEVELOPERS.DESCR_VICTOR')}`,
+    },
+    {
+      name: `${t('DEVELOPERS.OLGA')}`,
+      role: `${t('DEVELOPERS.DEVELOPER')}`,
+      lingGH: 'https://github.com/VolhaBukhal',
+      description: `${t('DEVELOPERS.DESCR_OLGA')}`,
+    },
+    {
+      name: `${t('DEVELOPERS.EVGENIY')}`,
+      role: `${t('DEVELOPERS.DEVELOPER')}`,
+      lingGH: 'https://github.com/EVG777-prog',
+      description: `${t('DEVELOPERS.DESCR_EVGENIY')}`,
+    },
+  ];
   return (
     <>
       <Container>
@@ -43,7 +63,7 @@ const WelcomePage = () => {
           </Grid>
         </Grid>
         <Typography variant="h3" component="h2" align="center" mt={2} mb={2} color="primary.dark">
-          Out team
+          {t('DEVELOPERS.TEAM')}
         </Typography>
         <Grid
           container
@@ -52,90 +72,35 @@ const WelcomePage = () => {
           maxWidth="lg"
           columnSpacing={{ xs: 1, sm: 2, md: 3 }}
         >
-          <Grid item md={4}>
-            <CardMedia component="img" height="250" image={bgImage} alt="team member picture" />
-            <CardContent>
-              <Typography gutterBottom variant="h5" component="div" color="primary.contrastText">
-                Victor
-              </Typography>
-              <Grid container>
-                <Typography variant="h6" color="text.secondary" mr={1}>
-                  Team Lead
+          {developers.map((developer) => (
+            <Grid item md={4} key={developer.name}>
+              <CardMedia component="img" height="250" image={bgImage} alt={developer.name} />
+              <CardContent>
+                <Typography gutterBottom variant="h5" component="div" color="primary.contrastText">
+                  {developer.name}
                 </Typography>
-                <Link
-                  href="https://github.com/BlackHatMan"
-                  target="_blank"
-                  sx={{
-                    transition: '.4s',
-                    color: 'secondary.main',
-                    '&:hover': { color: 'primary.contrastText' },
-                  }}
-                >
-                  <GitHubIcon />
-                </Link>
-              </Grid>
-              <Typography variant="body2" color="text.secondary">
-                Add some text about impact or in general som information about team member. Probably
-                a story of becoming of developer.
-              </Typography>
-            </CardContent>
-          </Grid>
-          <Grid item md={4}>
-            <CardMedia component="img" height="250" image={bgImage} alt="team member picture" />
-            <CardContent>
-              <Typography gutterBottom variant="h5" component="div" color="primary.contrastText">
-                Olga
-              </Typography>
-              <Grid container>
-                <Typography variant="h6" color="text.secondary" mr={1}>
-                  Developer
+                <Grid container>
+                  <Typography variant="h6" color="text.secondary" mr={1}>
+                    {developer.role}
+                  </Typography>
+                  <Link
+                    href={developer.lingGH}
+                    target="_blank"
+                    sx={{
+                      transition: '.4s',
+                      color: 'secondary.main',
+                      '&:hover': { color: 'primary.contrastText' },
+                    }}
+                  >
+                    <GitHubIcon />
+                  </Link>
+                </Grid>
+                <Typography variant="body2" color="text.secondary">
+                  {developer.description}
                 </Typography>
-                <Link
-                  href="https://github.com/VolhaBukhal"
-                  target="_blank"
-                  sx={{
-                    transition: '.4s',
-                    color: 'secondary.main',
-                    '&:hover': { color: 'primary.contrastText' },
-                  }}
-                >
-                  <GitHubIcon />
-                </Link>
-              </Grid>
-              <Typography variant="body2" color="text.secondary">
-                Add some text about impact or in general som information about team member. Probably
-                a story of becoming of developer.
-              </Typography>
-            </CardContent>
-          </Grid>
-          <Grid item md={4}>
-            <CardMedia component="img" height="250" image={bgImage} alt="team member picture" />
-            <CardContent>
-              <Typography gutterBottom variant="h5" component="div" color="primary.contrastText">
-                Evgeniy
-              </Typography>
-              <Grid container>
-                <Typography variant="h6" color="text.secondary" mr={1}>
-                  Developer
-                </Typography>
-                <Link
-                  href="https://github.com/EVG777-prog"
-                  target="_blank"
-                  sx={{
-                    transition: '.4s',
-                    color: 'secondary.main',
-                    '&:hover': { color: 'primary.contrastText' },
-                  }}
-                >
-                  <GitHubIcon />
-                </Link>
-              </Grid>
-              <Typography variant="body2" color="text.secondary">
-                Add some text about impact or in general som information about team member. Probably
-                a story of becoming of developer.
-              </Typography>
-            </CardContent>
-          </Grid>
+              </CardContent>
+            </Grid>
+          ))}
         </Grid>
       </Container>
     </>

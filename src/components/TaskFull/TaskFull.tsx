@@ -121,7 +121,7 @@ const TaskFull = ({ onClose, task }: IPropsTaskFull) => {
               p: 0,
             }}
           >
-            created by user: <span style={{ color: 'blue' }}>{currentUser}</span>
+            {t('TASK.CREATE_BY')} <span style={{ color: 'blue' }}>{currentUser}</span>
           </Typography>
         </DialogTitle>
 
@@ -158,8 +158,8 @@ const TaskFull = ({ onClose, task }: IPropsTaskFull) => {
               <Table size="small" aria-label="a dense table">
                 <TableHead>
                   <TableRow>
-                    <TableCell>Filename</TableCell>
-                    <TableCell align="right">Size</TableCell>
+                    <TableCell>{t('TASK.FILENAME')}</TableCell>
+                    <TableCell align="right">{t('TASK.SIZE')}</TableCell>
                     <TableCell align="right"></TableCell>
                   </TableRow>
                 </TableHead>

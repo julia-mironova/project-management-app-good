@@ -65,7 +65,7 @@ const FormNewTask = ({
           variant="outlined"
           error={errors.title ? true : false}
           helperText={errors.title ? errors.title.message : ''}
-          sx={{ mb: 5 }}
+          sx={{ my: 3 }}
           {...register('title', {
             required: { value: true, message: `${t('FORM.REQUIRE_MSG')}` },
           })}

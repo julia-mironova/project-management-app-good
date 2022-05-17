@@ -23,7 +23,7 @@ import { useAppDispatch } from '../../hooks/redux.hooks';
 import { IColumn } from '../../types/board';
 import { deleteColumn, updateColumn } from '../../store/slices/columnReducer';
 import Task from '../Task';
-import { t } from 'i18next';
+import { useTranslation } from 'react-i18next';
 
 type IFormInputChangeName = {
   title: string;
@@ -37,6 +37,7 @@ const Column = ({ column }: { column: IColumn }) => {
     handleSubmit,
     formState: { errors },
   } = useForm<IFormInputChangeName>();
+  const { t } = useTranslation();
 
   const [isOpenConformModal, setIsOpenConformModal] = React.useState(false);
   const { boardId } = useParams();
@@ -78,7 +79,7 @@ const Column = ({ column }: { column: IColumn }) => {
               borderRadius: 2,
               padding: 2,
               backgroundColor: 'rgba(213, 217, 233, .7)',
-              height: '73vh',
+              maxHeight: '73vh',
             }}
           >
             <Box
@@ -165,7 +166,7 @@ const Column = ({ column }: { column: IColumn }) => {
               )}
 
               <Box>
-                <Tooltip title="Add new task">
+                <Tooltip title={t('TASK.ADD_BTN')}>
                   <IconButton
                     aria-label="add new task"
                     color="primary"
@@ -179,7 +180,7 @@ const Column = ({ column }: { column: IColumn }) => {
                     <AddIcon />
                   </IconButton>
                 </Tooltip>
-                <Tooltip title="Delete column">
+                <Tooltip title={t('COLUMN.DELETE_BTN')}>
                   <IconButton
                     aria-label="delete column"
                     color="primary"
@@ -198,8 +199,20 @@ const Column = ({ column }: { column: IColumn }) => {
             <Stack
               spacing={2}
               sx={{
+                paddingRight: '.8rem',
                 overflowY: 'auto',
                 overflowX: 'hidden',
+                '&::-webkit-scrollbar': {
+                  width: '.8rem',
+                  backgroundColor: '#f1f1f1',
+                },
+                '&::-webkit-scrollbar-thumb ': {
+                  backgroundColor: '#c8c8c8',
+                  height: '2rem',
+                },
+                '&::-webkit-scrollbar-thumb:hover ': {
+                  backgroundColor: '#a8a8a8',
+                },
               }}
             >
               {column.tasks &&

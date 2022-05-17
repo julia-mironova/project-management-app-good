@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Button, Container, Stack, Typography } from '@mui/material';
+import { Button, Container, Stack, Typography, Grid } from '@mui/material';
+import DashboardRoundedIcon from '@mui/icons-material/DashboardRounded';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux.hooks';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import { getSingleBoard } from '../../store/slices/boardSlice';
@@ -99,18 +100,29 @@ const SingleBoardPage = () => {
     <Container
       maxWidth={false}
       sx={{
-        height: 'calc(100vh - 157px)',
+        height: 'calc(100vh - 132.5px)',
+        p: 0,
         background: `url('${process.env.PUBLIC_URL}/pictures/background${getImageNumber(
           title
         )}.jpg')`,
         backgroundRepeat: 'no-repeat',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
+        overflowX: 'auto',
+        overflowY: 'hidden',
       }}
     >
-      <Typography align="left" variant="h5" color="white" sx={{ p: 1, fontWeight: 'bold' }}>
-        {t('BOARD.BOARD')} {title.slice(2)}
-      </Typography>
+      <Grid container alignItems="center">
+        <Grid item>
+          <DashboardRoundedIcon sx={{ color: '#303F9F' }} />
+        </Grid>
+        <Grid item>
+          <Typography align="left" variant="h5" sx={{ fontWeight: 'bold', color: '#303F9F' }}>
+            {/* {t('BOARD.BOARD')} {title.slice(2)} */}
+            {title.slice(2)}
+          </Typography>
+        </Grid>
+      </Grid>
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="columns" direction="horizontal">
           {(provided) => {
@@ -120,7 +132,7 @@ const SingleBoardPage = () => {
                 spacing={{ xs: 1, sm: 2, md: 4 }}
                 justifyContent="flex-start"
                 alignItems="flex-start"
-                sx={{ overflowX: 'auto', overflowY: 'hidden' }}
+                // sx={{ overflowX: 'auto', overflowY: 'hidden' }}
                 {...provided.droppableProps}
                 ref={provided.innerRef}
               >
