@@ -3,19 +3,6 @@ import { ITask, ITaskResponse } from '../../types/board';
 import { BASE_URL } from '../../constants/constants';
 import { localStorageGetUser, localStorageGetUserToken } from '../../utils/localStorage';
 
-type IDataDeleteTask = {
-  tasks: ITask[];
-  boardId: string;
-  columnId: string;
-  taskId: string;
-  indexColumns: number;
-};
-
-type responseDeleteTask = {
-  resultTask: ITask[];
-  indexColumns: number;
-};
-
 export const createTask = createAsyncThunk<ITaskResponse, ITaskResponse, { rejectValue: string }>(
   'board/createTask',
   async (data, { rejectWithValue }) => {
@@ -80,15 +67,6 @@ export const deleteTask = createAsyncThunk<
   return { indexColumns, resultTask: result };
 });
 
-type updateTask = {
-  newTask: ITaskResponse;
-  indexColumns: number;
-};
-type updateTaskResponse = {
-  newTask: ITask;
-  indexColumns: number;
-};
-
 export const updateTask = createAsyncThunk<updateTaskResponse, updateTask, { rejectValue: string }>(
   'board/updateTask',
   async (data, { rejectWithValue }) => {
@@ -119,6 +97,31 @@ export const updateTask = createAsyncThunk<updateTaskResponse, updateTask, { rej
     }
     const updatedTask = await response.json();
     return { newTask: updatedTask, indexColumns: data.indexColumns };
+  }
+);
+
+export const updateDragTask = createAsyncThunk<updDragTaskResponse, updDragTask>(
+  'board/updateDragTask',
+  async (data) => {
+    if (data.oldOrder - data.newOrder < 0) {
+      const filtered = data.tasks.filter((el) => el.id !== data.draggableTask.id);
+      const updatedTasks = filtered.map((el) =>
+        el.order <= data.newOrder && el.order > data.oldOrder ? { ...el, order: el.order - 1 } : el
+      );
+      const taskWichDrag = Object.assign({}, data.draggableTask, { order: data.newOrder });
+      updatedTasks.push(taskWichDrag);
+      return { columnId: data.columnId, tasks: updatedTasks };
+    } else if (data.oldOrder - data.newOrder > 0) {
+      const filtered = data.tasks.filter((el) => el.id !== data.draggableTask.id);
+      const updatedTasks = filtered.map((el) =>
+        el.order >= data.newOrder && el.order < data.oldOrder ? { ...el, order: el.order + 1 } : el
+      );
+      const taskWichDrag = Object.assign({}, data.draggableTask, { order: data.newOrder });
+      updatedTasks.push(taskWichDrag);
+      return { columnId: data.columnId, tasks: updatedTasks };
+    } else {
+      return { columnId: data.columnId, tasks: data.tasks };
+    }
   }
 );
 
@@ -154,4 +157,39 @@ const decreaseOrdersOnServer = async (tasks: ITask[], boardId: string, columnId:
   });
   const results = await Promise.all(resultPromise.map((el) => el.then((resp) => resp.json())));
   return results;
+};
+
+type IDataDeleteTask = {
+  tasks: ITask[];
+  boardId: string;
+  columnId: string;
+  taskId: string;
+  indexColumns: number;
+};
+
+type responseDeleteTask = {
+  resultTask: ITask[];
+  indexColumns: number;
+};
+
+type updDragTask = {
+  draggableTask: ITask;
+  tasks: ITask[];
+  oldOrder: number;
+  newOrder: number;
+  columnId: string;
+};
+type updDragTaskResponse = {
+  tasks: ITask[];
+  columnId: string;
+};
+
+type updateTask = {
+  newTask: ITaskResponse;
+  indexColumns: number;
+};
+
+type updateTaskResponse = {
+  newTask: ITask;
+  indexColumns: number;
 };
