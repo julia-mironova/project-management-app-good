@@ -1,15 +1,6 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import {
-  Box,
-  Divider,
-  IconButton,
-  ListItem,
-  Stack,
-  TextField,
-  Tooltip,
-  Typography,
-} from '@mui/material';
+import { Box, Divider, IconButton, Stack, TextField, Tooltip, Typography } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import CancelIcon from '@mui/icons-material/Cancel';
@@ -17,7 +8,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ModalWindow from '../ModalWindow';
 import FormNewTask from '../FormNewTask';
 import { useForm } from 'react-hook-form';
-import { Draggable } from 'react-beautiful-dnd';
+import { Draggable, Droppable } from 'react-beautiful-dnd';
 import ConformModal from '../ConformModal';
 import { useAppDispatch } from '../../hooks/redux.hooks';
 import { IColumn } from '../../types/board';
@@ -59,19 +50,31 @@ const Column = ({ column }: { column: IColumn }) => {
   return (
     <Draggable draggableId={column.id} index={column.order}>
       {(provided) => (
-        <ListItem
+        // <ListItem
+        //   sx={{
+        //     width: '400px',
+        //     minWidth: '400px',
+        //     m: 0,
+        //     p: 0,
+        //   }}
+        // >
+        <Stack
+          spacing={2}
           sx={{
             width: '400px',
             minWidth: '400px',
-            m: 0,
-            p: 0,
+            border: '1px solid Gray',
+            borderRadius: 2,
+            padding: 2,
+            backgroundColor: 'rgba(213, 217, 233, .7)',
+            height: '73vh',
           }}
+          component="li"
+          // isDragging={snapshot.isDragging}
           ref={provided.innerRef}
           {...provided.draggableProps}
-          {...provided.dragHandleProps}
         >
-          <Stack
-            spacing={2}
+          <Box
             sx={{
               width: '400px',
               minWidth: '400px',
@@ -81,85 +84,94 @@ const Column = ({ column }: { column: IColumn }) => {
               backgroundColor: 'rgba(213, 217, 233, .7)',
               maxHeight: '73vh',
             }}
+            {...provided.dragHandleProps}
           >
-            <Box
-              sx={{
-                width: '100%',
-                display: 'flex',
-                justifyContent: 'space-between',
-                height: '33px',
-              }}
-            >
-              {isEdit ? (
-                <form onSubmit={handleSubmit(changeNameColumn)}>
-                  <Box
-                    sx={{
-                      width: '300px',
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      height: '33px',
-                      border: '1px solid gray',
-                      borderRadius: 2,
-                    }}
-                  >
-                    <TextField
-                      defaultValue={column.title}
-                      variant="standard"
-                      error={errors.title ? true : false}
-                      helperText={errors.title ? errors.title.message : ''}
-                      sx={{
-                        cursor: 'default',
-                        color: 'black',
-                        width: '75%',
-                        background: 'white',
-                        borderRadius: 1,
-                        pl: 1,
-                      }}
-                      {...register('title', {
-                        required: { value: true, message: `${t('FORM.REQUIRE_MSG')}` },
-                      })}
-                    />
-                    <Box>
-                      <Tooltip title="Change name">
-                        <IconButton
-                          aria-label="change name"
-                          color="primary"
-                          size="large"
-                          sx={{
-                            p: 0.5,
-                          }}
-                          type="submit"
-                        >
-                          <CheckCircleIcon />
-                        </IconButton>
-                      </Tooltip>
-                      <Tooltip title="Cancel">
-                        <IconButton
-                          aria-label="cancel"
-                          color="primary"
-                          size="large"
-                          sx={{
-                            p: 0.5,
-                          }}
-                          onClick={() => setIsEdit(false)}
-                        >
-                          <CancelIcon />
-                        </IconButton>
-                      </Tooltip>
-                    </Box>
-                  </Box>
-                </form>
-              ) : (
-                <Typography
-                  align="left"
-                  noWrap={true}
+            {isEdit ? (
+              <form onSubmit={handleSubmit(changeNameColumn)}>
+                <Box
                   sx={{
-                    color: 'gray',
-                    width: '70%',
-                    fontSize: '1.5rem',
-                    fontWeight: 'bold',
+                    width: '300px',
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    height: '33px',
+                    border: '1px solid gray',
+                    borderRadius: 2,
                   }}
-                  onClick={() => setIsEdit(true)}
+                >
+                  <TextField
+                    defaultValue={column.title}
+                    variant="standard"
+                    error={errors.title ? true : false}
+                    helperText={errors.title ? errors.title.message : ''}
+                    sx={{
+                      cursor: 'default',
+                      color: 'black',
+                      width: '75%',
+                      background: 'white',
+                      borderRadius: 1,
+                      pl: 1,
+                    }}
+                    {...register('title', {
+                      required: { value: true, message: `${t('FORM.REQUIRE_MSG')}` },
+                    })}
+                  />
+                  <Box>
+                    <Tooltip title="Change name">
+                      <IconButton
+                        aria-label="change name"
+                        color="primary"
+                        size="large"
+                        sx={{
+                          p: 0.5,
+                        }}
+                        type="submit"
+                      >
+                        <CheckCircleIcon />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Cancel">
+                      <IconButton
+                        aria-label="cancel"
+                        color="primary"
+                        size="large"
+                        sx={{
+                          p: 0.5,
+                        }}
+                        onClick={() => setIsEdit(false)}
+                      >
+                        <CancelIcon />
+                      </IconButton>
+                    </Tooltip>
+                  </Box>
+                </Box>
+              </form>
+            ) : (
+              <Typography
+                align="left"
+                noWrap={true}
+                sx={{
+                  color: 'gray',
+                  width: '70%',
+                  fontSize: '1.5rem',
+                  fontWeight: 'bold',
+                }}
+                onClick={() => setIsEdit(true)}
+              >
+                {column.title}
+              </Typography>
+            )}
+
+            <Box>
+              <Tooltip title="Add new task">
+                <IconButton
+                  aria-label="add new task"
+                  color="primary"
+                  size="large"
+                  sx={{
+                    p: 0,
+                    pr: 1,
+                  }}
+                  onClick={() => setisOpenModalAddNewTask(true)}
                 >
                   {column.title}
                 </Typography>
@@ -196,6 +208,9 @@ const Column = ({ column }: { column: IColumn }) => {
               </Box>
             </Box>
             <Divider />
+        <Droppable droppableId={column.id} type="QUOTE">
+            {(dropProvided) => {
+              return (
             <Stack
               spacing={2}
               sx={{
@@ -213,13 +228,19 @@ const Column = ({ column }: { column: IColumn }) => {
                 '&::-webkit-scrollbar-thumb:hover ': {
                   backgroundColor: '#a8a8a8',
                 },
+                {...dropProvided.droppableProps}
+                ref={dropProvided.innerRef}
               }}
             >
               {column.tasks &&
                 [...column.tasks]
                   .sort((a, b) => a.order - b.order)
                   .map((task) => <Task key={task.id} task={task} />)}
+               {dropProvided.placeholder}
             </Stack>
+               );
+              }}
+          </Droppable>
             <ModalWindow
               open={isOpenModalAddNewTask}
               onClose={() => setisOpenModalAddNewTask(false)}

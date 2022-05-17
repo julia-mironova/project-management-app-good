@@ -1,9 +1,10 @@
-import { Avatar, Paper, styled } from '@mui/material';
+import { Avatar, ListItem, Paper, styled } from '@mui/material';
 import ModalWindow from '../ModalWindow';
 import TaskFull from '../TaskFull';
 import React from 'react';
 import { ITask } from '../../types/board';
 import { useAppSelector } from '../../hooks/redux.hooks';
+import { Draggable } from 'react-beautiful-dnd';
 
 const Task = ({ task }: { task: ITask }) => {
   const [isOpenModalTaskFull, setIsOpenModalTaskFull] = React.useState(false);
@@ -57,10 +58,26 @@ const Task = ({ task }: { task: ITask }) => {
 
   return (
     <>
-      <TitleTask onClick={() => setIsOpenModalTaskFull(true)}>
-        {task.title}
-        <Avatar {...stringAvatar(currentUser)} />
-      </TitleTask>
+      <Draggable draggableId={task.id} index={task.order}>
+        {(provided) => (
+          <ListItem
+            sx={{
+              width: '360px',
+              minWidth: '360px',
+              m: 0,
+              p: 0,
+            }}
+            ref={provided.innerRef}
+            {...provided.draggableProps}
+            {...provided.dragHandleProps}
+          >
+            <TitleTask onClick={() => setIsOpenModalTaskFull(true)}>
+              {task.title}
+              <Avatar {...stringAvatar(currentUser)} />
+            </TitleTask>
+          </ListItem>
+        )}
+      </Draggable>
       <ModalWindow open={isOpenModalTaskFull} onClose={() => setIsOpenModalTaskFull(false)}>
         <TaskFull onClose={() => setIsOpenModalTaskFull(false)} task={task} />
       </ModalWindow>
