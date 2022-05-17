@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Button, Container, Stack, Typography } from '@mui/material';
+import { Button, Container, Stack, Typography, Grid } from '@mui/material';
+import DashboardRoundedIcon from '@mui/icons-material/DashboardRounded';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux.hooks';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import { getSingleBoard } from '../../store/slices/boardSlice';
@@ -111,9 +112,17 @@ const SingleBoardPage = () => {
         overflowY: 'hidden',
       }}
     >
-      <Typography align="left" variant="h5" color="white" sx={{ fontWeight: 'bold' }}>
-        {t('BOARD.BOARD')} {title.slice(2)}
-      </Typography>
+      <Grid container alignItems="center">
+        <Grid item>
+          <DashboardRoundedIcon sx={{ color: '#303F9F' }} />
+        </Grid>
+        <Grid item>
+          <Typography align="left" variant="h5" sx={{ fontWeight: 'bold', color: '#303F9F' }}>
+            {/* {t('BOARD.BOARD')} {title.slice(2)} */}
+            {title.slice(2)}
+          </Typography>
+        </Grid>
+      </Grid>
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="columns" direction="horizontal">
           {(provided) => {

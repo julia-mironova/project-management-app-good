@@ -198,7 +198,7 @@ const Column = ({ column }: { column: IColumn }) => {
             <Stack
               spacing={2}
               sx={{
-                paddingRight: '1rem',
+                paddingRight: '.8rem',
                 overflowY: 'auto',
                 overflowX: 'hidden',
                 '&::-webkit-scrollbar': {
