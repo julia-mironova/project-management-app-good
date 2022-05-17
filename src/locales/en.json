@@ -58,7 +58,10 @@
         "CREATE": "Create task",
         "EDIT": "Edit task",
         "DELETE": "Delete task",
-        "ADD_FILE": "+ Add File"
+        "ADD_FILE": "+ Add File",
+        "CREATE_BY": "created by user:",
+        "FILENAME": "Filename",
+        "SIZE": "Size"
     },
     "DEVELOPERS": {
         "TEAM": "Out team",
