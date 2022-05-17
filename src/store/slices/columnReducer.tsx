@@ -27,26 +27,12 @@ type deleteColumn = {
   order: number;
 };
 
-/* export const getAllColumns = createAsyncThunk<
-  responseCreateColumn,
-  string,
-  { rejectValue: string }
->('column/getAllColumns', async (boardId, { rejectWithValue }) => {
-  const token = localStorageGetUserToken();
-  const response = await fetch(`${BASE_URL}boards/${boardId}/columns`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-
-  if (!response.ok) {
-    const resp = await response.json();
-    return rejectWithValue(
-      `bad server response, error code: ${resp?.statusCode} message: ${resp?.message}`
-    );
-  }
-  return await response.json();
-}); */
+type updDragColumn = {
+  draggableColumn: IColumn;
+  oldOrder: number;
+  newOrder: number;
+  columns: IColumn[];
+};
 
 export const createColumn = createAsyncThunk<
   responseCreateColumn,
@@ -94,12 +80,6 @@ export const updateColumn = createAsyncThunk<undefined, updateColumn, { rejectVa
   }
 );
 
-type updDragColumn = {
-  draggableColumn: IColumn;
-  oldOrder: number;
-  newOrder: number;
-  columns: IColumn[];
-};
 export const updateDrag = createAsyncThunk<IColumn[], updDragColumn>(
   'column/updateDrag',
   async (data) => {
@@ -132,7 +112,6 @@ export const deleteColumn = createAsyncThunk<
 >('column/deleteColumn', async (data, { rejectWithValue, getState }) => {
   const token = localStorageGetUserToken();
   const columns = getState().boards.singleBoard.columns;
-  // const filtered: IColumn[] = columns.filter((el) => el.id !== data.columnId);
   const columnForUpdate = columns.filter((el) => el.order > data.order);
   const columnWithoutUpdate = columns.filter((el) => el.order < data.order);
 
@@ -149,19 +128,25 @@ export const deleteColumn = createAsyncThunk<
     );
   }
 
-  columnLoop(data.boardId, columnForUpdate, token, rejectWithValue, columnWithoutUpdate.length);
-  const updater = magics(columnForUpdate, columnWithoutUpdate.length);
-  const result = [...columnWithoutUpdate, ...updater];
+  updateSyncOrderOnServer(
+    data.boardId,
+    columnForUpdate,
+    token,
+    rejectWithValue,
+    columnWithoutUpdate.length
+  );
+  const updated = updateUpOrder(columnForUpdate, columnWithoutUpdate.length);
+  const result = [...columnWithoutUpdate, ...updated];
   return result;
 });
 
-const magics = (arr: Array<IColumn>, order: number) => {
+const updateUpOrder = (arr: Array<IColumn>, order: number) => {
   return arr.map((el, i) => {
     return Object.assign({}, el, { order: order + 1 + i });
   });
 };
 
-const columnLoop = async (
+const updateSyncOrderOnServer = async (
   boardId: string,
   columns: IColumn[],
   token: string,
@@ -169,8 +154,8 @@ const columnLoop = async (
   length: number
 ) => {
   let i = 0;
-  const acc = [] as IColumn[];
-  for await (const item of columns) {
+  const acc = [];
+  for (const item of columns) {
     i++;
     const response = await fetch(`${BASE_URL}boards/${boardId}/columns/${item.id}`, {
       method: 'PUT',
