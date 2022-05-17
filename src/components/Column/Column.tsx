@@ -67,7 +67,7 @@ const Column = ({ column }: { column: IColumn }) => {
             borderRadius: 2,
             padding: 2,
             backgroundColor: 'rgba(213, 217, 233, .7)',
-            height: '73vh',
+            // height: '73vh',
           }}
           component="li"
           // isDragging={snapshot.isDragging}
@@ -76,13 +76,16 @@ const Column = ({ column }: { column: IColumn }) => {
         >
           <Box
             sx={{
-              width: '400px',
-              minWidth: '400px',
-              border: '1px solid Gray',
-              borderRadius: 2,
-              padding: 2,
-              backgroundColor: 'rgba(213, 217, 233, .7)',
-              maxHeight: '73vh',
+              width: '370px',
+              minWidth: '370px',
+              display: 'flex',
+              justifyContent: 'space-between',
+              // border: '1px solid Gray',
+              // borderRadius: 2,
+              // padding: 2,
+              // m: 0,
+              // backgroundColor: 'rgba(213, 217, 233, .7)',
+              // maxHeight: '73vh',
             }}
             {...provided.dragHandleProps}
           >
@@ -106,7 +109,7 @@ const Column = ({ column }: { column: IColumn }) => {
                     sx={{
                       cursor: 'default',
                       color: 'black',
-                      width: '75%',
+                      width: '70%',
                       background: 'white',
                       borderRadius: 1,
                       pl: 1,
@@ -160,9 +163,8 @@ const Column = ({ column }: { column: IColumn }) => {
                 {column.title}
               </Typography>
             )}
-
             <Box>
-              <Tooltip title="Add new task">
+              <Tooltip title={t('TASK.ADD_BTN')}>
                 <IconButton
                   aria-label="add new task"
                   color="primary"
@@ -173,87 +175,68 @@ const Column = ({ column }: { column: IColumn }) => {
                   }}
                   onClick={() => setisOpenModalAddNewTask(true)}
                 >
-                  {column.title}
-                </Typography>
-              )}
-
-              <Box>
-                <Tooltip title={t('TASK.ADD_BTN')}>
-                  <IconButton
-                    aria-label="add new task"
-                    color="primary"
-                    size="large"
-                    sx={{
-                      p: 0,
-                      pr: 1,
-                    }}
-                    onClick={() => setisOpenModalAddNewTask(true)}
-                  >
-                    <AddIcon />
-                  </IconButton>
-                </Tooltip>
-                <Tooltip title={t('COLUMN.DELETE_BTN')}>
-                  <IconButton
-                    aria-label="delete column"
-                    color="primary"
-                    size="large"
-                    sx={{
-                      p: 0,
-                    }}
-                    onClick={() => setIsOpenConformModal(true)}
-                  >
-                    <DeleteIcon />
-                  </IconButton>
-                </Tooltip>
-              </Box>
+                  <AddIcon />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title={t('COLUMN.DELETE_BTN')}>
+                <IconButton
+                  aria-label="delete column"
+                  color="primary"
+                  size="large"
+                  sx={{
+                    p: 0,
+                  }}
+                  onClick={() => setIsOpenConformModal(true)}
+                >
+                  <DeleteIcon />
+                </IconButton>
+              </Tooltip>
             </Box>
-            <Divider />
-        <Droppable droppableId={column.id} type="QUOTE">
+          </Box>
+          <Divider />
+          <Droppable droppableId={column.id} type="QUOTE">
             {(dropProvided) => {
               return (
-            <Stack
-              spacing={2}
-              sx={{
-                paddingRight: '.8rem',
-                overflowY: 'auto',
-                overflowX: 'hidden',
-                '&::-webkit-scrollbar': {
-                  width: '.8rem',
-                  backgroundColor: '#f1f1f1',
-                },
-                '&::-webkit-scrollbar-thumb ': {
-                  backgroundColor: '#c8c8c8',
-                  height: '2rem',
-                },
-                '&::-webkit-scrollbar-thumb:hover ': {
-                  backgroundColor: '#a8a8a8',
-                },
-                {...dropProvided.droppableProps}
-                ref={dropProvided.innerRef}
-              }}
-            >
-              {column.tasks &&
-                [...column.tasks]
-                  .sort((a, b) => a.order - b.order)
-                  .map((task) => <Task key={task.id} task={task} />)}
-               {dropProvided.placeholder}
-            </Stack>
-               );
-              }}
+                <Stack
+                  spacing={2}
+                  component="ul"
+                  sx={{
+                    paddingRight: '.8rem',
+                    overflowY: 'auto',
+                    overflowX: 'hidden',
+                    '&::-webkit-scrollbar': {
+                      width: '.8rem',
+                      backgroundColor: '#f1f1f1',
+                    },
+                    '&::-webkit-scrollbar-thumb ': {
+                      backgroundColor: '#c8c8c8',
+                      height: '2rem',
+                    },
+                    '&::-webkit-scrollbar-thumb:hover ': {
+                      backgroundColor: '#a8a8a8',
+                    },
+                  }}
+                  {...dropProvided.droppableProps}
+                  ref={dropProvided.innerRef}
+                >
+                  {column.tasks &&
+                    [...column.tasks]
+                      .sort((a, b) => a.order - b.order)
+                      .map((task) => <Task key={task.id} task={task} />)}
+                  {dropProvided.placeholder}
+                </Stack>
+              );
+            }}
           </Droppable>
-            <ModalWindow
-              open={isOpenModalAddNewTask}
-              onClose={() => setisOpenModalAddNewTask(false)}
-            >
-              <FormNewTask columnId={column.id} onClose={() => setisOpenModalAddNewTask(false)} />
-            </ModalWindow>
-            <ConformModal
-              isOpen={isOpenConformModal}
-              close={() => setIsOpenConformModal(false)}
-              func={handleDeleteColumn}
-            />
-          </Stack>
-        </ListItem>
+          <ModalWindow open={isOpenModalAddNewTask} onClose={() => setisOpenModalAddNewTask(false)}>
+            <FormNewTask columnId={column.id} onClose={() => setisOpenModalAddNewTask(false)} />
+          </ModalWindow>
+          <ConformModal
+            isOpen={isOpenConformModal}
+            close={() => setIsOpenConformModal(false)}
+            func={handleDeleteColumn}
+          />
+        </Stack>
       )}
     </Draggable>
   );
