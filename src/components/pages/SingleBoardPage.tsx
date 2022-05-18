@@ -48,11 +48,10 @@ const SingleBoardPage = () => {
     const tasksFrom = taskCopyColumnFrom
       ?.sort((a, b) => a.order - b.order)
       .slice(source.index + 1) as ITask[];
-    console.log('🚀 ~ file: SingleBoardPage.tsx ~ line 49 ~ onDragEndTask ~ tasksFrom', tasksFrom);
+
     const tasksTo = taskCopyColumnTo
       ?.sort((a, b) => a.order - b.order)
       .slice((destination?.index || 0) + (moveInColumnUp ? 1 : 0)) as ITask[];
-    console.log('🚀 ~ file: SingleBoardPage.tsx ~ line 53 ~ onDragEndTask ~ tasksTo', tasksTo);
 
     const task = columns[indexColumnFrom].tasks?.find((el) => el.id === draggableId) as ITask;
 

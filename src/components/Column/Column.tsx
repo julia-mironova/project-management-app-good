@@ -30,9 +30,6 @@ const Column = ({ column }: { column: IColumn }) => {
   } = useForm<IFormInputChangeName>();
   const { t } = useTranslation();
 
-  console.log('column.order', column.order);
-  console.log('column.tasks', column.tasks);
-
   const [isOpenConformModal, setIsOpenConformModal] = React.useState(false);
   const { boardId } = useParams();
   const dispatch = useAppDispatch();
