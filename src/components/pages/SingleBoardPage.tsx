@@ -25,9 +25,10 @@ const SingleBoardPage = () => {
   const [isOpenModalAddNewColumn, setIsOpenModalAddNewColumn] = useState(false);
   const [filters, setFilters] = useState<IFilters>({ searchText: '', usersId: [] });
   const { columns, title } = useAppSelector((state) => state.boards.singleBoard);
-
   const dispatch = useAppDispatch();
   const { boardId } = useParams();
+  // const navigation = useNavigate();
+  console.log(rejectMsg);
 
   const usersIdCreatedTasks: string[] = [];
 
@@ -199,6 +200,10 @@ const SingleBoardPage = () => {
       onDragEndTask(result);
     }
   };
+
+  if (rejectMsg !== '') {
+    return <Page404 from="board" />;
+  }
 
   return (
     <Container
