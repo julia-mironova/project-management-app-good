@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks/redux.hooks';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import { getSingleBoard } from '../../store/slices/boardSlice';
 import { updateColumn, updateDrag } from '../../store/slices/columnReducer';
+import { logOut } from '../../store/slices/authSlice';
 import NewColumn from '../NewColumn';
 import ModalWindow from '../ModalWindow';
 import Column from '../Column';
@@ -27,8 +28,7 @@ const SingleBoardPage = () => {
   const { columns, title } = useAppSelector((state) => state.boards.singleBoard);
   const dispatch = useAppDispatch();
   const { boardId } = useParams();
-  // const navigation = useNavigate();
-  console.log(rejectMsg);
+  const navigate = useNavigate();
 
   const usersIdCreatedTasks: string[] = [];
 
@@ -51,6 +51,20 @@ const SingleBoardPage = () => {
   }, [dispatch]);
 
   const { t } = useTranslation();
+
+  useEffect(() => {
+    if (rejectMsg) {
+      const [code] = rejectMsg.split('/');
+      if (code) {
+        if (+code === 401) {
+          dispatch(logOut());
+          navigate('/login', { replace: true });
+        } else {
+          navigate('/not-found-board', { replace: true });
+        }
+      }
+    }
+  }, [rejectMsg]);
 
   const onDragEndTask = (result: DropResult) => {
     const { destination, source, draggableId } = result;
@@ -200,10 +214,6 @@ const SingleBoardPage = () => {
       onDragEndTask(result);
     }
   };
-
-  if (rejectMsg !== '') {
-    return <Page404 from="board" />;
-  }
 
   return (
     <Container
