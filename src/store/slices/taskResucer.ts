@@ -111,11 +111,22 @@ export const moveTaskOnServer = createAsyncThunk<
   const { boardId, columnIdFrom, columnIdTo, indexTaskTo, task, tasksFrom, tasksTo } = data;
   const token = localStorageGetUserToken();
 
-  if (tasksFrom) {
+  if (columnIdFrom === columnIdTo) {
+    if (tasksFrom.length > tasksTo.length) {
+      const taskForDecrease = tasksFrom.filter(
+        (el) => el.order > task.order && el.order <= indexTaskTo
+      );
+      console.log('🚀 ~ file: taskResucer.ts ~ line 119 ~ > ~ taskForDecrease', taskForDecrease);
+      decreaseOrdersOnServer(taskForDecrease, boardId, columnIdFrom);
+    } else {
+      const taskForIncrease = tasksTo.filter(
+        (el) => el.order < task.order && el.order >= indexTaskTo
+      );
+      console.log('🚀 ~ file: taskResucer.ts ~ line 125 ~ > ~ taskForIncrease', taskForIncrease);
+      increaseOrdersOnServer(taskForIncrease, boardId, columnIdFrom);
+    }
+  } else {
     await decreaseOrdersOnServer(tasksFrom, boardId, columnIdFrom);
-  }
-
-  if (tasksTo) {
     await increaseOrdersOnServer(tasksTo, boardId, columnIdTo);
   }
 

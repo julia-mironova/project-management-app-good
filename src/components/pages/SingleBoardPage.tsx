@@ -48,9 +48,11 @@ const SingleBoardPage = () => {
     const tasksFrom = taskCopyColumnFrom
       ?.sort((a, b) => a.order - b.order)
       .slice(source.index + 1) as ITask[];
+    console.log('🚀 ~ file: SingleBoardPage.tsx ~ line 49 ~ onDragEndTask ~ tasksFrom', tasksFrom);
     const tasksTo = taskCopyColumnTo
       ?.sort((a, b) => a.order - b.order)
       .slice((destination?.index || 0) + (moveInColumnUp ? 1 : 0)) as ITask[];
+    console.log('🚀 ~ file: SingleBoardPage.tsx ~ line 53 ~ onDragEndTask ~ tasksTo', tasksTo);
 
     const task = columns[indexColumnFrom].tasks?.find((el) => el.id === draggableId) as ITask;
 
@@ -183,7 +185,7 @@ const SingleBoardPage = () => {
             return (
               <Stack
                 direction={{ xs: 'column', sm: 'row' }}
-                spacing={{ xs: 1, sm: 2, md: 4 }}
+                spacing={0}
                 component="ul"
                 justifyContent="flex-start"
                 alignItems="flex-start"
@@ -205,6 +207,7 @@ const SingleBoardPage = () => {
                     minWidth: 300,
                     backgroundColor: 'rgba(213, 217, 233, .7)',
                     '&:hover': { backgroundColor: 'rgb(213, 217, 233)' },
+                    mr: 2,
                   }}
                   onClick={() => setIsOpenModalAddNewColumn(true)}
                 >

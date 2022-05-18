@@ -30,6 +30,9 @@ const Column = ({ column }: { column: IColumn }) => {
   } = useForm<IFormInputChangeName>();
   const { t } = useTranslation();
 
+  console.log('column.order', column.order);
+  console.log('column.tasks', column.tasks);
+
   const [isOpenConformModal, setIsOpenConformModal] = React.useState(false);
   const { boardId } = useParams();
   const dispatch = useAppDispatch();
@@ -59,13 +62,16 @@ const Column = ({ column }: { column: IColumn }) => {
         //   }}
         // >
         <Stack
-          spacing={2}
+          spacing={0}
           sx={{
             width: '400px',
             minWidth: '400px',
             border: '1px solid Gray',
             borderRadius: 2,
             padding: 2,
+            pb: 1,
+            ml: 2,
+            mr: 2,
             backgroundColor: 'rgba(213, 217, 233, .7)',
             // height: '73vh',
           }}
@@ -193,14 +199,15 @@ const Column = ({ column }: { column: IColumn }) => {
               </Tooltip>
             </Box>
           </Box>
-          <Divider />
+          <Divider sx={{ mt: 1, mb: 1 }} />
           <Droppable droppableId={column.id} type="QUOTE">
             {(dropProvided) => {
               return (
                 <Stack
-                  spacing={2}
+                  spacing={0}
                   component="ul"
                   sx={{
+                    mt: 0,
                     paddingRight: '.8rem',
                     overflowY: 'auto',
                     overflowX: 'hidden',
@@ -215,6 +222,8 @@ const Column = ({ column }: { column: IColumn }) => {
                     '&::-webkit-scrollbar-thumb:hover ': {
                       backgroundColor: '#a8a8a8',
                     },
+                    maxHeight: '63.5vh',
+                    minHeight: '1vh',
                   }}
                   {...dropProvided.droppableProps}
                   ref={dropProvided.innerRef}
