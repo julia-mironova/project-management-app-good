@@ -3,29 +3,6 @@ import { ITask, ITaskResponse } from '../../types/board';
 import { BASE_URL } from '../../constants/constants';
 import { localStorageGetUser, localStorageGetUserToken } from '../../utils/localStorage';
 
-type IDataDeleteTask = {
-  tasks: ITask[];
-  boardId: string;
-  columnId: string;
-  taskId: string;
-  indexColumns: number;
-};
-
-type IDataMoveTask = {
-  boardId: string;
-  columnIdFrom: string;
-  columnIdTo: string;
-  indexTaskTo: number;
-  task: ITask;
-  tasksFrom: ITask[];
-  tasksTo: ITask[];
-};
-
-type responseDeleteTask = {
-  resultTask: ITask[];
-  indexColumns: number;
-};
-
 export const createTask = createAsyncThunk<ITaskResponse, ITaskResponse, { rejectValue: string }>(
   'board/createTask',
   async (data, { rejectWithValue }) => {
@@ -263,6 +240,18 @@ const increaseOrdersOnServer = async (tasks: ITask[], boardId: string, columnId:
   });
   const results = await Promise.all(resultPromise.map((el) => el.then((resp) => resp.json())));
   return results;
+};
+
+type IDataMoveTask = {
+  boardId: string;
+  columnIdFrom: string;
+  columnIdTo: string;
+  indexTaskTo: number;
+  task: ITask;
+  tasksFrom: ITask[];
+  tasksTo: ITask[];
+};
+
 type IDataDeleteTask = {
   tasks: ITask[];
   boardId: string;
