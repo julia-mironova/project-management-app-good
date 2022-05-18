@@ -23,7 +23,7 @@ const NewColumn = ({ onClose }: { onClose: () => void }) => {
 
   const onSubmit = ({ title }: formData) => {
     if (boardId) {
-      dispatch(createColumn({ boardId: boardId, title, order: columns.length + 1 }));
+      dispatch(createColumn({ boardId: boardId, title, order: columns.length }));
     }
     onClose();
   };

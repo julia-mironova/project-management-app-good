@@ -25,6 +25,8 @@ const Task = ({ task }: { task: ITask }) => {
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingRight: '0.6rem',
+    marginBottom: theme.spacing(1),
+    marginTop: theme.spacing(1),
   }));
 
   function stringToColor(string: string) {
