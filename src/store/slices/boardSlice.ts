@@ -1,4 +1,4 @@
-import { createTask, deleteTask, updateTask } from './taskResucer';
+import { createTask, deleteTask, updateTask, updateDragTask } from './taskResucer';
 import { createSlice, PayloadAction, createAsyncThunk, AnyAction } from '@reduxjs/toolkit';
 import { localStorageGetUserToken } from '../../utils/localStorage';
 import { BASE_URL } from '../../constants/constants';
@@ -202,6 +202,12 @@ export const boardSlice = createSlice({
         state.singleBoard.columns[idx].tasks = state.singleBoard.columns[idx].tasks?.map((t) =>
           t.id === action.payload.newTask.id ? action.payload.newTask : t
         );
+      })
+      .addCase(updateDragTask.fulfilled, (state, action) => {
+        const indexColumn = state.singleBoard.columns.findIndex(
+          (column) => column.id === action.payload.columnId
+        );
+        state.singleBoard.columns[indexColumn].tasks = action.payload.tasks;
       })
       /* users reducer */
       .addCase(getAllUsers.fulfilled, (state, action) => {
