@@ -12,8 +12,16 @@ import Column from '../Column';
 import { IColumnsResp } from '../../utils/types/board';
 import { getAllUsers } from '../../store/slices/userReducer';
 import { useTranslation } from 'react-i18next';
-import { moveTaskOnServer } from '../../store/slices/taskResucer';
-import { ITask } from '../../types/board';
+import {
+  deleteTask,
+  IDataDeleteTask,
+  updateDragTask,
+  updDragTask,
+  moveTaskOnServer,
+  createOnDragTask,
+  updateDraggableTask,
+} from '../../store/slices/taskResucer';
+import { ITask, ITaskResponse } from '../../types/board';
 
 const SingleBoardPage = () => {
   const [isOpenModalAddNewColumn, setIsOpenModalAddNewColumn] = useState(false);
@@ -36,36 +44,87 @@ const SingleBoardPage = () => {
   const onDragEndTask = (result: DropResult) => {
     const { destination, source, draggableId } = result;
 
-    const indexColumnFrom = columns.findIndex((el) => el.id === source.droppableId) as number;
-    const indexColumnTo = columns.findIndex((el) => el.id === destination?.droppableId);
+    const idxColFrom = columns.findIndex((el) => el.id === source.droppableId) as number;
+    const idxColDestination = columns.findIndex((el) => el.id === destination?.droppableId);
+    const draggableTask = columns[idxColFrom].tasks?.find((el) => el.id === draggableId) as ITask;
+    const idColumnDestination = columns[idxColDestination].id;
+    const newOrderTask = destination?.index || 0;
+
+    const copyTasksFrom = columns[idxColFrom]?.tasks?.slice(0);
+    let copyTasksDestination = columns[idxColDestination]?.tasks?.slice(0);
 
     const moveInColumnUp =
       source.droppableId === destination?.droppableId && source.index < destination?.index;
 
-    const taskCopyColumnFrom = columns[indexColumnFrom]?.tasks?.slice(0);
-    const taskCopyColumnTo = columns[indexColumnTo]?.tasks?.slice(0);
-
-    const tasksFrom = taskCopyColumnFrom
+    const tasksFrom = copyTasksFrom
       ?.sort((a, b) => a.order - b.order)
       .slice(source.index + 1) as ITask[];
 
-    const tasksTo = taskCopyColumnTo
+    const tasksTo = copyTasksDestination
       ?.sort((a, b) => a.order - b.order)
       .slice((destination?.index || 0) + (moveInColumnUp ? 1 : 0)) as ITask[];
-
-    const task = columns[indexColumnFrom].tasks?.find((el) => el.id === draggableId) as ITask;
 
     const dataMoveTask = {
       boardId: boardId || '',
       columnIdFrom: source.droppableId,
+      idColumnDestination,
       columnIdTo: destination?.droppableId || '',
       indexTaskTo: destination?.index || 0,
-      task: task,
+      task: draggableTask,
       tasksFrom: tasksFrom,
       tasksTo: tasksTo || [],
     };
 
-    dispatch(moveTaskOnServer(dataMoveTask));
+    const updDeleteTask: IDataDeleteTask = {
+      tasks: copyTasksFrom || [],
+      indexColumns: idxColFrom,
+      boardId: boardId || '',
+      columnId: columns[idxColFrom].id,
+      taskId: draggableTask.id,
+    };
+
+    const updDragTask: updDragTask = {
+      draggableTask,
+      tasks: copyTasksFrom || [],
+      oldOrder: draggableTask.order,
+      newOrder: destination?.index || 0,
+      columnId: columns[idxColFrom].id,
+    };
+    const createDragTask: ITaskResponse = {
+      boardId: boardId || '',
+      columnId: columns[idxColDestination].id,
+      description: draggableTask.description,
+      id: draggableTask.id,
+      order: newOrderTask,
+      title: draggableTask.title,
+      userId: draggableTask.userId,
+    };
+
+    if (idxColFrom === idxColDestination) {
+      dispatch(updateDragTask(updDragTask));
+      updateDraggableTask(createDragTask);
+      moveTaskOnServer(dataMoveTask);
+    } else if (idxColFrom !== idxColDestination) {
+      copyTasksDestination = copyTasksDestination ? copyTasksDestination : [];
+
+      const updDestinationTask: updDragTask = {
+        draggableTask: { ...draggableTask },
+        tasks: copyTasksDestination,
+        oldOrder: copyTasksDestination?.length + 1 || 0,
+        newOrder: destination?.index || 0,
+        columnId: columns[idxColDestination].id,
+      };
+
+      const createTaskForUpdateID = async () => {
+        return await createOnDragTask(createDragTask);
+      };
+      createTaskForUpdateID().then((updTask) => {
+        updDestinationTask.draggableTask.id = updTask.id;
+        dispatch(updateDragTask(updDestinationTask));
+        dispatch(deleteTask(updDeleteTask));
+        moveTaskOnServer(dataMoveTask);
+      });
+    }
   };
 
   const onDragEndColumn = async (result: DropResult) => {

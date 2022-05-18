@@ -58,7 +58,7 @@ export const deleteTask = createAsyncThunk<
       `bad server response, error code: ${resp?.statusCode} message: ${resp?.message}`
     );
   }
-  const orderDeleteTask = tasks.find((task) => task.id === data.taskId)?.order || 1;
+  const orderDeleteTask = tasks.find((task) => task.id === data.taskId)?.order || 0;
   const TasksWithoutDelete = tasks.filter((el) => el.id !== data.taskId);
   const taskForDecrease = TasksWithoutDelete.filter((el) => el.order > orderDeleteTask);
   const restTask = TasksWithoutDelete.filter((el) => el.order < orderDeleteTask);
@@ -67,18 +67,8 @@ export const deleteTask = createAsyncThunk<
   return { indexColumns, resultTask: result };
 });
 
-type moveTaskResponse = {
-  newTask: ITask;
-};
-
-export const moveTaskOnServer = createAsyncThunk<
-  moveTaskResponse,
-  IDataMoveTask,
-  { rejectValue: string }
->('board/moveTask', async (data) => {
+export const moveTaskOnServer = async (data: IDataMoveTask) => {
   const { boardId, columnIdFrom, columnIdTo, indexTaskTo, task, tasksFrom, tasksTo } = data;
-  const token = localStorageGetUserToken();
-
   if (columnIdFrom === columnIdTo) {
     if (tasksFrom.length > tasksTo.length) {
       const taskForDecrease = tasksFrom.filter(
@@ -92,39 +82,9 @@ export const moveTaskOnServer = createAsyncThunk<
       increaseOrdersOnServer(taskForIncrease, boardId, columnIdFrom);
     }
   } else {
-    await decreaseOrdersOnServer(tasksFrom, boardId, columnIdFrom);
     await increaseOrdersOnServer(tasksTo, boardId, columnIdTo);
   }
-
-  const response = await fetch(
-    `${BASE_URL}boards/${boardId}/columns/${columnIdFrom}/tasks/${task?.id}`,
-    {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({
-        title: task?.title,
-        order: indexTaskTo,
-        description: task?.description,
-        userId: task?.userId,
-        boardId: boardId,
-        columnId: columnIdTo,
-      }),
-    }
-  );
-
-  if (!response.ok) {
-    const resp = await response.json();
-    throw new Error(
-      `bad server response, error code: ${resp?.statusCode} message: ${resp?.message}`
-    );
-  }
-  const updatedTask = await response.json();
-
-  return { newTask: updatedTask };
-});
+};
 
 export const updateTask = createAsyncThunk<updateTaskResponse, updateTask, { rejectValue: string }>(
   'board/updateTask',
@@ -163,6 +123,7 @@ export const updateDragTask = createAsyncThunk<updDragTaskResponse, updDragTask>
   'board/updateDragTask',
   async (data) => {
     if (data.oldOrder - data.newOrder < 0) {
+      /* перетаскиваем сверху вниз*/
       const filtered = data.tasks.filter((el) => el.id !== data.draggableTask.id);
       const updatedTasks = filtered.map((el) =>
         el.order <= data.newOrder && el.order > data.oldOrder ? { ...el, order: el.order - 1 } : el
@@ -171,6 +132,7 @@ export const updateDragTask = createAsyncThunk<updDragTaskResponse, updDragTask>
       updatedTasks.push(taskWichDrag);
       return { columnId: data.columnId, tasks: updatedTasks };
     } else if (data.oldOrder - data.newOrder > 0) {
+      /* перетаскиваем снизу вверх */
       const filtered = data.tasks.filter((el) => el.id !== data.draggableTask.id);
       const updatedTasks = filtered.map((el) =>
         el.order >= data.newOrder && el.order < data.oldOrder ? { ...el, order: el.order + 1 } : el
@@ -242,9 +204,52 @@ const increaseOrdersOnServer = async (tasks: ITask[], boardId: string, columnId:
   return results;
 };
 
+export const createOnDragTask = async (data: ITaskResponse) => {
+  const token = localStorageGetUserToken();
+  const response = await fetch(`${BASE_URL}boards/${data.boardId}/columns/${data.columnId}/tasks`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      title: data.title,
+      order: data.order,
+      description: data.description,
+      userId: data.userId,
+    }),
+  });
+  const newTask: ITaskResponse = await response.json();
+  return newTask;
+};
+export const updateDraggableTask = async (data: ITaskResponse) => {
+  const token = localStorageGetUserToken();
+  const response = await fetch(
+    `${BASE_URL}boards/${data.boardId}/columns/${data.columnId}/tasks/${data.id}`,
+    {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        title: data.title,
+        order: data.order,
+        description: data.description,
+        userId: data.userId,
+        boardId: data.boardId,
+        columnId: data.columnId,
+      }),
+    }
+  );
+  const updatedTask: ITaskResponse = await response.json();
+  return updatedTask;
+};
+
 type IDataMoveTask = {
   boardId: string;
   columnIdFrom: string;
+  idColumnDestination: string;
   columnIdTo: string;
   indexTaskTo: number;
   task: ITask;
@@ -252,7 +257,7 @@ type IDataMoveTask = {
   tasksTo: ITask[];
 };
 
-type IDataDeleteTask = {
+export type IDataDeleteTask = {
   tasks: ITask[];
   boardId: string;
   columnId: string;
@@ -265,7 +270,7 @@ type responseDeleteTask = {
   indexColumns: number;
 };
 
-type updDragTask = {
+export type updDragTask = {
   draggableTask: ITask;
   tasks: ITask[];
   oldOrder: number;
