@@ -18,15 +18,26 @@ import Toolbar from '../Toolbar';
 
 export type IFilters = {
   searchText: string;
-  userId: string;
+  usersId: string[];
 };
 
 const SingleBoardPage = () => {
   const [isOpenModalAddNewColumn, setIsOpenModalAddNewColumn] = useState(false);
-  const [filters, setFilters] = useState<IFilters>({ searchText: '', userId: '' });
+  const [filters, setFilters] = useState<IFilters>({ searchText: '', usersId: [] });
   const { columns, title } = useAppSelector((state) => state.boards.singleBoard);
+
   const dispatch = useAppDispatch();
   const { boardId } = useParams();
+
+  const usersIdCreatedTasks: string[] = [];
+
+  columns.forEach((column) => {
+    column?.tasks?.forEach((task) => {
+      if (!usersIdCreatedTasks.includes(task.userId)) {
+        usersIdCreatedTasks.push(task.userId);
+      }
+    });
+  });
 
   useEffect(() => {
     if (boardId) {
@@ -174,7 +185,11 @@ const SingleBoardPage = () => {
         overflowY: 'hidden',
       }}
     >
-      <Toolbar filters={filters} setFilters={setFilters}></Toolbar>
+      <Toolbar
+        filters={filters}
+        setFilters={setFilters}
+        usersIdCreatedTasks={usersIdCreatedTasks}
+      ></Toolbar>
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="board" direction="horizontal">
           {(provided) => {

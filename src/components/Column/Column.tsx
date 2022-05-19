@@ -215,9 +215,10 @@ const Column = ({ column, filters }: { column: IColumn; filters: IFilters }) => 
                       .sort((a, b) => a.order - b.order)
                       .filter(
                         (task) =>
-                          filters.searchText === '' ||
-                          task.title.includes(filters.searchText) ||
-                          task.description.includes(filters.searchText)
+                          (filters.searchText === '' ||
+                            task.title.includes(filters.searchText) ||
+                            task.description.includes(filters.searchText)) &&
+                          (filters.usersId.length === 0 || filters.usersId.includes(task.userId))
                       )
                       .map((task) => <Task key={task.id} task={task} />)}
                   {dropProvided.placeholder}

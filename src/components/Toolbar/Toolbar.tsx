@@ -1,4 +1,19 @@
-import { alpha, Grid, InputBase, styled, Typography } from '@mui/material';
+import {
+  alpha,
+  Box,
+  Checkbox,
+  FormControl,
+  Grid,
+  InputBase,
+  InputLabel,
+  ListItemText,
+  MenuItem,
+  OutlinedInput,
+  Select,
+  SelectChangeEvent,
+  styled,
+  Typography,
+} from '@mui/material';
 import React from 'react';
 import DashboardRoundedIcon from '@mui/icons-material/DashboardRounded';
 import { useAppSelector } from '../../hooks/redux.hooks';
@@ -8,10 +23,12 @@ import SearchIcon from '@mui/icons-material/Search';
 type IProps = {
   filters: IFilters;
   setFilters: (filters: IFilters) => void;
+  usersIdCreatedTasks: string[];
 };
 
-const Toolbar = ({ filters, setFilters }: IProps) => {
+const Toolbar = ({ filters, setFilters, usersIdCreatedTasks }: IProps) => {
   const { title } = useAppSelector((state) => state.boards.singleBoard);
+  const { usersAll } = useAppSelector((state) => state.boards);
 
   const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -53,6 +70,39 @@ const Toolbar = ({ filters, setFilters }: IProps) => {
     },
   }));
 
+  // const ITEM_HEIGHT = 48;
+  // const ITEM_PADDING_TOP = 8;
+  // const MenuProps = {
+  //   PaperProps: {
+  //     style: {
+  //       maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+  //       width: 250,
+  //       padding: 0,
+  //     },
+  //   },
+  // };
+
+  const usersCreatedTasks = usersIdCreatedTasks.map((id) => {
+    const user = usersAll.find((user) => user.id === id);
+    return user;
+  });
+
+  const [personName, setPersonName] = React.useState<string[]>([]);
+
+  const handleChange = (event: SelectChangeEvent<typeof personName>) => {
+    const {
+      target: { value },
+    } = event;
+    setPersonName(
+      // On autofill we get a stringified value.
+      typeof value === 'string' ? value.split(',') : value
+    );
+    const usersIdChecked = usersCreatedTasks
+      .filter((user) => event.target.value.includes(user?.name || ''))
+      .map((user) => user?.id || '');
+    setFilters({ ...filters, usersId: usersIdChecked });
+  };
+
   return (
     <Grid container alignItems="center" justifyContent="space-between">
       <Grid item sx={{ display: 'flex' }}>
@@ -61,19 +111,55 @@ const Toolbar = ({ filters, setFilters }: IProps) => {
           {title.slice(2)}
         </Typography>
       </Grid>
-      <Grid item>
-        <Search sx={{ border: '2px solid #3f51b5' }}>
-          <SearchIconWrapper>
-            <SearchIcon />
-          </SearchIconWrapper>
-          <StyledInputBase
-            placeholder="Search…"
-            value={filters.searchText}
-            autoFocus={true}
-            inputProps={{ 'aria-label': 'search' }}
-            onChange={(e) => setFilters({ ...filters, searchText: e.target.value })}
-          />
-        </Search>
+      <Grid item sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+        <Box>
+          <FormControl
+            sx={{
+              m: 1,
+              width: 300,
+              height: 50,
+              p: 0,
+              display: 'flex',
+              justifyContent: 'center',
+            }}
+          >
+            <InputLabel id="demo-multiple-checkbox-label" sx={{ p: 0, m: 0, color: 'darkblue' }}>
+              {usersCreatedTasks.length ? 'Select users' : 'No tasks'}
+            </InputLabel>
+            <Select
+              labelId="demo-multiple-checkbox-label"
+              id="demo-multiple-checkbox"
+              multiple
+              value={personName}
+              onChange={handleChange}
+              input={<OutlinedInput label="Select users" />}
+              renderValue={(selected) => selected.join(', ')}
+              disabled={usersCreatedTasks.length === 0}
+              sx={{ width: '300px', height: '40px', p: 0, m: 0 }}
+            >
+              {usersCreatedTasks?.map((user) => (
+                <MenuItem key={user?.id} value={user?.name} sx={{ p: 0, m: 0 }}>
+                  <Checkbox checked={personName.indexOf(user?.name || '') > -1} />
+                  <ListItemText primary={user?.name} />
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Box>
+        <Box>
+          <Search sx={{ border: '2px solid #3f51b5', m: 1, width: 400, height: 40, p: 0 }}>
+            <SearchIconWrapper>
+              <SearchIcon />
+            </SearchIconWrapper>
+            <StyledInputBase
+              placeholder="Search…"
+              value={filters.searchText}
+              autoFocus={true}
+              inputProps={{ 'aria-label': 'search' }}
+              onChange={(e) => setFilters({ ...filters, searchText: e.target.value })}
+            />
+          </Search>
+        </Box>
       </Grid>
     </Grid>
   );
