@@ -192,6 +192,7 @@ export const boardSlice = createSlice({
         } else {
           state.singleBoard.columns[indexColumn].tasks = [newTask];
         }
+        state.pending = false;
       })
       .addCase(deleteTask.fulfilled, (state, action) => {
         state.singleBoard.columns[action.payload.indexColumns].tasks = action.payload.resultTask;
@@ -202,12 +203,14 @@ export const boardSlice = createSlice({
         state.singleBoard.columns[idx].tasks = state.singleBoard.columns[idx].tasks?.map((t) =>
           t.id === action.payload.newTask.id ? action.payload.newTask : t
         );
+        state.pending = false;
       })
       .addCase(updateDragTask.fulfilled, (state, action) => {
         const indexColumn = state.singleBoard.columns.findIndex(
           (column) => column.id === action.payload.columnId
         );
         state.singleBoard.columns[indexColumn].tasks = action.payload.tasks;
+        state.pending = false;
       })
       /* users reducer */
       .addCase(getAllUsers.fulfilled, (state, action) => {
