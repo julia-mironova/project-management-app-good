@@ -75,6 +75,30 @@ export const updateColumn = createAsyncThunk<undefined, updateColumn, { rejectVa
     }
   }
 );
+export const updateTitleColumn = createAsyncThunk<
+  responseCreateColumn,
+  updateColumn,
+  { rejectValue: string }
+>('column/updateTitleColumn', async (data, { rejectWithValue }) => {
+  const token = localStorageGetUserToken();
+  const response = await fetch(`${BASE_URL}boards/${data.boardId}/columns/${data.columnId}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ title: data.title, order: data.order }),
+  });
+
+  if (!response.ok) {
+    const resp = await response.json();
+    return rejectWithValue(
+      `bad server response, error code: ${resp?.statusCode} message: ${resp?.message}`
+    );
+  }
+  const updatedColumn: responseCreateColumn = await response.json();
+  return updatedColumn;
+});
 
 export const updateDrag = createAsyncThunk<IColumn[], updDragColumn>(
   'column/updateDrag',

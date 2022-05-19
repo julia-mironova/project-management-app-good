@@ -58,7 +58,7 @@ export const deleteTask = createAsyncThunk<
   const TasksWithoutDelete = tasks.filter((el) => el.id !== data.taskId);
   const taskForDecrease = TasksWithoutDelete.filter((el) => el.order > orderDeleteTask);
   const restTask = TasksWithoutDelete.filter((el) => el.order < orderDeleteTask);
-  decreaseOrdersOnServer(taskForDecrease, data.boardId, data.columnId);
+  decreaseOrdersOnServer(taskForDecrease, data.boardId, data.columnId, rejectWithValue);
   const result = decreaseOrderOnState(taskForDecrease, restTask);
   return { indexColumns, resultTask: result };
 });
@@ -73,15 +73,16 @@ export const moveTaskOnServer = createAsyncThunk<undefined, IDataMoveTask, { rej
         const taskForDecrease = tasksFrom.filter(
           (el) => el.order > task.order && el.order <= indexTaskTo
         );
-        decreaseOrdersOnServer(taskForDecrease, boardId, columnIdFrom);
+        decreaseOrdersOnServer(taskForDecrease, boardId, columnIdFrom, rejectWithValue);
       } else {
         const taskForIncrease = tasksTo.filter(
           (el) => el.order < task.order && el.order >= indexTaskTo
         );
-        increaseOrdersOnServer(taskForIncrease, boardId, columnIdFrom);
+        increaseOrdersOnServer(taskForIncrease, boardId, columnIdFrom, rejectWithValue);
       }
     } else {
-      await increaseOrdersOnServer(tasksTo, boardId, columnIdTo);
+      await decreaseOrdersOnServer(tasksFrom, boardId, columnIdFrom, rejectWithValue);
+      await increaseOrdersOnServer(tasksTo, boardId, columnIdTo, rejectWithValue);
     }
     const response = await fetch(
       `${BASE_URL}boards/${boardId}/columns/${columnIdFrom}/tasks/${task?.id}`,
@@ -178,7 +179,12 @@ const decreaseOrderOnState = (decreaseTask: ITask[], restTasks: ITask[]) => {
   return [...restTasks, ...decrease];
 };
 
-const decreaseOrdersOnServer = async (tasks: ITask[], boardId: string, columnId: string) => {
+const decreaseOrdersOnServer = async (
+  tasks: ITask[],
+  boardId: string,
+  columnId: string,
+  rejectWithValue: (error: string) => void
+) => {
   const token = localStorageGetUserToken();
   const userId = localStorageGetUser()?.id;
   const resultPromise = tasks.map((item) => {
@@ -198,11 +204,26 @@ const decreaseOrdersOnServer = async (tasks: ITask[], boardId: string, columnId:
       }),
     });
   });
-  const results = await Promise.all(resultPromise.map((el) => el.then((resp) => resp.json())));
+  const results = await Promise.all(
+    resultPromise.map((el) =>
+      el
+        .then((resp) => resp.json())
+        .catch((err) => {
+          return rejectWithValue(
+            `bad server response, error code: ${err?.statusCode} message: ${err?.message}`
+          );
+        })
+    )
+  );
   return results;
 };
 
-const increaseOrdersOnServer = async (tasks: ITask[], boardId: string, columnId: string) => {
+const increaseOrdersOnServer = async (
+  tasks: ITask[],
+  boardId: string,
+  columnId: string,
+  rejectWithValue: (error: string) => void
+) => {
   const token = localStorageGetUserToken();
   const userId = localStorageGetUser()?.id;
   const resultPromise = tasks.map((item) => {
@@ -222,27 +243,18 @@ const increaseOrdersOnServer = async (tasks: ITask[], boardId: string, columnId:
       }),
     });
   });
-  const results = await Promise.all(resultPromise.map((el) => el.then((resp) => resp.json())));
+  const results = await Promise.all(
+    resultPromise.map((el) =>
+      el
+        .then((resp) => resp.json())
+        .catch((err) => {
+          return rejectWithValue(
+            `bad server response, error code: ${err?.statusCode} message: ${err?.message}`
+          );
+        })
+    )
+  );
   return results;
-};
-
-export const createOnDragTask = async (data: ITaskResponse) => {
-  const token = localStorageGetUserToken();
-  const response = await fetch(`${BASE_URL}boards/${data.boardId}/columns/${data.columnId}/tasks`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify({
-      title: data.title,
-      order: data.order,
-      description: data.description,
-      userId: data.userId,
-    }),
-  });
-  const newTask: ITaskResponse = await response.json();
-  return newTask;
 };
 
 type IDataMoveTask = {

@@ -3,7 +3,7 @@ import { createSlice, PayloadAction, createAsyncThunk, AnyAction } from '@reduxj
 import { localStorageGetUserToken } from '../../utils/localStorage';
 import { BASE_URL } from '../../constants/constants';
 import { boardState, IBoard, IBoardPreview } from '../../types/board';
-import { createColumn, deleteColumn, updateColumn, updateDrag } from './columnReducer';
+import { createColumn, deleteColumn, updateDrag, updateTitleColumn } from './columnReducer';
 import { getAllUsers } from './userReducer';
 
 const initialSingleBoard: IBoard = {
@@ -149,7 +149,6 @@ export const boardSlice = createSlice({
         state.boards = state.boards.map((el) => {
           return el.id === action.payload.id ? action.payload : el;
         });
-        state.pending = false;
       })
       .addCase(deleteBoard.fulfilled, (state, action) => {
         state.boards = state.boards.filter((el) => el.id !== action.payload);
@@ -162,18 +161,19 @@ export const boardSlice = createSlice({
       /* column reducer */
       .addCase(createColumn.fulfilled, (state, action) => {
         state.singleBoard.columns.push(action.payload);
-        state.pending = false;
       })
       .addCase(deleteColumn.fulfilled, (state, action) => {
         state.singleBoard.columns = action.payload;
-        state.pending = false;
       })
       .addCase(updateDrag.fulfilled, (state, action) => {
         state.singleBoard.columns = action.payload;
-        state.pending = false;
       })
-      .addCase(updateColumn.fulfilled, (state) => {
-        state.pending = false;
+      .addCase(updateTitleColumn.fulfilled, (state, action) => {
+        state.singleBoard.columns = state.singleBoard.columns.map((column) => {
+          return column.id === action.payload.id
+            ? { ...column, title: action.payload.title }
+            : column;
+        });
       })
       /* tasks reducer */
       .addCase(createTask.fulfilled, (state, action) => {
@@ -185,25 +185,21 @@ export const boardSlice = createSlice({
         } else {
           state.singleBoard.columns[indexColumn].tasks = [newTask];
         }
-        state.pending = false;
       })
       .addCase(deleteTask.fulfilled, (state, action) => {
         state.singleBoard.columns[action.payload.indexColumns].tasks = action.payload.resultTask;
-        state.pending = false;
       })
       .addCase(updateTask.fulfilled, (state, action) => {
         const idx = action.payload.indexColumns;
         state.singleBoard.columns[idx].tasks = state.singleBoard.columns[idx].tasks?.map((t) =>
           t.id === action.payload.newTask.id ? action.payload.newTask : t
         );
-        state.pending = false;
       })
       .addCase(updateDragTask.fulfilled, (state, action) => {
         const indexColumn = state.singleBoard.columns.findIndex(
           (column) => column.id === action.payload.columnId
         );
         state.singleBoard.columns[indexColumn].tasks = action.payload.tasks;
-        state.pending = false;
       })
       /* users reducer */
       .addCase(getAllUsers.fulfilled, (state, action) => {
@@ -213,9 +209,6 @@ export const boardSlice = createSlice({
       .addMatcher(isError, (state, action: PayloadAction<string>) => {
         state.pending = false;
         state.rejectMsg = action.payload;
-      })
-      .addMatcher(isPending, (state) => {
-        state.pending = true;
       });
   },
 });
@@ -226,7 +219,4 @@ export default boardSlice.reducer;
 
 function isError(action: AnyAction) {
   return action.type.endsWith('rejected');
-}
-function isPending(action: AnyAction) {
-  return action.type.endsWith('pending');
 }
