@@ -12,16 +12,8 @@ import Column from '../Column';
 import { IColumnsResp } from '../../utils/types/board';
 import { getAllUsers } from '../../store/slices/userReducer';
 import { useTranslation } from 'react-i18next';
-import {
-  deleteTask,
-  IDataDeleteTask,
-  updateDragTask,
-  updDragTask,
-  moveTaskOnServer,
-  createOnDragTask,
-  updateDraggableTask,
-} from '../../store/slices/taskResucer';
-import { ITask, ITaskResponse } from '../../types/board';
+import { updateDragTask, updDragTask, moveTaskOnServer } from '../../store/slices/taskResucer';
+import { ITask } from '../../types/board';
 
 const SingleBoardPage = () => {
   const [isOpenModalAddNewColumn, setIsOpenModalAddNewColumn] = useState(false);
@@ -48,7 +40,6 @@ const SingleBoardPage = () => {
     const idxColDestination = columns.findIndex((el) => el.id === destination?.droppableId);
     const draggableTask = columns[idxColFrom].tasks?.find((el) => el.id === draggableId) as ITask;
     const idColumnDestination = columns[idxColDestination].id;
-    const newOrderTask = destination?.index || 0;
 
     const copyTasksFrom = columns[idxColFrom]?.tasks?.slice(0);
     let copyTasksDestination = columns[idxColDestination]?.tasks?.slice(0);
@@ -75,14 +66,6 @@ const SingleBoardPage = () => {
       tasksTo: tasksTo || [],
     };
 
-    const updDeleteTask: IDataDeleteTask = {
-      tasks: copyTasksFrom || [],
-      indexColumns: idxColFrom,
-      boardId: boardId || '',
-      columnId: columns[idxColFrom].id,
-      taskId: draggableTask.id,
-    };
-
     const updDragTask: updDragTask = {
       draggableTask,
       tasks: copyTasksFrom || [],
@@ -90,41 +73,30 @@ const SingleBoardPage = () => {
       newOrder: destination?.index || 0,
       columnId: columns[idxColFrom].id,
     };
-    const createDragTask: ITaskResponse = {
-      boardId: boardId || '',
-      columnId: columns[idxColDestination].id,
-      description: draggableTask.description,
-      id: draggableTask.id,
-      order: newOrderTask,
-      title: draggableTask.title,
-      userId: draggableTask.userId,
-    };
 
     if (idxColFrom === idxColDestination) {
       dispatch(updateDragTask(updDragTask));
-      updateDraggableTask(createDragTask);
-      moveTaskOnServer(dataMoveTask);
     } else if (idxColFrom !== idxColDestination) {
       copyTasksDestination = copyTasksDestination ? copyTasksDestination : [];
 
       const updDestinationTask: updDragTask = {
-        draggableTask: { ...draggableTask },
+        draggableTask,
         tasks: copyTasksDestination,
         oldOrder: copyTasksDestination?.length + 1 || 0,
         newOrder: destination?.index || 0,
         columnId: columns[idxColDestination].id,
       };
-
-      const createTaskForUpdateID = async () => {
-        return await createOnDragTask(createDragTask);
+      const updOldColumn: updDragTask = {
+        draggableTask,
+        tasks: copyTasksFrom || [],
+        oldOrder: draggableTask.order,
+        newOrder: 100,
+        columnId: columns[idxColFrom].id,
       };
-      createTaskForUpdateID().then((updTask) => {
-        updDestinationTask.draggableTask.id = updTask.id;
-        dispatch(updateDragTask(updDestinationTask));
-        dispatch(deleteTask(updDeleteTask));
-        moveTaskOnServer(dataMoveTask);
-      });
+      dispatch(updateDragTask(updOldColumn));
+      dispatch(updateDragTask(updDestinationTask));
     }
+    dispatch(moveTaskOnServer(dataMoveTask));
   };
 
   const onDragEndColumn = async (result: DropResult) => {
