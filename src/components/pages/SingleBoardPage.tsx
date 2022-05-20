@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { Button, Container, Stack } from '@mui/material';
-
 import { useAppDispatch, useAppSelector } from '../../hooks/redux.hooks';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import { getSingleBoard } from '../../store/slices/boardSlice';
@@ -24,8 +23,11 @@ export type IFilters = {
 
 const SingleBoardPage = () => {
   const [isOpenModalAddNewColumn, setIsOpenModalAddNewColumn] = useState(false);
+  const {
+    rejectMsg,
+    singleBoard: { columns, title },
+  } = useAppSelector((state) => state.boards);
   const [filters, setFilters] = useState<IFilters>({ searchText: '', usersId: [] });
-  const { columns, title } = useAppSelector((state) => state.boards.singleBoard);
   const dispatch = useAppDispatch();
   const { boardId } = useParams();
   const navigate = useNavigate();
@@ -64,7 +66,7 @@ const SingleBoardPage = () => {
         }
       }
     }
-  }, [rejectMsg]);
+  }, [rejectMsg, dispatch, navigate]);
 
   const onDragEndTask = (result: DropResult) => {
     const { destination, source, draggableId } = result;
