@@ -5,6 +5,7 @@ import { BASE_URL } from '../../constants/constants';
 import { boardState, IBoard, IBoardPreview } from '../../types/board';
 import { createColumn, deleteColumn, updateDrag, updateTitleColumn } from './columnReducer';
 import { getAllUsers } from './userReducer';
+import { logOut } from './authSlice';
 
 const initialSingleBoard: IBoard = {
   id: '',
@@ -20,9 +21,9 @@ const initialState: boardState = {
   usersAll: [],
 };
 
-export const getAllBoards = createAsyncThunk<IBoardPreview[], undefined, { rejectValue: string }>(
+export const getAllBoards = createAsyncThunk<IBoardPreview[], undefined>(
   'board/getAllBoards',
-  async (_, { rejectWithValue }) => {
+  async (_, { rejectWithValue, dispatch }) => {
     const token = localStorageGetUserToken();
     const response = await fetch(`${BASE_URL}boards`, {
       headers: {
@@ -32,6 +33,7 @@ export const getAllBoards = createAsyncThunk<IBoardPreview[], undefined, { rejec
 
     if (!response.ok) {
       const resp = await response.json();
+      if (response.status === 401) dispatch(logOut());
       return rejectWithValue(`${resp?.statusCode}/${resp.message}`);
     }
     return await response.json();

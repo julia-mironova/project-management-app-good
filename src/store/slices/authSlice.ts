@@ -138,28 +138,26 @@ export const updateUser = createAsyncThunk(
   async (data: ICreateUser, { dispatch, rejectWithValue }) => {
     const token = localStorageGetUserToken();
     const user = localStorageGetUser();
-    try {
-      const singleUserResponse = await fetch(`${BASE_URL}users/${user.id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(data),
-      });
-      if (!singleUserResponse.ok) {
-        const resp = await singleUserResponse.json();
-        throw new Error(
-          `bad server response, error code: ${resp?.statusCode} message: ${resp?.message}`
-        );
-      }
-      const singleUser: UserResponse = await singleUserResponse.json();
-      dispatch(setUser(singleUser));
-      localStorageSetUser({ id: singleUser.id, name: singleUser.name });
-    } catch (err) {
-      const msg = (err as Error).message;
-      return rejectWithValue(msg);
+
+    const response = await fetch(`${BASE_URL}users/${user.id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+      const resp = await response.json();
+      if (response.status === 401) dispatch(logOut());
+      return rejectWithValue(
+        `bad server response, error code: ${resp?.statusCode} message: ${resp?.message}`
+      );
     }
+    const singleUser: UserResponse = await response.json();
+    dispatch(setUser(singleUser));
+    localStorageSetUser({ id: singleUser.id, name: singleUser.name });
   }
 );
 
@@ -183,6 +181,7 @@ export const authSlice = createSlice({
       state.id = action.payload.id;
       state.login = action.payload.login;
       state.name = action.payload.name;
+      state.pending = false;
     },
     logOut: (state) => {
       state.isLoggedIn = false;
@@ -206,6 +205,7 @@ export const authSlice = createSlice({
     [getSingleUser.pending.type]: pending,
     [getSingleUser.rejected.type]: reject,
     [getSingleUser.fulfilled.type]: fulfilled,
+    [updateUser.pending.type]: pending,
   },
 });
 

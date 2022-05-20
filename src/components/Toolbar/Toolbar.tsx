@@ -137,8 +137,8 @@ const Toolbar = ({ filters, setFilters, usersIdCreatedTasks }: IProps) => {
               disabled={usersCreatedTasks.length === 0}
               sx={{ width: '300px', height: '40px', p: 0, m: 0 }}
             >
-              {usersCreatedTasks?.map((user) => (
-                <MenuItem key={user?.id} value={user?.name} sx={{ p: 0, m: 0 }}>
+              {usersCreatedTasks?.map((user, idx) => (
+                <MenuItem key={`${user?.id}/${idx}`} value={user?.name} sx={{ p: 0, m: 0 }}>
                   <Checkbox checked={personName.indexOf(user?.name || '') > -1} />
                   <ListItemText primary={user?.name} />
                 </MenuItem>
