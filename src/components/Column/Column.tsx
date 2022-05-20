@@ -12,7 +12,7 @@ import { Draggable, Droppable } from 'react-beautiful-dnd';
 import ConformModal from '../ConformModal';
 import { useAppDispatch } from '../../hooks/redux.hooks';
 import { IColumn } from '../../types/board';
-import { deleteColumn, updateColumn } from '../../store/slices/columnReducer';
+import { deleteColumn, updateTitleColumn } from '../../store/slices/columnReducer';
 import Task from '../Task';
 import { useTranslation } from 'react-i18next';
 import { IFilters } from '../pages/SingleBoardPage';
@@ -43,7 +43,9 @@ const Column = ({ column, filters }: { column: IColumn; filters: IFilters }) => 
 
   const changeNameColumn = async (e: IFormInputChangeName) => {
     if (boardId) {
-      dispatch(updateColumn({ boardId, columnId: column.id, order: column.order, title: e.title }));
+      dispatch(
+        updateTitleColumn({ boardId, columnId: column.id, order: column.order, title: e.title })
+      );
     }
     setIsEdit(false);
   };

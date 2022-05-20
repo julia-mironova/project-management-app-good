@@ -30,11 +30,12 @@ const EditProfile = () => {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<propsSubmitSignUp>({ mode: 'onSubmit' });
 
   const [showPassword, setShowPassword] = useState(false);
   const [isOpenConformModal, setIsOpenConformModal] = useState(false);
-  const { id, name, token, pending } = useAppSelector((state) => state.auth);
+  const { id, name, token, pending, rejectMsg } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -47,25 +48,19 @@ const EditProfile = () => {
         name: data.name,
       })
     );
+    if (!rejectMsg) reset();
   };
 
   const deleteUser = async () => {
     await dispatch(deleteCurrentUser(id));
-    await dispatch(logOut());
+    dispatch(logOut());
     navigate('/');
   };
 
   useEffect(() => {
-    return () => {
-      localStorageSetUser({ id: id, name: name });
-      localStorageSetUserToken(token);
-    };
+    localStorageSetUser({ id: id, name: name });
+    localStorageSetUserToken(token);
   }, [id, name, token]);
-
-  // added to check ErrorBoundary need to be removed
-  const checkErrorBoundary = () => {
-    throw new Error('Something went wrong in Login component');
-  };
 
   return (
     <Container maxWidth="xs">
@@ -81,8 +76,6 @@ const EditProfile = () => {
       >
         <Typography component="h1" variant="h4">
           {t('EDIT_PROFILE')}
-          {/* need to be removed after checking */}
-          {checkErrorBoundary()}
         </Typography>
         <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate sx={{ mt: 1 }}>
           <TextField
@@ -94,7 +87,7 @@ const EditProfile = () => {
             id="name"
             label={t('SIGNUP.NAME')}
             autoFocus
-            defaultValue={name}
+            placeholder={name}
             {...register('name', {
               required: { value: true, message: `${t('FORM.REQUIRE_MSG')}` },
               minLength: {
