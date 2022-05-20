@@ -1,9 +1,15 @@
+import { useLocation, Link } from 'react-router-dom';
 import { Container, Button, Typography } from '@mui/material';
-import { Link } from 'react-router-dom';
+
 import { useTranslation } from 'react-i18next';
+
+const boardPath = '/not-found-board';
 
 const Page404 = () => {
   const { t } = useTranslation();
+  const { pathname } = useLocation();
+  const isFromBoard = pathname === boardPath;
+
   return (
     <Container
       maxWidth="lg"
@@ -18,9 +24,15 @@ const Page404 = () => {
       <Typography variant="h6" mb={2} sx={{ color: 'gray' }}>
         {t('NOT_FOUND_PAGE')}
       </Typography>
-      <Button variant="contained" component={Link} to="/">
-        {t('BACK_TO_MAIN')}
-      </Button>
+      {isFromBoard ? (
+        <Button variant="contained" component={Link} to="/boards">
+          {t('BACK_TO_BOARDS')}
+        </Button>
+      ) : (
+        <Button variant="contained" component={Link} to="/">
+          {t('BACK_TO_MAIN')}
+        </Button>
+      )}
     </Container>
   );
 };
