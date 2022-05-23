@@ -73,6 +73,7 @@ const Column = ({ column, filters }: { column: IColumn; filters: IFilters }) => 
               mr: 0,
               p: 1,
             },
+            maxHeight: 'calc(100vh - 230px)',
           }}
           component="li"
           ref={provided.innerRef}
@@ -216,7 +217,6 @@ const Column = ({ column, filters }: { column: IColumn; filters: IFilters }) => 
                     '&::-webkit-scrollbar-thumb:hover ': {
                       backgroundColor: '#a8a8a8',
                     },
-                    maxHeight: '57vh',
                     minHeight: '1vh',
                     '@media only screen and (max-width: 450px)': {
                       pr: 0,
