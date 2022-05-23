@@ -230,7 +230,13 @@ const SingleBoardPage = () => {
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         overflowX: 'auto',
-        overflowY: 'hidden',
+        overflowY: 'auto',
+        '@media only screen and (max-width: 450px)': {
+          '&::-webkit-scrollbar': {
+            width: '0',
+            backgroundColor: '#f1f1f1',
+          },
+        },
       }}
     >
       <Toolbar
@@ -263,10 +269,15 @@ const SingleBoardPage = () => {
                   size="large"
                   sx={{
                     height: 50,
-                    minWidth: 300,
+                    width: '300px',
                     backgroundColor: 'rgba(213, 217, 233, .7)',
                     '&:hover': { backgroundColor: 'rgb(213, 217, 233)' },
                     mr: 2,
+                    '@media only screen and (max-width: 450px)': {
+                      width: '100%',
+                      minWidth: '250px',
+                      maxWidth: '400px',
+                    },
                   }}
                   onClick={() => setIsOpenModalAddNewColumn(true)}
                 >
