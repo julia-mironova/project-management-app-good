@@ -30,7 +30,7 @@ const NewColumn = ({ onClose }: { onClose: () => void }) => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Box sx={{ width: '400px' }}>
+      <Box sx={{ width: '100%', maxWidth: '400px' }}>
         <DialogTitle>{t('COLUMN.CREATE_COLUMN_HEADER')}</DialogTitle>
         <DialogContent>
           <TextField
