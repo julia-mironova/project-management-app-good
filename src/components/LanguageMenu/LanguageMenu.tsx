@@ -22,7 +22,7 @@ const LanguageMenu = () => {
   };
 
   return (
-    <Box sx={{ minWidth: 120 }}>
+    <Box mr={{ xs: 0, sm: 5 }}>
       <Select
         value={lng}
         onChange={handleChange}
