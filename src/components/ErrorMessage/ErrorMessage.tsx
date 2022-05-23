@@ -1,6 +1,6 @@
 import { Container, Grid, Typography, CardMedia } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import errImg from '../../assets/images/error-page.jpg';
+import errImg from '../../assets/images/error-page.webp';
 
 const ErrorMessage = () => {
   const { t } = useTranslation();
