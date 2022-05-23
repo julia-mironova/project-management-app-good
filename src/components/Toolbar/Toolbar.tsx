@@ -96,6 +96,12 @@ const Toolbar = ({ filters, setFilters, usersIdCreatedTasks }: IProps) => {
       alignItems="center"
       justifyContent="space-between"
       columns={{ xs: 1, sm: 2, md: 4, lg: 6, xl: 6 }}
+      sx={{
+        '@media only screen and (max-width: 600px)': {
+          alignItems: 'center',
+          justifyContent: 'center',
+        },
+      }}
     >
       <Grid item container direction="row">
         <DashboardRoundedIcon sx={{ color: '#303F9F' }} />

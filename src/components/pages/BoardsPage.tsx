@@ -52,7 +52,7 @@ const BoardsPage = () => {
       <Button
         variant="outlined"
         size="large"
-        sx={{ height: 50, minWidth: '21rem' }}
+        sx={{ height: 50, width: '100%', maxWidth: '21rem' }}
         onClick={() => setOpenModal(true)}
       >
         {t('BOARD.NEW_BOARD')}

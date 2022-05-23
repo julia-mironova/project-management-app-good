@@ -41,7 +41,11 @@ const FormCreateBoard: FC<{ onClose: () => void; handlerCreateBoard: (title: str
     <form onSubmit={handleSubmit(onSubmit)}>
       <DialogTitle>{t('BOARD.CREATE')}</DialogTitle>
       <DialogContent>
-        <ImageList sx={{ width: 500, height: 400, gap: 5 }} cols={4} rowHeight={130}>
+        <ImageList
+          sx={{ width: '100%', maxWidth: '500px', height: 400, gap: 5 }}
+          cols={4}
+          rowHeight={130}
+        >
           {dataPictures.map((item, i) => (
             <ImageListItem key={item} onClick={() => setChangedImg(i)}>
               <img
