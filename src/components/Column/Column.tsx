@@ -58,6 +58,7 @@ const Column = ({ column, filters }: { column: IColumn; filters: IFilters }) => 
           sx={{
             width: '400px',
             minWidth: '400px',
+            maxWidth: '400px',
             border: '1px solid Gray',
             borderRadius: 2,
             padding: 2,
@@ -65,6 +66,14 @@ const Column = ({ column, filters }: { column: IColumn; filters: IFilters }) => 
             ml: 2,
             mr: 2,
             backgroundColor: 'rgba(213, 217, 233, .7)',
+            '@media only screen and (max-width: 450px)': {
+              width: '100%',
+              minWidth: '250px',
+              maxWidth: '400px',
+              ml: 0,
+              mr: 0,
+              p: 1,
+            },
           }}
           component="li"
           ref={provided.innerRef}
@@ -72,8 +81,9 @@ const Column = ({ column, filters }: { column: IColumn; filters: IFilters }) => 
         >
           <Box
             sx={{
-              width: '370px',
-              minWidth: '370px',
+              width: '100%',
+              // minWidth: '250px',
+              // maxWidth: '370px',
               display: 'flex',
               justifyContent: 'space-between',
             }}
@@ -83,7 +93,7 @@ const Column = ({ column, filters }: { column: IColumn; filters: IFilters }) => 
               <form onSubmit={handleSubmit(changeNameColumn)}>
                 <Box
                   sx={{
-                    width: '300px',
+                    width: '100%',
                     display: 'flex',
                     justifyContent: 'space-between',
                     height: '33px',
@@ -153,7 +163,7 @@ const Column = ({ column, filters }: { column: IColumn; filters: IFilters }) => 
                 {column.title}
               </Typography>
             )}
-            <Box>
+            <Box sx={{ display: 'flex' }}>
               <Tooltip title={t('TASK.ADD_BTN')}>
                 <IconButton
                   aria-label="add new task"
@@ -208,6 +218,13 @@ const Column = ({ column, filters }: { column: IColumn; filters: IFilters }) => 
                     },
                     maxHeight: '63.5vh',
                     minHeight: '1vh',
+                    '@media only screen and (max-width: 450px)': {
+                      pr: 0,
+                      '&::-webkit-scrollbar': {
+                        width: '0',
+                        backgroundColor: '#f1f1f1',
+                      },
+                    },
                   }}
                   {...dropProvided.droppableProps}
                   ref={dropProvided.innerRef}

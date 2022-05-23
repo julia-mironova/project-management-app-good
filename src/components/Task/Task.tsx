@@ -64,8 +64,7 @@ const Task = ({ task }: { task: ITask }) => {
         {(provided) => (
           <ListItem
             sx={{
-              width: '350px',
-              minWidth: '350px',
+              width: '100%',
               m: 0,
               p: 0,
             }}

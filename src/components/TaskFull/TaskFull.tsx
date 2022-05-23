@@ -113,8 +113,16 @@ const TaskFull = ({ onClose, task }: IPropsTaskFull) => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Box sx={{ width: '500px' }}>
-        <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between' }}>
+      <Box sx={{ width: '100%', maxWidth: '500px' }}>
+        <DialogTitle
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            '@media only screen and (max-width: 450px)': {
+              flexDirection: 'column',
+            },
+          }}
+        >
           {t('TASK.EDIT')}
           <Typography
             variant="body1"
@@ -209,7 +217,14 @@ const TaskFull = ({ onClose, task }: IPropsTaskFull) => {
             />
           </Button>
         </DialogContent>
-        <DialogActions>
+        <DialogActions
+          sx={{
+            '@media only screen and (max-width: 450px)': {
+              display: 'flex',
+              flexDirection: 'column',
+            },
+          }}
+        >
           <Button onClick={() => setIsOpenConformModal(true)} sx={{ color: 'red' }}>
             {t('TASK.DELETE')}
           </Button>
