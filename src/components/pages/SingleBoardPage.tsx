@@ -254,7 +254,12 @@ const SingleBoardPage = () => {
                 component="ul"
                 justifyContent="flex-start"
                 alignItems="flex-start"
-                // sx={{ overflowX: 'auto', overflowY: 'hidden' }}
+                sx={{
+                  '@media only screen and (max-width: 600px)': {
+                    alignItems: 'center',
+                    gap: '10px',
+                  },
+                }}
                 {...provided.droppableProps}
                 ref={provided.innerRef}
               >
@@ -269,15 +274,15 @@ const SingleBoardPage = () => {
                   size="large"
                   sx={{
                     height: 50,
-                    width: '300px',
+                    width: '100%',
+                    maxWidth: '400px',
+                    minWidth: '170px',
+                    padding: 2,
+                    // pb: 1,
+                    ml: 2,
+                    mr: 2,
                     backgroundColor: 'rgba(213, 217, 233, .7)',
                     '&:hover': { backgroundColor: 'rgb(213, 217, 233)' },
-                    mr: 2,
-                    '@media only screen and (max-width: 450px)': {
-                      width: '100%',
-                      minWidth: '250px',
-                      maxWidth: '400px',
-                    },
                   }}
                   onClick={() => setIsOpenModalAddNewColumn(true)}
                 >
