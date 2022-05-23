@@ -44,6 +44,16 @@ const BoardsPage = () => {
         p: 3,
         height: 'calc(100vh - 149px)',
         overflowY: 'auto',
+        '&::-webkit-scrollbar': {
+          width: '.7rem',
+        },
+        '&::-webkit-scrollbar-thumb ': {
+          backgroundColor: '#c8c8c8',
+          borderRadius: 2,
+        },
+        '&::-webkit-scrollbar-thumb:hover ': {
+          backgroundColor: '#a8a8a8',
+        },
       }}
     >
       {boards.map((item) => (

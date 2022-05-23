@@ -7,6 +7,7 @@ import {
   InputLabel,
   ListItemText,
   MenuItem,
+  // TextField,
   OutlinedInput,
   Select,
   SelectChangeEvent,
@@ -18,6 +19,7 @@ import DashboardRoundedIcon from '@mui/icons-material/DashboardRounded';
 import { useAppSelector } from '../../hooks/redux.hooks';
 import { IFilters } from '../pages/SingleBoardPage';
 import SearchIcon from '@mui/icons-material/Search';
+import { useTranslation } from 'react-i18next';
 
 type IProps = {
   filters: IFilters;
@@ -28,6 +30,7 @@ type IProps = {
 const Toolbar = ({ filters, setFilters, usersIdCreatedTasks }: IProps) => {
   const { title } = useAppSelector((state) => state.boards.singleBoard);
   const { usersAll } = useAppSelector((state) => state.boards);
+  const { t } = useTranslation();
 
   const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -53,19 +56,30 @@ const Toolbar = ({ filters, setFilters, usersIdCreatedTasks }: IProps) => {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+    color: '#6585F3',
   }));
 
   const StyledInputBase = styled(InputBase)(({ theme }) => ({
-    color: 'inherit',
+    color: 'grey',
     '& .MuiInputBase-input': {
       padding: theme.spacing(1, 1, 1, 0),
-      // vertical padding + font size from searchIcon
       paddingLeft: `calc(1em + ${theme.spacing(4)})`,
       transition: theme.transitions.create('width'),
       width: '100%',
       [theme.breakpoints.up('md')]: {
         width: '20ch',
       },
+    },
+  }));
+
+  const WhiteBorderTextField = styled(OutlinedInput)(() => ({
+    color: 'grey',
+    '& fieldset': {
+      borderColor: '#3f51b5',
+      borderWidth: '2px',
+    },
+    '&:hover fieldset': {
+      borderWidth: '1px',
     },
   }));
 
@@ -95,21 +109,41 @@ const Toolbar = ({ filters, setFilters, usersIdCreatedTasks }: IProps) => {
       container
       alignItems="center"
       justifyContent="space-between"
-      columns={{ xs: 1, sm: 2, md: 4, lg: 6, xl: 6 }}
       sx={{
-        '@media only screen and (max-width: 600px)': {
+        '@media only screen and (max-width: 650px)': {
           alignItems: 'center',
           justifyContent: 'center',
+          flexDirection: 'column',
         },
       }}
     >
-      <Grid item container direction="row">
+      <Grid
+        item
+        container
+        direction="row"
+        lg={8}
+        sm={12}
+        sx={{
+          '@media only screen and (max-width: 650px)': {
+            alignItems: 'center',
+            justifyContent: 'center',
+          },
+        }}
+      >
         <DashboardRoundedIcon sx={{ color: '#303F9F' }} />
         <Typography align="left" variant="h5" sx={{ fontWeight: 'bold', color: '#303F9F' }}>
           {title.slice(2)}
         </Typography>
       </Grid>
-      <Grid item xs={1}>
+      <Grid
+        item
+        lg={2}
+        sx={{
+          '@media only screen and (max-width: 650px)': {
+            width: '80%',
+          },
+        }}
+      >
         <FormControl
           sx={{
             m: 1,
@@ -120,8 +154,15 @@ const Toolbar = ({ filters, setFilters, usersIdCreatedTasks }: IProps) => {
             justifyContent: 'center',
           }}
         >
-          <InputLabel id="demo-multiple-checkbox-label" sx={{ p: 0, m: 0, color: 'darkblue' }}>
-            {usersCreatedTasks.length ? 'Select users' : 'No tasks'}
+          <InputLabel
+            id="demo-multiple-checkbox-label"
+            sx={{
+              p: 0,
+              m: 0,
+              color: '#686970',
+            }}
+          >
+            {usersCreatedTasks.length ? `${t('FILTER.SELECT')}` : 'No tasks'}
           </InputLabel>
           <Select
             labelId="demo-multiple-checkbox-label"
@@ -129,10 +170,18 @@ const Toolbar = ({ filters, setFilters, usersIdCreatedTasks }: IProps) => {
             multiple
             value={personName}
             onChange={handleChange}
-            input={<OutlinedInput label="Select users" />}
+            input={<WhiteBorderTextField label={t('FILTER.SELECT')} />}
             renderValue={(selected) => selected.join(', ')}
             disabled={usersCreatedTasks.length === 0}
-            sx={{ width: '280px', height: '40px', p: 0, m: 0 }}
+            sx={{
+              width: '280px',
+              height: '40px',
+              p: 0,
+              m: 0,
+              '@media only screen and (max-width: 650px)': {
+                width: '80%',
+              },
+            }}
           >
             {usersCreatedTasks?.map((user, idx) => (
               <MenuItem key={`${user?.id}/${idx}`} value={user?.name} sx={{ p: 0, m: 0 }}>
@@ -143,13 +192,21 @@ const Toolbar = ({ filters, setFilters, usersIdCreatedTasks }: IProps) => {
           </Select>
         </FormControl>
       </Grid>
-      <Grid item xs={1}>
+      <Grid
+        item
+        lg={2}
+        sx={{
+          '@media only screen and (max-width: 650px)': {
+            width: '80%',
+          },
+        }}
+      >
         <Search sx={{ border: '2px solid #3f51b5', m: 1, width: 280, height: 40, p: 0 }}>
           <SearchIconWrapper>
             <SearchIcon />
           </SearchIconWrapper>
           <StyledInputBase
-            placeholder="Search…"
+            placeholder={t('FILTER.SEARCH')}
             value={filters.searchText}
             autoFocus={true}
             inputProps={{ 'aria-label': 'search' }}

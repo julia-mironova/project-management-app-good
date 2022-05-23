@@ -237,6 +237,16 @@ const SingleBoardPage = () => {
             backgroundColor: '#f1f1f1',
           },
         },
+        '&::-webkit-scrollbar': {
+          height: '.7rem',
+        },
+        '&::-webkit-scrollbar-thumb ': {
+          backgroundColor: '#c8c8c8',
+          borderRadius: 2,
+        },
+        '&::-webkit-scrollbar-thumb:hover ': {
+          backgroundColor: '#a8a8a8',
+        },
       }}
     >
       <Toolbar

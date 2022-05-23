@@ -36,6 +36,7 @@ const NewColumn = ({ onClose }: { onClose: () => void }) => {
           <TextField
             label={t('TITLE')}
             fullWidth={true}
+            sx={{ mt: 2 }}
             variant="outlined"
             error={errors.title ? true : false}
             helperText={errors.title ? errors.title.message : ''}
