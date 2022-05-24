@@ -223,6 +223,7 @@ const SingleBoardPage = () => {
       sx={{
         height: 'calc(100vh - 132.5px)',
         p: 0,
+        pt: 'calc(84.5px)',
         background: `url('${process.env.PUBLIC_URL}/pictures/background${getImageNumber(
           title
         )}.jpg')`,
@@ -231,6 +232,12 @@ const SingleBoardPage = () => {
         backgroundPosition: 'center',
         overflowX: 'auto',
         overflowY: 'auto',
+        '@media only screen and (max-width: 900px)': {
+          pt: 'calc(68.5px + 130px)',
+        },
+        '@media only screen and (max-width: 600px)': {
+          pt: 0,
+        },
         '@media only screen and (max-width: 450px)': {
           '&::-webkit-scrollbar': {
             width: '0',

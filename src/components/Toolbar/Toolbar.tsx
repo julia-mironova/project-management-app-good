@@ -7,7 +7,6 @@ import {
   InputLabel,
   ListItemText,
   MenuItem,
-  // TextField,
   OutlinedInput,
   Select,
   SelectChangeEvent,
@@ -39,13 +38,6 @@ const Toolbar = ({ filters, setFilters, usersIdCreatedTasks }: IProps) => {
     '&:hover': {
       backgroundColor: alpha(theme.palette.common.white, 0.25),
     },
-    marginRight: theme.spacing(2),
-    marginLeft: 0,
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-      marginLeft: theme.spacing(3),
-      width: 'auto',
-    },
   }));
 
   const SearchIconWrapper = styled('div')(({ theme }) => ({
@@ -65,14 +57,14 @@ const Toolbar = ({ filters, setFilters, usersIdCreatedTasks }: IProps) => {
       padding: theme.spacing(1, 1, 1, 0),
       paddingLeft: `calc(1em + ${theme.spacing(4)})`,
       transition: theme.transitions.create('width'),
-      width: '100%',
-      [theme.breakpoints.up('md')]: {
-        width: '20ch',
-      },
     },
   }));
 
-  const WhiteBorderTextField = styled(OutlinedInput)(() => ({
+  const WhiteBorderTextField = styled(OutlinedInput)(({ theme }) => ({
+    '& .MuiSelect-select': {
+      padding: theme.spacing(1, 1, 1, 1),
+      transition: theme.transitions.create('width'),
+    },
     color: 'grey',
     '& fieldset': {
       borderColor: '#3f51b5',
@@ -109,11 +101,20 @@ const Toolbar = ({ filters, setFilters, usersIdCreatedTasks }: IProps) => {
       container
       alignItems="center"
       justifyContent="space-between"
+      columnSpacing={{ lg: 1 }}
+      px={3}
+      py={1}
       sx={{
-        '@media only screen and (max-width: 650px)': {
+        position: 'fixed',
+        top: '84.5px',
+        left: '0',
+        '@media only screen and (max-width: 900px)': {
           alignItems: 'center',
           justifyContent: 'center',
           flexDirection: 'column',
+        },
+        '@media only screen and (max-width: 600px)': {
+          position: 'unset',
         },
       }}
     >
@@ -121,10 +122,12 @@ const Toolbar = ({ filters, setFilters, usersIdCreatedTasks }: IProps) => {
         item
         container
         direction="row"
-        lg={8}
+        lg={6}
+        md={4}
         sm={12}
         sx={{
-          '@media only screen and (max-width: 650px)': {
+          width: '100%',
+          '@media only screen and (max-width: 900px)': {
             alignItems: 'center',
             justifyContent: 'center',
           },
@@ -135,21 +138,11 @@ const Toolbar = ({ filters, setFilters, usersIdCreatedTasks }: IProps) => {
           {title.slice(2)}
         </Typography>
       </Grid>
-      <Grid
-        item
-        lg={2}
-        sx={{
-          '@media only screen and (max-width: 650px)': {
-            width: '80%',
-          },
-        }}
-      >
+      <Grid item lg={3} md={3} sm={6} xs={10} sx={{ width: '100%' }}>
         <FormControl
           sx={{
-            m: 1,
-            width: 250,
-            height: 50,
-            p: 0,
+            mx: 1,
+            py: 1,
             display: 'flex',
             justifyContent: 'center',
           }}
@@ -173,18 +166,16 @@ const Toolbar = ({ filters, setFilters, usersIdCreatedTasks }: IProps) => {
             input={<WhiteBorderTextField label={t('FILTER.SELECT')} />}
             renderValue={(selected) => selected.join(', ')}
             disabled={usersCreatedTasks.length === 0}
-            sx={{
-              width: '280px',
-              height: '40px',
-              p: 0,
-              m: 0,
-              '@media only screen and (max-width: 650px)': {
-                width: '80%',
-              },
-            }}
           >
             {usersCreatedTasks?.map((user, idx) => (
-              <MenuItem key={`${user?.id}/${idx}`} value={user?.name} sx={{ p: 0, m: 0 }}>
+              <MenuItem
+                key={`${user?.id}/${idx}`}
+                value={user?.name}
+                sx={{
+                  p: 0,
+                  m: 0,
+                }}
+              >
                 <Checkbox checked={personName.indexOf(user?.name || '') > -1} />
                 <ListItemText primary={user?.name} />
               </MenuItem>
@@ -192,16 +183,8 @@ const Toolbar = ({ filters, setFilters, usersIdCreatedTasks }: IProps) => {
           </Select>
         </FormControl>
       </Grid>
-      <Grid
-        item
-        lg={2}
-        sx={{
-          '@media only screen and (max-width: 650px)': {
-            width: '80%',
-          },
-        }}
-      >
-        <Search sx={{ border: '2px solid #3f51b5', m: 1, width: 280, height: 40, p: 0 }}>
+      <Grid item lg={3} md={3} sm={6} xs={10} sx={{ width: '100%' }}>
+        <Search sx={{ border: '2px solid #3f51b5', mx: 1 }}>
           <SearchIconWrapper>
             <SearchIcon />
           </SearchIconWrapper>
