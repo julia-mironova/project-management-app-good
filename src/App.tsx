@@ -32,7 +32,14 @@ function App() {
                 </RequireAuth>
               }
             />
-            <Route path="boards/:boardId" element={<SingleBoardPage />} />
+            <Route
+              path="boards/:boardId"
+              element={
+                <ErrorBoundary>
+                  <SingleBoardPage />
+                </ErrorBoundary>
+              }
+            />
             <Route path="login" element={<Login />} />
             <Route path="signup" element={<SignUp />} />
             <Route path="*" element={<Page404 />} />

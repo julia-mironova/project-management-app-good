@@ -226,7 +226,7 @@ const SingleBoardPage = () => {
         p: 0,
         background: `url('${process.env.PUBLIC_URL}/pictures/background${getImageNumber(
           title
-        )}.jpg')`,
+        )}.webp')`,
         backgroundRepeat: 'no-repeat',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
