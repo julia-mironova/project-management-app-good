@@ -223,6 +223,7 @@ const SingleBoardPage = () => {
       sx={{
         height: 'calc(100vh - 132.5px)',
         p: 0,
+        pt: 'calc(71px)',
         background: `url('${process.env.PUBLIC_URL}/pictures/background${getImageNumber(
           title
         )}.jpg')`,
@@ -231,11 +232,27 @@ const SingleBoardPage = () => {
         backgroundPosition: 'center',
         overflowX: 'auto',
         overflowY: 'auto',
+        '@media only screen and (max-width: 900px)': {
+          pt: 'calc(148px)',
+        },
+        '@media only screen and (max-width: 600px)': {
+          pt: 0,
+        },
         '@media only screen and (max-width: 450px)': {
           '&::-webkit-scrollbar': {
             width: '0',
             backgroundColor: '#f1f1f1',
           },
+        },
+        '&::-webkit-scrollbar': {
+          height: '.7rem',
+        },
+        '&::-webkit-scrollbar-thumb ': {
+          backgroundColor: '#c8c8c8',
+          borderRadius: 2,
+        },
+        '&::-webkit-scrollbar-thumb:hover ': {
+          backgroundColor: '#a8a8a8',
         },
       }}
     >

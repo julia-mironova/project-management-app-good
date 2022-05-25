@@ -1,4 +1,5 @@
-import { Avatar, ListItem, Paper, styled } from '@mui/material';
+import { Avatar, ListItem, Paper, styled, Typography } from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
 import ModalWindow from '../ModalWindow';
 import TaskFull from '../TaskFull';
 import React from 'react';
@@ -27,6 +28,12 @@ const Task = ({ task }: { task: ITask }) => {
     paddingRight: '0.6rem',
     marginBottom: theme.spacing(1),
     marginTop: theme.spacing(1),
+    '&:hover': {
+      boxShadow: '3px 3px 5px #5a5050',
+      '& .MuiSvgIcon-root': {
+        opacity: '1',
+      },
+    },
   }));
 
   function stringToColor(string: string) {
@@ -72,8 +79,15 @@ const Task = ({ task }: { task: ITask }) => {
             {...provided.draggableProps}
             {...provided.dragHandleProps}
           >
-            <TitleTask onClick={() => setIsOpenModalTaskFull(true)}>
-              {task.title}
+            <TitleTask onClick={() => setIsOpenModalTaskFull(true)} sx={{ gap: 1 }}>
+              <Typography variant="h6" sx={{ flexGrow: 1 }}>
+                {task.title}
+              </Typography>
+              <EditIcon
+                sx={{
+                  opacity: '0',
+                }}
+              />
               <Avatar {...stringAvatar(currentUser)} />
             </TitleTask>
           </ListItem>

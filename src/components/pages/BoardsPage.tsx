@@ -38,12 +38,25 @@ const BoardsPage = () => {
         flexDirection: 'row',
         flexWrap: 'wrap',
         justifyContent: 'flex-start',
+        '@media only screen and (max-width: 1200px)': {
+          justifyContent: 'center',
+        },
         alignItems: 'flex-start',
         alignContent: 'flex-start',
         gap: 5,
         p: 3,
         height: 'calc(100vh - 149px)',
         overflowY: 'auto',
+        '&::-webkit-scrollbar': {
+          width: '.7rem',
+        },
+        '&::-webkit-scrollbar-thumb ': {
+          backgroundColor: '#c8c8c8',
+          borderRadius: 2,
+        },
+        '&::-webkit-scrollbar-thumb:hover ': {
+          backgroundColor: '#a8a8a8',
+        },
       }}
     >
       {boards.map((item) => (
