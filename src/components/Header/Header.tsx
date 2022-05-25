@@ -62,7 +62,15 @@ const Header = () => {
         backgroundColor: isSticky ? '#0F23F5' : '',
       }}
     >
-      <Container maxWidth="xl" sx={{ p: { xs: 0, sm: 1 } }}>
+      <Container
+        maxWidth="xl"
+        sx={{
+          px: {
+            xs: 0,
+            sm: 1,
+          },
+        }}
+      >
         <Toolbar disableGutters>
           <Typography
             variant="h6"

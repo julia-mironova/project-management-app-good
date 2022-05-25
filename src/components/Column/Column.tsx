@@ -61,8 +61,7 @@ const Column = ({ column, filters }: { column: IColumn; filters: IFilters }) => 
             maxWidth: '400px',
             border: '1px solid Gray',
             borderRadius: 2,
-            padding: 2,
-            pb: 1,
+            py: 1,
             ml: 2,
             mr: 2,
             backgroundColor: 'rgba(213, 217, 233, .7)',
@@ -74,6 +73,7 @@ const Column = ({ column, filters }: { column: IColumn; filters: IFilters }) => 
               mr: 0,
               p: 1,
             },
+            maxHeight: 'calc(100vh - 230px)',
           }}
           component="li"
           ref={provided.innerRef}
@@ -82,8 +82,8 @@ const Column = ({ column, filters }: { column: IColumn; filters: IFilters }) => 
           <Box
             sx={{
               width: '100%',
-              // minWidth: '250px',
-              // maxWidth: '370px',
+              py: 0.8,
+              pl: 1.7,
               display: 'flex',
               justifyContent: 'space-between',
             }}
@@ -119,7 +119,7 @@ const Column = ({ column, filters }: { column: IColumn; filters: IFilters }) => 
                     })}
                   />
                   <Box>
-                    <Tooltip title="Change name">
+                    <Tooltip title={t('BOARD.CHANGE_NAME')}>
                       <IconButton
                         aria-label="change name"
                         color="primary"
@@ -132,7 +132,7 @@ const Column = ({ column, filters }: { column: IColumn; filters: IFilters }) => 
                         <CheckCircleIcon />
                       </IconButton>
                     </Tooltip>
-                    <Tooltip title="Cancel">
+                    <Tooltip title={t('CANCEL_BTN')}>
                       <IconButton
                         aria-label="cancel"
                         color="primary"
@@ -202,21 +202,21 @@ const Column = ({ column, filters }: { column: IColumn; filters: IFilters }) => 
                   component="ul"
                   sx={{
                     mt: 0,
+                    pl: 1.8,
+                    pr: 1,
                     paddingRight: '.8rem',
                     overflowY: 'auto',
                     overflowX: 'hidden',
                     '&::-webkit-scrollbar': {
-                      width: '.8rem',
-                      backgroundColor: '#f1f1f1',
+                      width: '.7rem',
                     },
                     '&::-webkit-scrollbar-thumb ': {
                       backgroundColor: '#c8c8c8',
-                      height: '2rem',
+                      borderRadius: 2,
                     },
                     '&::-webkit-scrollbar-thumb:hover ': {
                       backgroundColor: '#a8a8a8',
                     },
-                    maxHeight: '63.5vh',
                     minHeight: '1vh',
                     '@media only screen and (max-width: 450px)': {
                       pr: 0,

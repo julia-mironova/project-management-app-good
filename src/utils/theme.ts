@@ -10,6 +10,9 @@ const theme = createTheme({
       main: '#686970',
     },
   },
+  typography: {
+    fontFamily: ['Open Sans', 'sans-serif'].join(','),
+  },
 });
 
 export { theme };
