@@ -1,52 +1,59 @@
 import { Suspense, lazy } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout/Layout';
-import { WelcomePage, SingleBoardPage, BoardsPage } from './components/pages';
-import { Login, SignUp } from './components';
-import RequireAuth from './hoc/RequireAuth';
-import ErrorBoundary from './components/ErrorBoundary';
+import WelcomePage from './components/pages/WelcomePage';
+import Login from './components/Login/Login';
 
-const EditProfile = lazy(() => import('./components/pages/EditProfile'));
 const Page404 = lazy(() => import('./components/pages/Page404'));
+const SingleBoardPage = lazy(() => import('./components/pages/SingleBoardPage'));
+const BoardsPage = lazy(() => import('./components/pages/BoardsPage'));
+const RequireAuth = lazy(() => import('./hoc/RequireAuth'));
+const ErrorBoundary = lazy(() => import('./components/ErrorBoundary'));
+const EditProfile = lazy(() => import('./components/pages/EditProfile'));
+const SignUp = lazy(() => import('./components/Login/SignUp'));
 
 function App() {
   return (
-    <ErrorBoundary>
-      <Suspense>
-        <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route index element={<WelcomePage />} />
-            <Route
-              path="edit-profile"
-              element={
+    <Suspense>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<WelcomePage />} />
+          <Route
+            path="edit-profile"
+            element={
+              <ErrorBoundary>
                 <RequireAuth>
                   <EditProfile />
                 </RequireAuth>
-              }
-            />
-            <Route
-              path="boards"
-              element={
+              </ErrorBoundary>
+            }
+          />
+          <Route
+            path="boards"
+            element={
+              <ErrorBoundary>
                 <RequireAuth>
                   <BoardsPage />
                 </RequireAuth>
-              }
-            />
-            <Route
-              path="boards/:boardId"
-              element={
-                <ErrorBoundary>
+              </ErrorBoundary>
+            }
+          />
+          <Route
+            path="boards/:boardId"
+            element={
+              <ErrorBoundary>
+                <RequireAuth>
                   <SingleBoardPage />
-                </ErrorBoundary>
-              }
-            />
-            <Route path="login" element={<Login />} />
-            <Route path="signup" element={<SignUp />} />
-            <Route path="*" element={<Page404 />} />
-          </Route>
-        </Routes>
-      </Suspense>
-    </ErrorBoundary>
+                </RequireAuth>
+              </ErrorBoundary>
+            }
+          />
+          <Route path="login" element={<Login />} />
+          <Route path="signup" element={<SignUp />} />
+          <Route path="*" element={<Page404 />} />
+        </Route>
+      </Routes>
+    </Suspense>
   );
 }
 

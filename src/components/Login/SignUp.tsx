@@ -21,7 +21,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { localStorageSetUser, localStorageSetUserToken } from '../../utils/localStorage';
 import { useTranslation } from 'react-i18next';
 
-export const SignUp = () => {
+const SignUp = () => {
   const {
     register,
     handleSubmit,
@@ -153,7 +153,7 @@ export const SignUp = () => {
     </Container>
   );
 };
-
+export default SignUp;
 export type propsSubmitSignUp = {
   email: string;
   password: string;

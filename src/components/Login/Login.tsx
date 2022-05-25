@@ -20,7 +20,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks/redux.hooks';
 import { createToken } from '../../store/slices/authSlice';
 import { useTranslation } from 'react-i18next';
 
-export const Login = () => {
+const Login = () => {
   const {
     register,
     handleSubmit,
@@ -130,7 +130,7 @@ export const Login = () => {
     </Container>
   );
 };
-
+export default Login;
 type propsSubmitLogin = {
   email: string;
   password: string;
