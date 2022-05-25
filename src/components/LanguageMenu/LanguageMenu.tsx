@@ -4,10 +4,11 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { indigo } from '@mui/material/colors';
 import { useTranslation, TFuncKey } from 'react-i18next';
 
-type languages = 'en' | 'ru';
+type languages = 'en' | 'ru' | 'ua';
 const lngs: Record<languages, TFuncKey> = {
   en: 'LANGUAGES.EN',
   ru: 'LANGUAGES.RU',
+  ua: 'LANGUAGES.UA',
 };
 
 type languagesKeys = keyof typeof lngs;

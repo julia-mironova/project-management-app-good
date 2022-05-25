@@ -11,7 +11,8 @@
     },
     "LANGUAGES": {
 		"EN": "En",
-		"RU": "Ру"
+		"RU": "Ru",
+    "UA": "Ua"
     },
     "WELCOME": {
 		"TITLE": "We help to organize your work!",
@@ -64,6 +65,11 @@
         "CREATE_BY": "created by user:",
         "FILENAME": "Filename",
         "SIZE": "Size"
+    },
+    "TOOLBAR": {
+        "SELECT_USERS": "Select users",
+        "NO_TASKS": "No tasks",
+        "SEARCH": "Search..."
     },
     "DEVELOPERS": {
         "TEAM": "Out team",

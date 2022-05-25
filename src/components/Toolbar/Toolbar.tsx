@@ -31,6 +31,8 @@ const Toolbar = ({ filters, setFilters, usersIdCreatedTasks }: IProps) => {
   const { usersAll } = useAppSelector((state) => state.boards);
   const { t } = useTranslation();
 
+  const { t } = useTranslation();
+
   const Search = styled('div')(({ theme }) => ({
     position: 'relative',
     borderRadius: theme.shape.borderRadius,
@@ -147,6 +149,7 @@ const Toolbar = ({ filters, setFilters, usersIdCreatedTasks }: IProps) => {
             justifyContent: 'center',
           }}
         >
+<<<<<<< HEAD
           <InputLabel
             id="demo-multiple-checkbox-label"
             sx={{
@@ -156,6 +159,10 @@ const Toolbar = ({ filters, setFilters, usersIdCreatedTasks }: IProps) => {
             }}
           >
             {usersCreatedTasks.length ? `${t('FILTER.SELECT')}` : 'No tasks'}
+=======
+          <InputLabel id="demo-multiple-checkbox-label" sx={{ p: 0, m: 0, color: 'darkblue' }}>
+            {usersCreatedTasks.length ? t('TOOLBAR.SELECT_USERS') : t('TOOLBAR.NO_TASKS')}
+>>>>>>> 8f83020 (feat: add ukrainian language)
           </InputLabel>
           <Select
             labelId="demo-multiple-checkbox-label"
@@ -189,7 +196,11 @@ const Toolbar = ({ filters, setFilters, usersIdCreatedTasks }: IProps) => {
             <SearchIcon />
           </SearchIconWrapper>
           <StyledInputBase
+<<<<<<< HEAD
             placeholder={t('FILTER.SEARCH')}
+=======
+            placeholder={t('TOOLBAR.SEARCH')}
+>>>>>>> 8f83020 (feat: add ukrainian language)
             value={filters.searchText}
             autoFocus={true}
             inputProps={{ 'aria-label': 'search' }}
