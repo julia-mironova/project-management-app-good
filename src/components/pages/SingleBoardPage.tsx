@@ -225,9 +225,7 @@ const SingleBoardPage = () => {
         height: 'calc(100vh - 132.5px)',
         p: 0,
         pt: 'calc(71px)',
-        background: `url('${process.env.PUBLIC_URL}/pictures/background${getImageNumber(
-          title
-        )}.webp')`,
+        background: `url('/pictures/background${getImageNumber(title)}.webp')`,
         backgroundRepeat: 'no-repeat',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
