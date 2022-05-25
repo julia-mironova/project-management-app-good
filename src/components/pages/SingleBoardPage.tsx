@@ -223,7 +223,7 @@ const SingleBoardPage = () => {
       sx={{
         height: 'calc(100vh - 132.5px)',
         p: 0,
-        pt: 'calc(84.5px)',
+        pt: 'calc(71px)',
         background: `url('${process.env.PUBLIC_URL}/pictures/background${getImageNumber(
           title
         )}.jpg')`,
@@ -233,7 +233,7 @@ const SingleBoardPage = () => {
         overflowX: 'auto',
         overflowY: 'auto',
         '@media only screen and (max-width: 900px)': {
-          pt: 'calc(68.5px + 130px)',
+          pt: 'calc(148px)',
         },
         '@media only screen and (max-width: 600px)': {
           pt: 0,

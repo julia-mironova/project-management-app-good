@@ -38,6 +38,9 @@ const BoardsPage = () => {
         flexDirection: 'row',
         flexWrap: 'wrap',
         justifyContent: 'flex-start',
+        '@media only screen and (max-width: 1200px)': {
+          justifyContent: 'center',
+        },
         alignItems: 'flex-start',
         alignContent: 'flex-start',
         gap: 5,

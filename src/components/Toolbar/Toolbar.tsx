@@ -106,7 +106,7 @@ const Toolbar = ({ filters, setFilters, usersIdCreatedTasks }: IProps) => {
       py={1}
       sx={{
         position: 'fixed',
-        top: '84.5px',
+        top: '68.5px',
         left: '0',
         '@media only screen and (max-width: 900px)': {
           alignItems: 'center',

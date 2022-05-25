@@ -67,14 +67,12 @@
     },
     "DEVELOPERS": {
         "TEAM": "Out team",
+        "TEAM_DESCR": "We are a team of beginner developers who are passionate about their work. We tend to create functional and beautiful applications.",
         "VICTOR": "Victor",
         "EVGENIY": "Evgeniy",
         "OLGA": "Olga",
         "TEAM_L": "Team Lead",
-        "DEVELOPER": "Developer",
-        "DESCR_VICTOR": "Victor info",
-        "DESCR_EVGENIY": "Evgeniy info",
-        "DESCR_OLGA": "Olga info"
+        "DEVELOPER": "Developer"
     },
     "FILTER": {
         "SELECT":"Select users",
