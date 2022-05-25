@@ -1,9 +1,10 @@
 import { Container, Typography, Grid, CardMedia, CardContent, Link } from '@mui/material';
 import GitHubIcon from '@mui/icons-material/GitHub';
-import bgImage from '../../assets/images/bg.jpg';
+import bgImage from '../../assets/images/bg.webp';
 import olgaImg from '../../assets/images/olga.jpg';
 import victorImg from '../../assets/images/victor.jpg';
 import evgeniyImg from '../../assets/images/eugen.jpg';
+
 import { useTranslation } from 'react-i18next';
 
 const WelcomePage = () => {

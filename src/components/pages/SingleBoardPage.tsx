@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Button, Container, Stack } from '@mui/material';
+import { Backdrop, Button, CircularProgress, Container, Stack } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux.hooks';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import { getSingleBoard } from '../../store/slices/boardSlice';
@@ -25,6 +25,7 @@ const SingleBoardPage = () => {
   const [isOpenModalAddNewColumn, setIsOpenModalAddNewColumn] = useState(false);
   const {
     rejectMsg,
+    pending,
     singleBoard: { columns, title },
   } = useAppSelector((state) => state.boards);
   const [filters, setFilters] = useState<IFilters>({ searchText: '', usersId: [] });
@@ -226,7 +227,7 @@ const SingleBoardPage = () => {
         pt: 'calc(71px)',
         background: `url('${process.env.PUBLIC_URL}/pictures/background${getImageNumber(
           title
-        )}.jpg')`,
+        )}.webp')`,
         backgroundRepeat: 'no-repeat',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
@@ -313,6 +314,9 @@ const SingleBoardPage = () => {
       <ModalWindow open={isOpenModalAddNewColumn} onClose={() => setIsOpenModalAddNewColumn(false)}>
         <NewColumn onClose={() => setIsOpenModalAddNewColumn(false)} />
       </ModalWindow>
+      <Backdrop sx={{ color: '#fff', zIndex: 100 }} open={pending}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </Container>
   );
 };

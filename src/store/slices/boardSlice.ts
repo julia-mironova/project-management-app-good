@@ -143,6 +143,9 @@ export const boardSlice = createSlice({
         state.boards = action.payload;
         state.pending = false;
       })
+      .addCase(getAllBoards.pending, (state) => {
+        state.pending = true;
+      })
       .addCase(createBoard.fulfilled, (state, action) => {
         state.boards.push(action.payload);
         state.pending = false;
@@ -154,11 +157,13 @@ export const boardSlice = createSlice({
       })
       .addCase(deleteBoard.fulfilled, (state, action) => {
         state.boards = state.boards.filter((el) => el.id !== action.payload);
-        state.pending = false;
       })
       .addCase(getSingleBoard.fulfilled, (state, action) => {
         state.singleBoard = action.payload;
         state.pending = false;
+      })
+      .addCase(getSingleBoard.pending, (state) => {
+        state.pending = true;
       })
       /* column reducer */
       .addCase(createColumn.fulfilled, (state, action) => {
