@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Backdrop, Button, CircularProgress, Container, Stack } from '@mui/material';
+import { Backdrop, Button, CircularProgress, Container, Stack, useMediaQuery } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux.hooks';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import { getSingleBoard } from '../../store/slices/boardSlice';
@@ -32,7 +32,7 @@ const SingleBoardPage = () => {
   const dispatch = useAppDispatch();
   const { boardId } = useParams();
   const navigate = useNavigate();
-
+  const matches = useMediaQuery('(max-width:600px)');
   const usersIdCreatedTasks: string[] = [];
 
   columns.forEach((column) => {
@@ -222,7 +222,7 @@ const SingleBoardPage = () => {
     <Container
       maxWidth={false}
       sx={{
-        height: 'calc(100vh - 132.5px)',
+        height: 'calc(100vh - 132px)',
         p: 0,
         pt: 'calc(71px)',
         background: `url('/pictures/background${getImageNumber(title)}.webp')`,
@@ -261,7 +261,7 @@ const SingleBoardPage = () => {
         usersIdCreatedTasks={usersIdCreatedTasks}
       ></Toolbar>
       <DragDropContext onDragEnd={onDragEnd}>
-        <Droppable droppableId="board" direction="horizontal">
+        <Droppable droppableId="board" direction={matches ? 'vertical' : 'horizontal'}>
           {(provided) => {
             return (
               <Stack
