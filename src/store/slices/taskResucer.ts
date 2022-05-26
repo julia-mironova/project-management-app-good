@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { ITask, ITaskResponse } from '../../types/board';
 import { BASE_URL } from '../../constants/constants';
-import { localStorageGetUser, localStorageGetUserToken } from '../../utils/localStorage';
+import { localStorageGetUserToken } from '../../utils/localStorage';
 
 export const createTask = createAsyncThunk<ITaskResponse, ITaskResponse, { rejectValue: string }>(
   'board/createTask',
@@ -186,7 +186,6 @@ const decreaseOrdersOnServer = async (
   rejectWithValue: (error: string) => void
 ) => {
   const token = localStorageGetUserToken();
-  const userId = localStorageGetUser()?.id;
   const resultPromise = tasks.map((item) => {
     return fetch(`${BASE_URL}boards/${boardId}/columns/${columnId}/tasks/${item.id}`, {
       method: 'PUT',
@@ -198,7 +197,7 @@ const decreaseOrdersOnServer = async (
         title: item.title,
         order: item.order - 1,
         description: item.description,
-        userId: userId,
+        userId: item.userId,
         boardId: boardId,
         columnId: columnId,
       }),
@@ -225,7 +224,6 @@ const increaseOrdersOnServer = async (
   rejectWithValue: (error: string) => void
 ) => {
   const token = localStorageGetUserToken();
-  const userId = localStorageGetUser()?.id;
   const resultPromise = tasks.map((item) => {
     return fetch(`${BASE_URL}boards/${boardId}/columns/${columnId}/tasks/${item.id}`, {
       method: 'PUT',
@@ -237,7 +235,7 @@ const increaseOrdersOnServer = async (
         title: item.title,
         order: item.order + 1,
         description: item.description,
-        userId: userId,
+        userId: item.userId,
         boardId: boardId,
         columnId: columnId,
       }),

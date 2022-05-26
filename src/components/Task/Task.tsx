@@ -7,7 +7,7 @@ import { ITask } from '../../types/board';
 import { useAppSelector } from '../../hooks/redux.hooks';
 import { Draggable } from 'react-beautiful-dnd';
 
-const Task = ({ task }: { task: ITask }) => {
+const Task = ({ task, index }: { task: ITask; index: number }) => {
   const [isOpenModalTaskFull, setIsOpenModalTaskFull] = React.useState(false);
   const { usersAll } = useAppSelector((state) => state.boards);
 
@@ -67,7 +67,7 @@ const Task = ({ task }: { task: ITask }) => {
 
   return (
     <>
-      <Draggable draggableId={task.id} index={task.order}>
+      <Draggable draggableId={task.id} index={index}>
         {(provided) => (
           <ListItem
             sx={{
