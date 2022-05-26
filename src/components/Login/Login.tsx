@@ -26,7 +26,7 @@ const Login = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<propsSubmitLogin>({ mode: 'onSubmit' });
-  let linterError = null;
+
   const { t } = useTranslation();
   const state = useAppSelector((state) => state.auth);
   const navigate = useNavigate();
