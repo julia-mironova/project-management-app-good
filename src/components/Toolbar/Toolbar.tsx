@@ -147,15 +147,8 @@ const Toolbar = ({ filters, setFilters, usersIdCreatedTasks }: IProps) => {
             justifyContent: 'center',
           }}
         >
-          <InputLabel
-            id="demo-multiple-checkbox-label"
-            sx={{
-              p: 0,
-              m: 0,
-              color: '#686970',
-            }}
-          >
-            {usersCreatedTasks.length ? `${t('FILTER.SELECT')}` : 'No tasks'}
+          <InputLabel id="demo-multiple-checkbox-label" sx={{ p: 0, m: 0, color: '#686970' }}>
+            {usersCreatedTasks.length ? t('FILTER.SELECT') : t('FILTER.NO_TASKS')}
           </InputLabel>
           <Select
             labelId="demo-multiple-checkbox-label"

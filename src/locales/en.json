@@ -11,7 +11,8 @@
     },
     "LANGUAGES": {
 		"EN": "En",
-		"RU": "Ру"
+		"RU": "Ru",
+    "UA": "Ua"
     },
     "WELCOME": {
 		"TITLE": "We help to organize your work!",
@@ -76,6 +77,7 @@
     },
     "FILTER": {
         "SELECT":"Select users",
+        "NO_TASKS": "No tasks",
         "SEARCH": "Search…"
     },
     "TITLE": "Title", 
