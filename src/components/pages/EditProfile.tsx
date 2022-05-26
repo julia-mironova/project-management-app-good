@@ -67,7 +67,7 @@ const EditProfile = () => {
       <CssBaseline />
       <Box
         sx={{
-          height: 'calc(100vh - 132.5px)',
+          height: 'calc(100vh - 132px)',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',

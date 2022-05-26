@@ -1,4 +1,4 @@
-import { Login } from './Login';
+import Login from './Login';
 import { render, screen, userEvent } from '../../utils/test-utils';
 
 describe('login test', () => {
