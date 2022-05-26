@@ -34,7 +34,7 @@ describe('login test', () => {
     userEvent.type(email, 'email.com{enter}');
     expect(await screen.findByText(/incorrect email/i)).toBeInTheDocument();
     expect(
-      screen.queryByText(/Your password must be aTTTTTt least 6 characters long/i)
+      screen.queryByText(/Your password must be at least 6 characters long/i)
     ).toBeInTheDocument();
   });
 });
