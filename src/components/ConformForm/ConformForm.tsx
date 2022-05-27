@@ -7,8 +7,12 @@ const ConformForm = ({ choose }: { choose: (arg: boolean) => void }) => {
     <Box sx={{ width: '100%', maxWidth: '400px' }}>
       <DialogTitle>{t('TASK.CONFIRM_DEL')}</DialogTitle>
       <DialogActions>
-        <Button onClick={() => choose(false)}>{t('CANCEL_BTN')}</Button>
-        <Button onClick={() => choose(true)}>{t('TASK.YES')}</Button>
+        <Button onClick={() => choose(false)} sx={{ '&:hover': { color: 'primary.contrastText' } }}>
+          {t('CANCEL_BTN')}
+        </Button>
+        <Button onClick={() => choose(true)} sx={{ '&:hover': { color: 'primary.contrastText' } }}>
+          {t('TASK.YES')}
+        </Button>
       </DialogActions>
     </Box>
   );

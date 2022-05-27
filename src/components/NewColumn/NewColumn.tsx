@@ -46,8 +46,12 @@ const NewColumn = ({ onClose }: { onClose: () => void }) => {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={onClose}>{t('CANCEL_BTN')}</Button>
-          <Button type="submit">{t('COLUMN.CREATE_COLUMN_BTN')}</Button>
+          <Button onClick={onClose} sx={{ '&:hover': { color: 'primary.contrastText' } }}>
+            {t('CANCEL_BTN')}
+          </Button>
+          <Button type="submit" sx={{ '&:hover': { color: 'primary.contrastText' } }}>
+            {t('COLUMN.CREATE_COLUMN_BTN')}
+          </Button>
         </DialogActions>
       </Box>
     </form>

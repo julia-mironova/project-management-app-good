@@ -83,7 +83,7 @@ const Column = ({ column, filters }: { column: IColumn; filters: IFilters }) => 
             sx={{
               width: '100%',
               py: 0.8,
-              pl: 1.7,
+              px: 1.7,
               display: 'flex',
               justifyContent: 'space-between',
             }}
@@ -96,9 +96,7 @@ const Column = ({ column, filters }: { column: IColumn; filters: IFilters }) => 
                     width: '100%',
                     display: 'flex',
                     justifyContent: 'space-between',
-                    height: '33px',
-                    border: '1px solid gray',
-                    borderRadius: 2,
+                    alignItem: 'center',
                   }}
                 >
                   <TextField
@@ -108,17 +106,19 @@ const Column = ({ column, filters }: { column: IColumn; filters: IFilters }) => 
                     helperText={errors.title ? errors.title.message : ''}
                     sx={{
                       cursor: 'default',
-                      color: 'black',
                       width: '70%',
-                      background: 'white',
-                      borderRadius: 1,
                       pl: 1,
+                      input: {
+                        color: 'gray',
+                        fontWeight: 700,
+                        fontSize: '1.3rem',
+                      },
                     }}
                     {...register('title', {
                       required: { value: true, message: `${t('FORM.REQUIRE_MSG')}` },
                     })}
                   />
-                  <Box>
+                  <Box alignSelf="center">
                     <Tooltip title={t('BOARD.CHANGE_NAME')}>
                       <IconButton
                         aria-label="change name"
@@ -157,6 +157,10 @@ const Column = ({ column, filters }: { column: IColumn; filters: IFilters }) => 
                   width: '70%',
                   fontSize: '1.5rem',
                   fontWeight: 'bold',
+                  '&:hover': {
+                    color: 'primary.contrastText',
+                    cursor: 'pointer',
+                  },
                 }}
                 onClick={() => setIsEdit(true)}
               >
