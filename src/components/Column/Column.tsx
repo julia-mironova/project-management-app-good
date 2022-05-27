@@ -243,7 +243,7 @@ const Column = ({ column, filters }: { column: IColumn; filters: IFilters }) => 
                             task.description.includes(filters.searchText)) &&
                           (filters.usersId.length === 0 || filters.usersId.includes(task.userId))
                       )
-                      .map((task) => <Task key={task.id} task={task} />)}
+                      .map((task, index) => <Task key={task.id} task={task} index={index} />)}
                   {dropProvided.placeholder}
                 </Stack>
               );
