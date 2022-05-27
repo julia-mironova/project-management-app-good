@@ -201,9 +201,6 @@ const SingleBoardPage = () => {
   };
 
   const onDragEnd = (result: DropResult) => {
-    console.log(result);
-    console.log(columns);
-
     const { destination, source } = result;
 
     if (!destination) {
