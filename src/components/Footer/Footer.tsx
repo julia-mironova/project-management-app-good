@@ -26,6 +26,9 @@ const Footer = () => {
                   width: '50rem',
                   display: 'flex',
                   justifyContent: 'start',
+                  '@media only screen and (max-width: 900px)': {
+                    justifyContent: 'center',
+                  },
                 }}
               >
                 {DEVELOPERS_GH.map((dev) => (
@@ -59,6 +62,11 @@ const Footer = () => {
               columnSpacing={1}
               alignItems="center"
               justifyContent="end"
+              sx={{
+                '@media only screen and (max-width: 900px)': {
+                  justifyContent: 'space-evenly',
+                },
+              }}
             >
               <Grid item lg={6}>
                 <BottomNavigationAction
@@ -67,7 +75,10 @@ const Footer = () => {
                       href="https://rs.school/react/"
                       target="_blank"
                       rel="noreferrer"
-                      sx={{ transition: '.4s', '&:hover': { bgcolor: 'primary.main' } }}
+                      sx={{
+                        transition: '.4s',
+                        '&:hover': { transform: 'scale(0.9)' },
+                      }}
                     >
                       <img src={rsLogo} alt="rs-school logo"></img>
                     </Link>

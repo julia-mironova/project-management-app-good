@@ -84,8 +84,12 @@ const FormNewTask = ({
         />
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose}>{t('CANCEL_BTN')}</Button>
-        <Button type="submit">{t('TASK.CREATE')}</Button>
+        <Button onClick={onClose} sx={{ '&:hover': { color: 'primary.contrastText' } }}>
+          {t('CANCEL_BTN')}
+        </Button>
+        <Button type="submit" sx={{ '&:hover': { color: 'primary.contrastText' } }}>
+          {t('TASK.CREATE')}
+        </Button>
       </DialogActions>
     </form>
   );

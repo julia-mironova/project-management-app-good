@@ -47,7 +47,18 @@ const FormCreateBoard: FC<{ onClose: () => void; handlerCreateBoard: (title: str
           rowHeight={130}
         >
           {dataPictures.map((item, i) => (
-            <ImageListItem key={item} onClick={() => setChangedImg(i)}>
+            <ImageListItem
+              key={item}
+              onClick={() => setChangedImg(i)}
+              sx={{
+                '&:hover': {
+                  cursor: 'pointer',
+                  img: {
+                    borderRadius: 3,
+                  },
+                },
+              }}
+            >
               <img
                 src={item}
                 alt="background"
@@ -86,8 +97,12 @@ const FormCreateBoard: FC<{ onClose: () => void; handlerCreateBoard: (title: str
         </Typography>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose}>{t('CANCEL_BTN')}</Button>
-        <Button type="submit">{t('BOARD.CREATE_BTN')}</Button>
+        <Button onClick={onClose} sx={{ '&:hover': { color: 'primary.contrastText' } }}>
+          {t('CANCEL_BTN')}
+        </Button>
+        <Button type="submit" sx={{ '&:hover': { color: 'primary.contrastText' } }}>
+          {t('BOARD.CREATE_BTN')}
+        </Button>
       </DialogActions>
     </form>
   );

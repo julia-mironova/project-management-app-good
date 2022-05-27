@@ -44,7 +44,19 @@ const BoardPreview: FC<{
   };
 
   return (
-    <Card sx={{ width: '21rem', maxWidth: '21rem', height: '15rem', border: 2 }}>
+    <Card
+      sx={{
+        width: '21rem',
+        maxWidth: '21rem',
+        height: '15rem',
+        border: 2,
+        '&:hover': {
+          cursor: 'pointer',
+          boxShadow: 6,
+          borderColor: 'gray',
+        },
+      }}
+    >
       <CardMedia
         onClick={() => {
           navigate(`/boards/${board.id}`);
@@ -75,8 +87,6 @@ const BoardPreview: FC<{
                 display: 'flex',
                 justifyContent: 'space-between',
                 height: '33px',
-                border: '1px solid gray',
-                borderRadius: 2,
               }}
             >
               <TextField
@@ -89,8 +99,10 @@ const BoardPreview: FC<{
                   color: 'black',
                   width: '75%',
                   background: 'white',
-                  borderRadius: 1,
                   pl: 1,
+                  input: {
+                    fontSize: '1.3rem',
+                  },
                 }}
                 {...register('title', {
                   required: { value: true, message: 'this field is required' },
@@ -133,6 +145,11 @@ const BoardPreview: FC<{
             sx={{
               width: '100%',
               fontSize: '1.5rem',
+              fontWeight: 700,
+              color: 'primary.contrastText',
+              '&:hover': {
+                color: 'secondary.main',
+              },
             }}
             onClick={() => setIsEdit(true)}
           >
