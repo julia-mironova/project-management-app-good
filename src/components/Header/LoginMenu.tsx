@@ -1,27 +1,24 @@
 import { useState } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
-import { Box, Tooltip, IconButton, Typography, Menu, MenuItem } from '@mui/material';
+import { NavLink } from 'react-router-dom';
+import { IconButton, Typography, Menu, MenuItem } from '@mui/material';
 import LogoutIcon from '@mui/icons-material/Logout';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { TFuncKey, useTranslation } from 'react-i18next';
-import { generateUserInitials } from '../../utils/generateUserInitials';
 import { logOut } from '../../store/slices/authSlice';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux.hooks';
+import HeaderTooltip from './HeaderTooltip';
 
-export const LoginMenu = () => {
-  const navigate = useNavigate();
+const LoginMenu = () => {
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
-
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
-  const { isLoggedIn, name } = useAppSelector((state) => state.auth);
-
-  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElUser(event.currentTarget);
-  };
+  const { isLoggedIn } = useAppSelector((state) => state.auth);
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+  };
+
+  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorElUser(event.currentTarget);
   };
 
   const settings: Array<{ page: TFuncKey; path: string }> = [
@@ -31,52 +28,7 @@ export const LoginMenu = () => {
 
   return (
     <div>
-      <Tooltip title={t('HEADER.OPEN_SETTINGS')}>
-        <IconButton
-          onClick={(e) => {
-            isLoggedIn ? navigate('/edit-profile') : handleOpenUserMenu(e);
-          }}
-          sx={{ p: 0 }}
-        >
-          {isLoggedIn ? (
-            <Box
-              justifyContent="center"
-              alignItems="center"
-              sx={{
-                display: 'flex',
-                width: { xs: '2rem', sm: '3rem' },
-                height: { xs: '2rem', sm: '3rem' },
-                borderRadius: '50%',
-                bgcolor: 'white',
-                transition: '.4s',
-                '&:hover': { bgcolor: 'primary.contrastText' },
-              }}
-            >
-              <Typography
-                color="primary.contrastText"
-                sx={{
-                  fontWeight: '700',
-                  fontSize: '1.25rem',
-                  transition: '.4s',
-                  '&:hover': { color: 'white' },
-                }}
-              >
-                {name && generateUserInitials(name)}
-              </Typography>
-            </Box>
-          ) : (
-            <AccountCircleIcon
-              sx={{
-                color: 'white',
-                width: '3rem',
-                height: '3rem',
-                transition: '.4s',
-                '&:hover': { color: 'primary.contrastText' },
-              }}
-            />
-          )}
-        </IconButton>
-      </Tooltip>
+      <HeaderTooltip openMenu={handleOpenUserMenu} />
       <IconButton
         sx={{ p: 0 }}
         onClick={() => {
@@ -121,3 +73,5 @@ export const LoginMenu = () => {
     </div>
   );
 };
+
+export default LoginMenu;

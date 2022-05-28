@@ -14,7 +14,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import LanguageMenu from '../../components/LanguageMenu';
 import { useTranslation, TFuncKey } from 'react-i18next';
 import { LOGO, mainBgColor } from '../../constants/constants';
-import { LoginMenu } from './LoginMenu';
+import LoginMenu from './LoginMenu';
 import AwesomeLink from './AwesomeLink';
 
 const Header = () => {
@@ -23,7 +23,7 @@ const Header = () => {
   const [isSticky, setIsSticky] = useState<boolean>(false);
 
   const setStickyHeader = () => {
-    if (window.scrollY >= 90) {
+    if (window.scrollY > 90) {
       setIsSticky(true);
     } else {
       setIsSticky(false);
@@ -58,7 +58,7 @@ const Header = () => {
         position: 'sticky',
         top: 0,
         height: isSticky ? 'auto' : '64px',
-        backgroundColor: isSticky ? '#0F23F5' : mainBgColor,
+        backgroundColor: isSticky ? '#484b68' : mainBgColor,
       }}
     >
       <Container

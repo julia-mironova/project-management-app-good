@@ -11,8 +11,8 @@ import { DEVELOPERS_GH, mainBgColor } from '../../constants/constants';
 
 const Footer = () => {
   return (
-    <footer>
-      <Container maxWidth="xl" sx={{ color: 'white', backgroundColor: mainBgColor }}>
+    <footer style={{ backgroundColor: mainBgColor }}>
+      <Container maxWidth="xl" sx={{ color: 'white' }}>
         <Grid container justifyContent="space-between">
           <Grid container item xs={12} md={6} lg={4} p={0}>
             <BottomNavigation
