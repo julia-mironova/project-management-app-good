@@ -19,7 +19,8 @@ code {
 }
 
 .App {
-  height: 100vh;
+  min-height: 100vh;
+  text-align: center;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
