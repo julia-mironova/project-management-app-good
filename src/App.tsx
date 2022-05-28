@@ -3,12 +3,12 @@ import { Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout/Layout';
 import WelcomePage from './components/pages/WelcomePage';
 import Login from './components/Login/Login';
+import BoardsPage from './components/pages/BoardsPage';
+import RequireAuth from './hoc/RequireAuth';
+import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
 
 const Page404 = lazy(() => import('./components/pages/Page404'));
 const SingleBoardPage = lazy(() => import('./components/pages/SingleBoardPage'));
-const BoardsPage = lazy(() => import('./components/pages/BoardsPage'));
-const RequireAuth = lazy(() => import('./hoc/RequireAuth'));
-const ErrorBoundary = lazy(() => import('./components/ErrorBoundary'));
 const EditProfile = lazy(() => import('./components/pages/EditProfile'));
 const SignUp = lazy(() => import('./components/Login/SignUp'));
 

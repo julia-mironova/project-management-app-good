@@ -97,6 +97,7 @@ const SignUp = () => {
             margin="normal"
             required
             fullWidth
+            autoComplete="email"
             id="email"
             label={t('FORM.EMAIL')}
             {...register('email', {
@@ -114,6 +115,7 @@ const SignUp = () => {
             margin="normal"
             required
             fullWidth
+            autoComplete="current-password"
             label={t('FORM.PASSWORD')}
             type={showPassword ? 'text' : 'password'}
             id="password"

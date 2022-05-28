@@ -101,6 +101,7 @@ const EditProfile = () => {
             margin="normal"
             required
             fullWidth
+            autoComplete="username"
             id="email"
             label={t('FORM.EMAIL')}
             defaultValue={() => localStorageGetUser().id}
@@ -122,6 +123,7 @@ const EditProfile = () => {
             label={t('FORM.PASSWORD')}
             type={showPassword ? 'text' : 'password'}
             id="password"
+            autoComplete="current-password"
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
