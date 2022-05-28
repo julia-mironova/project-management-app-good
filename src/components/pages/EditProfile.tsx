@@ -67,14 +67,13 @@ const EditProfile = () => {
       <CssBaseline />
       <Box
         sx={{
-          height: 'calc(100vh - 132px)',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
         }}
       >
-        <Typography component="h1" variant="h4">
+        <Typography component="h2" variant="h5">
           {t('EDIT_PROFILE')}
         </Typography>
         <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate sx={{ mt: 1 }}>

@@ -14,46 +14,48 @@ const SignUp = lazy(() => import('./components/Login/SignUp'));
 
 function App() {
   return (
-    <Suspense>
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<WelcomePage />} />
-          <Route
-            path="edit-profile"
-            element={
-              <ErrorBoundary>
-                <RequireAuth>
-                  <EditProfile />
-                </RequireAuth>
-              </ErrorBoundary>
-            }
-          />
-          <Route
-            path="boards"
-            element={
-              <ErrorBoundary>
-                <RequireAuth>
-                  <BoardsPage />
-                </RequireAuth>
-              </ErrorBoundary>
-            }
-          />
-          <Route
-            path="boards/:boardId"
-            element={
-              <ErrorBoundary>
-                <RequireAuth>
-                  <SingleBoardPage />
-                </RequireAuth>
-              </ErrorBoundary>
-            }
-          />
-          <Route path="login" element={<Login />} />
-          <Route path="signup" element={<SignUp />} />
-          <Route path="*" element={<Page404 />} />
-        </Route>
-      </Routes>
-    </Suspense>
+    <div className="App">
+      <Suspense>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<WelcomePage />} />
+            <Route
+              path="edit-profile"
+              element={
+                <ErrorBoundary>
+                  <RequireAuth>
+                    <EditProfile />
+                  </RequireAuth>
+                </ErrorBoundary>
+              }
+            />
+            <Route
+              path="boards"
+              element={
+                <ErrorBoundary>
+                  <RequireAuth>
+                    <BoardsPage />
+                  </RequireAuth>
+                </ErrorBoundary>
+              }
+            />
+            <Route
+              path="boards/:boardId"
+              element={
+                <ErrorBoundary>
+                  <RequireAuth>
+                    <SingleBoardPage />
+                  </RequireAuth>
+                </ErrorBoundary>
+              }
+            />
+            <Route path="login" element={<Login />} />
+            <Route path="signup" element={<SignUp />} />
+            <Route path="*" element={<Page404 />} />
+          </Route>
+        </Routes>
+      </Suspense>
+    </div>
   );
 }
 

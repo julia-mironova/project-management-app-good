@@ -222,7 +222,7 @@ const SingleBoardPage = () => {
     <Container
       maxWidth={false}
       sx={{
-        height: 'calc(100vh - 132px)',
+        height: '100%',
         p: 0,
         pt: 'calc(71px)',
         background: `url('/pictures/background${getImageNumber(title)}.webp')`,

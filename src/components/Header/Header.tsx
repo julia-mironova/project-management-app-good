@@ -14,7 +14,7 @@ import {
 import MenuIcon from '@mui/icons-material/Menu';
 import LanguageMenu from '../../components/LanguageMenu';
 import { useTranslation, TFuncKey } from 'react-i18next';
-import { LOGO } from '../../constants/constants';
+import { LOGO, mainBgColor } from '../../constants/constants';
 import { LoginMenu } from './LoginMenu';
 
 const Header = () => {
@@ -58,8 +58,8 @@ const Header = () => {
       sx={{
         position: 'sticky',
         top: 0,
-        height: isSticky ? '65px' : '',
-        backgroundColor: isSticky ? '#0F23F5' : '',
+        height: isSticky ? 'auto' : '64px',
+        backgroundColor: isSticky ? '#0F23F5' : mainBgColor,
       }}
     >
       <Container
@@ -67,7 +67,8 @@ const Header = () => {
         sx={{
           px: {
             xs: 0,
-            sm: 1,
+            sm: 2,
+            xl: 4,
           },
         }}
       >
@@ -128,11 +129,11 @@ const Header = () => {
                 onClick={handleCloseNavMenu}
                 sx={{
                   my: 2,
-                  color: 'white',
+                  color: location.pathname === path ? '#0dca0d' : 'white',
                   display: 'block',
                   textDecoration: location.pathname === path ? 'underline' : '',
                   transition: '.4s',
-                  '&:hover': { color: 'primary.contrastText' },
+                  '&:hover': { color: '#0dca0d' },
                 }}
                 component={NavLink}
                 to={path}

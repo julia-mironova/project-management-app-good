@@ -45,7 +45,6 @@ const BoardsPage = () => {
         alignContent: 'flex-start',
         gap: 5,
         p: 3,
-        height: 'calc(100vh - 148px)',
         overflowY: 'auto',
         '&::-webkit-scrollbar': {
           width: '.7rem',
