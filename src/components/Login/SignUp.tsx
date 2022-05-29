@@ -147,7 +147,7 @@ const SignUp = () => {
           >
             {t('SIGNUP.HEADER')}
           </LoadingButton>
-          <Button component={NavLink} to={'/login'}>
+          <Button component={NavLink} to={'/signin'}>
             <Typography variant="body2">{t('SIGNUP.ACCOUNT_EXIST_MSG')}</Typography>
           </Button>
         </Box>
