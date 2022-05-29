@@ -6,11 +6,11 @@ import Login from './components/Login/Login';
 import BoardsPage from './components/pages/BoardsPage';
 import RequireAuth from './hoc/RequireAuth';
 import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
+import SignUp from './components/Login/SignUp';
 
 const Page404 = lazy(() => import('./components/pages/Page404'));
 const SingleBoardPage = lazy(() => import('./components/pages/SingleBoardPage'));
 const EditProfile = lazy(() => import('./components/pages/EditProfile'));
-const SignUp = lazy(() => import('./components/Login/SignUp'));
 
 function App() {
   return (
