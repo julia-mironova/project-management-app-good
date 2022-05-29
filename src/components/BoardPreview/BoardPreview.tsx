@@ -148,7 +148,7 @@ const BoardPreview: FC<{
               fontWeight: 700,
               color: 'primary.contrastText',
               '&:hover': {
-                color: 'secondary.main',
+                color: 'secondary.contrastText',
               },
             }}
             onClick={() => setIsEdit(true)}
