@@ -37,15 +37,26 @@ const LoginMenu = () => {
         variant="outlined"
         color="secondary"
         aria-label="large contained button group"
-        sx={{
-          '@media only screen and (min-width: 450px)': {
-            ml: 2,
-          },
-        }}
+        // sx={{
+        //   '@media only screen and (min-width: 450px)': {
+        //     p: 0,
+        //     m: 0.5,
+        //   },
+        // }}
       >
         {isLoggedIn ? (
           <>
-            <Button onClick={() => navigate('/boards')}>Go to Main Page</Button>
+            <Button
+              onClick={() => navigate('/boards')}
+              sx={{
+                '@media only screen and (max-width: 450px)': {
+                  p: 0,
+                  m: 0.5,
+                },
+              }}
+            >
+              Go to Main Page
+            </Button>
           </>
         ) : (
           <>
@@ -53,7 +64,8 @@ const LoginMenu = () => {
               onClick={() => navigate('/signin')}
               sx={{
                 '@media only screen and (max-width: 450px)': {
-                  p: 1,
+                  p: 0,
+                  ml: 0.5,
                 },
               }}
             >
@@ -63,7 +75,8 @@ const LoginMenu = () => {
               onClick={() => navigate('/signup')}
               sx={{
                 '@media only screen and (max-width: 450px)': {
-                  p: 1,
+                  p: 0,
+                  mr: 0.5,
                 },
               }}
             >
