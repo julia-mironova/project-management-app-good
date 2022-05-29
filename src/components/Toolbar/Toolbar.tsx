@@ -184,7 +184,6 @@ const Toolbar = ({ filters, setFilters, usersIdCreatedTasks }: IProps) => {
           <StyledInputBase
             placeholder={t('FILTER.SEARCH')}
             value={filters.searchText}
-            autoFocus={true}
             inputProps={{ 'aria-label': 'search' }}
             onChange={(e) => setFilters({ ...filters, searchText: e.target.value })}
           />

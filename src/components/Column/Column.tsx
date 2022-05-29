@@ -102,6 +102,7 @@ const Column = ({ column, filters }: { column: IColumn; filters: IFilters }) => 
                   <TextField
                     defaultValue={column.title}
                     variant="standard"
+                    autoFocus
                     error={errors.title ? true : false}
                     helperText={errors.title ? errors.title.message : ''}
                     sx={{
