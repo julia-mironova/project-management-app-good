@@ -8,7 +8,7 @@ describe('login test', () => {
     expect(screen.getByTestId('VisibilityIcon')).toBeInTheDocument();
     expect(screen.getByTestId('SendIcon')).toBeInTheDocument();
     expect(screen.getAllByText('Sign In')).toHaveLength(2);
-    expect(screen.getByRole('heading', { name: /login/i }));
+    expect(screen.getByRole('heading', { name: /Sign In/i }));
   });
   test('fields type', () => {
     render(<Login />);
