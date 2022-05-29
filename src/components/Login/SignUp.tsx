@@ -30,9 +30,15 @@ const SignUp = () => {
 
   const { t } = useTranslation();
   const [showPassword, setShowPassword] = useState(false);
-  const { id, name, token, rejectMsg, pending } = useAppSelector((state) => state.auth);
+  const { id, name, token, rejectMsg, pending, isLoggedIn } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigate('/boards');
+    }
+  }, [navigate, isLoggedIn]);
 
   const onSubmit = async (data: propsSubmitSignUp) => {
     await dispatch(
