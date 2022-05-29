@@ -6,11 +6,13 @@ import SnackbarMessage from '../SnackbarMessage';
 const Layout = () => {
   return (
     <>
-      <Header />
-      <Outlet />
+      <div className="wrapper">
+        <Header />
+        <Outlet />
 
+        <Footer />
+      </div>
       <SnackbarMessage />
-      <Footer />
     </>
   );
 };

@@ -33,6 +33,7 @@ const BoardsPage = () => {
     <Container
       maxWidth="xl"
       sx={{
+        height: 'calc(100vh - 170px)',
         mb: 2,
         display: 'flex',
         flexDirection: 'row',
