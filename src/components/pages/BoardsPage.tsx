@@ -42,6 +42,9 @@ const BoardsPage = () => {
         '@media only screen and (max-width: 1200px)': {
           justifyContent: 'center',
         },
+        '@media only screen and (max-width: 900px)': {
+          height: 'calc(100vh - 199px)',
+        },
         alignItems: 'flex-start',
         alignContent: 'flex-start',
         gap: 5,

@@ -49,7 +49,6 @@ const BoardPreview: FC<{
         width: '21rem',
         maxWidth: '21rem',
         height: '15rem',
-        border: 2,
         '&:hover': {
           cursor: 'pointer',
           boxShadow: 6,
@@ -65,7 +64,6 @@ const BoardPreview: FC<{
         height="170"
         image={dataPictures[+board.title?.slice(0, 2)]}
         alt="background"
-        sx={{ pt: 2, pl: 2, pr: 2, pb: 0 }}
       />
       <CardContent
         sx={{
@@ -92,6 +90,7 @@ const BoardPreview: FC<{
               <TextField
                 defaultValue={board.title.slice(2)}
                 variant="standard"
+                autoFocus
                 error={errors.title ? true : false}
                 helperText={errors.title ? errors.title.message : ''}
                 sx={{

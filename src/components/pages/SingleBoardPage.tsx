@@ -233,6 +233,7 @@ const SingleBoardPage = () => {
         overflowY: 'auto',
         '@media only screen and (max-width: 900px)': {
           pt: 'calc(148px)',
+          height: 'calc(100vh - 183px)',
         },
         '@media only screen and (max-width: 600px)': {
           pt: 0,

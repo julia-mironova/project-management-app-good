@@ -58,6 +58,9 @@ const Login = () => {
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
+          '@media only screen and (max-width: 900px)': {
+            height: 'calc(100vh - 183px)',
+          },
         }}
       >
         <Avatar sx={{ m: 1, bgcolor: 'secondary.contrastText' }}>
