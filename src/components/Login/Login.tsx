@@ -44,7 +44,7 @@ const Login = () => {
     if (path === 'string') {
       navigate(path, { replace: true });
     } else {
-      navigate('/');
+      navigate('/boards');
     }
   };
 

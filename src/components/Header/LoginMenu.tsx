@@ -4,12 +4,14 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import { logOut } from '../../store/slices/authSlice';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux.hooks';
 import HeaderTooltip from './HeaderTooltip';
+import { useTranslation } from 'react-i18next';
 
 const LoginMenu = () => {
   const dispatch = useAppDispatch();
   const { isLoggedIn } = useAppSelector((state) => state.auth);
   const navigate = useNavigate();
   const matches = useMediaQuery('(max-width:600px)');
+  const { t } = useTranslation();
 
   return (
     <div>
@@ -33,17 +35,7 @@ const LoginMenu = () => {
           />
         )}
       </IconButton>
-      <ButtonGroup
-        variant="outlined"
-        color="secondary"
-        aria-label="large contained button group"
-        // sx={{
-        //   '@media only screen and (min-width: 450px)': {
-        //     p: 0,
-        //     m: 0.5,
-        //   },
-        // }}
-      >
+      <ButtonGroup variant="outlined" color="secondary" aria-label="large contained button group">
         {isLoggedIn ? (
           <>
             <Button
@@ -55,7 +47,7 @@ const LoginMenu = () => {
                 },
               }}
             >
-              Go to Main Page
+              {t('GO_TO_MAIN')}
             </Button>
           </>
         ) : (
@@ -69,7 +61,7 @@ const LoginMenu = () => {
                 },
               }}
             >
-              Sign In
+              {t('LOGIN.HEADER')}
             </Button>
             <Button
               onClick={() => navigate('/signup')}
@@ -80,7 +72,7 @@ const LoginMenu = () => {
                 },
               }}
             >
-              Sign Up
+              {t('SIGNUP.HEADER')}
             </Button>
           </>
         )}
