@@ -90,6 +90,7 @@ const BoardPreview: FC<{
               <TextField
                 defaultValue={board.title.slice(2)}
                 variant="standard"
+                autoFocus
                 error={errors.title ? true : false}
                 helperText={errors.title ? errors.title.message : ''}
                 sx={{
