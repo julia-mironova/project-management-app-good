@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { NavLink } from 'react-router-dom';
-import { IconButton, Typography, Menu, MenuItem } from '@mui/material';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { IconButton, Typography, Menu, MenuItem, Button, ButtonGroup } from '@mui/material';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { TFuncKey, useTranslation } from 'react-i18next';
 import { logOut } from '../../store/slices/authSlice';
@@ -12,6 +12,7 @@ const LoginMenu = () => {
   const { t } = useTranslation();
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
   const { isLoggedIn } = useAppSelector((state) => state.auth);
+  const navigate = useNavigate();
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
@@ -70,6 +71,23 @@ const LoginMenu = () => {
           </MenuItem>
         ))}
       </Menu>
+      <ButtonGroup
+        variant="outlined"
+        color="secondary"
+        aria-label="large contained button group"
+        sx={{ ml: 2 }}
+      >
+        {isLoggedIn ? (
+          <>
+            <Button onClick={() => navigate('/boards')}>Go to Main Page</Button>
+          </>
+        ) : (
+          <>
+            <Button onClick={() => navigate('/signin')}>Sign In</Button>
+            <Button onClick={() => navigate('/signup')}>Sign Up</Button>
+          </>
+        )}
+      </ButtonGroup>
     </div>
   );
 };
