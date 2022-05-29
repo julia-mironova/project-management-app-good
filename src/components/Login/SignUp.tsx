@@ -67,7 +67,7 @@ const SignUp = () => {
           justifyContent: 'center',
         }}
       >
-        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+        <Avatar sx={{ m: 1, bgcolor: 'secondary.contrastText' }}>
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h4">
@@ -147,7 +147,7 @@ const SignUp = () => {
           >
             {t('SIGNUP.HEADER')}
           </LoadingButton>
-          <Button component={NavLink} to={'/login'}>
+          <Button component={NavLink} to={'/signin'}>
             <Typography variant="body2">{t('SIGNUP.ACCOUNT_EXIST_MSG')}</Typography>
           </Button>
         </Box>

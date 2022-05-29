@@ -106,7 +106,7 @@ const WelcomePage = () => {
               align="center"
               mt={2}
               mb={2}
-              color="text.secondary"
+              color="text.primary"
             >
               {t('DEVELOPERS.TEAM_DESCR')}
             </Typography>
@@ -157,7 +157,7 @@ const WelcomePage = () => {
                         target="_blank"
                         sx={{
                           transition: '.4s',
-                          color: 'secondary.main',
+                          color: 'secondary.contrastText',
                           '&:hover': { color: 'primary.contrastText' },
                         }}
                       >

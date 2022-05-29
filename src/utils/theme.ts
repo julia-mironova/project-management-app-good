@@ -3,11 +3,13 @@ const theme = createTheme({
   palette: {
     primary: {
       main: '#6585F3',
+      light: '#484b68',
       dark: '#0F23F5',
       contrastText: '#172B4D',
     },
     secondary: {
-      main: '#686970',
+      main: '#FFFFFF',
+      contrastText: '#686970',
     },
   },
   typography: {

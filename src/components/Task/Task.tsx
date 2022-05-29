@@ -17,7 +17,7 @@ const Task = ({ task, index }: { task: ITask; index: number }) => {
     ...theme.typography.h6,
     textAlign: 'left',
     paddingLeft: theme.spacing(2),
-    color: theme.palette.text.secondary,
+    color: theme.palette.text.primary,
     height: 60,
     width: '100%',
     lineHeight: '60px',

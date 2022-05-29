@@ -60,7 +60,7 @@ const Login = () => {
           justifyContent: 'center',
         }}
       >
-        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+        <Avatar sx={{ m: 1, bgcolor: 'secondary.contrastText' }}>
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h4">

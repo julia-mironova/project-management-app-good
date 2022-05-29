@@ -61,7 +61,7 @@ const SingleBoardPage = () => {
       if (code) {
         if (+code === 401) {
           dispatch(logOut());
-          navigate('/login', { replace: true });
+          navigate('/signin', { replace: true });
         } else {
           navigate('/not-found-board', { replace: true });
         }

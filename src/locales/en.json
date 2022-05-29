@@ -3,10 +3,10 @@
     "WELCOME": "Welcome",
     "BOARDS": "Boards",
     "EDIT_PROFILE": "Profile",
-    "OPEN_SETTINGS": "Go to boards"
+    "OPEN_SETTINGS": "Profile"
   },
   "AUTH": {
-    "LOG_IN": "Log in",
+    "LOG_IN": "Sidn in",
     "SIGN_UP": "Sign up"
   },
   "LANGUAGES": {
@@ -21,13 +21,13 @@
     "DESCR": "Track all the tasks and miss nothing!"
   },
   "LOGIN": {
-    "HEADER": "Login",
+    "HEADER": "Sign In",
     "ACCOUNT_ABSENCE_MSG": "Don't have an account? Sign Up"
   },
   "SIGNUP": {
     "NAME": "Name",
     "HEADER": "Sign Up",
-    "ACCOUNT_EXIST_MSG": "Do you have an account? Login.",
+    "ACCOUNT_EXIST_MSG": "Do you have an account? Sign In.",
     "DELETE": "Delete user"
   },
   "FORM": {

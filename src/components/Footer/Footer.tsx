@@ -7,22 +7,22 @@ import {
   Grid,
   Box,
 } from '@mui/material';
-// import { useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import rsLogo from '../../assets/svg/rs_school.svg';
 import { DEVELOPERS_GH } from '../../constants/constants';
 
 const Footer = () => {
-  /*   const location = useLocation();
-  const isMainPage = location.pathname === '/'; */
+  const location = useLocation();
+  const isMainPage = location.pathname === '/';
   return (
     <footer>
-      <Box bgcolor="primary.main" color="white">
+      <Box bgcolor={isMainPage ? 'primary.light' : 'primary.main'} color="white">
         <Container maxWidth="xl" sx={{ color: 'white' }}>
           <Grid container justifyContent="space-between">
             <Grid container item xs={12} md={6} lg={4} p={0}>
               <BottomNavigation
                 sx={{
-                  backgroundColor: 'primary.main',
+                  backgroundColor: isMainPage ? 'primary.light' : 'primary.main',
                   width: '50rem',
                   display: 'flex',
                   justifyContent: 'start',
@@ -43,7 +43,7 @@ const Footer = () => {
                         href={dev.lingGH}
                         underline="none"
                         rel="noopener"
-                        color="secondary.contrastText"
+                        color="secondary"
                         target="_blank"
                       >
                         {dev.name}
