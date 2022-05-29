@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { generateUserInitials } from '../../utils/generateUserInitials';
 import { useAppSelector } from '../../hooks/redux.hooks';
 
-const HeaderTooltip = ({ openMenu }: { openMenu: (e: React.MouseEvent<HTMLElement>) => void }) => {
+const HeaderTooltip = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { isLoggedIn, name } = useAppSelector((state) => state.auth);
@@ -14,8 +14,8 @@ const HeaderTooltip = ({ openMenu }: { openMenu: (e: React.MouseEvent<HTMLElemen
   return (
     <Tooltip title={t('HEADER.OPEN_SETTINGS')}>
       <IconButton
-        onClick={(e) => {
-          isLoggedIn ? navigate('/edit-profile') : openMenu(e);
+        onClick={() => {
+          isLoggedIn && navigate('/edit-profile');
         }}
         sx={{ p: 0 }}
       >

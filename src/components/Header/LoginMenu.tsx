@@ -1,42 +1,26 @@
-import { useState } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
-import { IconButton, Typography, Menu, MenuItem, Button, ButtonGroup } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import { IconButton, Button, ButtonGroup, useMediaQuery } from '@mui/material';
 import LogoutIcon from '@mui/icons-material/Logout';
-import { TFuncKey, useTranslation } from 'react-i18next';
 import { logOut } from '../../store/slices/authSlice';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux.hooks';
 import HeaderTooltip from './HeaderTooltip';
 
 const LoginMenu = () => {
   const dispatch = useAppDispatch();
-  const { t } = useTranslation();
-  const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
   const { isLoggedIn } = useAppSelector((state) => state.auth);
   const navigate = useNavigate();
-
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
-
-  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElUser(event.currentTarget);
-  };
-
-  const settings: Array<{ page: TFuncKey; path: string }> = [
-    { page: 'AUTH.LOG_IN', path: '/signin' },
-    { page: 'AUTH.SIGN_UP', path: '/signup' },
-  ];
+  const matches = useMediaQuery('(max-width:600px)');
 
   return (
     <div>
-      <HeaderTooltip openMenu={handleOpenUserMenu} />
+      {!matches && <HeaderTooltip />}
       <IconButton
         sx={{ p: 0 }}
         onClick={() => {
           dispatch(logOut());
         }}
       >
-        {isLoggedIn && (
+        {isLoggedIn && !matches && (
           <LogoutIcon
             sx={{
               color: 'white',
@@ -49,33 +33,15 @@ const LoginMenu = () => {
           />
         )}
       </IconButton>
-      <Menu
-        sx={{ mt: '45px' }}
-        id="menu-appbar"
-        anchorEl={anchorElUser}
-        anchorOrigin={{
-          vertical: 'top',
-          horizontal: 'right',
-        }}
-        keepMounted
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'right',
-        }}
-        open={Boolean(anchorElUser)}
-        onClose={handleCloseUserMenu}
-      >
-        {settings.map(({ page, path }) => (
-          <MenuItem key={page} onClick={handleCloseUserMenu} component={NavLink} to={path}>
-            <Typography textAlign="center">{t(`${page}`)}</Typography>
-          </MenuItem>
-        ))}
-      </Menu>
       <ButtonGroup
         variant="outlined"
         color="secondary"
         aria-label="large contained button group"
-        sx={{ ml: 2 }}
+        sx={{
+          '@media only screen and (min-width: 450px)': {
+            ml: 2,
+          },
+        }}
       >
         {isLoggedIn ? (
           <>
@@ -83,8 +49,26 @@ const LoginMenu = () => {
           </>
         ) : (
           <>
-            <Button onClick={() => navigate('/signin')}>Sign In</Button>
-            <Button onClick={() => navigate('/signup')}>Sign Up</Button>
+            <Button
+              onClick={() => navigate('/signin')}
+              sx={{
+                '@media only screen and (max-width: 450px)': {
+                  p: 1,
+                },
+              }}
+            >
+              Sign In
+            </Button>
+            <Button
+              onClick={() => navigate('/signup')}
+              sx={{
+                '@media only screen and (max-width: 450px)': {
+                  p: 1,
+                },
+              }}
+            >
+              Sign Up
+            </Button>
           </>
         )}
       </ButtonGroup>
