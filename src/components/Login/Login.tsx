@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import {
@@ -34,6 +34,12 @@ const Login = () => {
   const path: string | unknown = useLocation().state;
   const [showPassword, setShowPassword] = useState(false);
 
+  useEffect(() => {
+    if (state.isLoggedIn) {
+      navigate('/boards');
+    }
+  }, [navigate, state.isLoggedIn]);
+
   const onSubmit = async (data: propsSubmitLogin) => {
     const rename = {
       login: data.email, // email это поле login на сервере
@@ -44,7 +50,7 @@ const Login = () => {
     if (path === 'string') {
       navigate(path, { replace: true });
     } else {
-      navigate('/');
+      navigate('/boards');
     }
   };
 
