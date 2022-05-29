@@ -7,7 +7,7 @@ describe('login test', () => {
     expect(screen.getByTestId('LockOutlinedIcon')).toBeInTheDocument();
     expect(screen.getByTestId('VisibilityIcon')).toBeInTheDocument();
     expect(screen.getByTestId('SendIcon')).toBeInTheDocument();
-    expect(screen.getAllByText('Login')).toHaveLength(2);
+    expect(screen.getAllByText('Sign In')).toHaveLength(2);
     expect(screen.getByRole('heading', { name: /login/i }));
   });
   test('fields type', () => {
