@@ -22,7 +22,7 @@ const LoginMenu = () => {
   };
 
   const settings: Array<{ page: TFuncKey; path: string }> = [
-    { page: 'AUTH.LOG_IN', path: '/login' },
+    { page: 'AUTH.LOG_IN', path: '/signin' },
     { page: 'AUTH.SIGN_UP', path: '/signup' },
   ];
 

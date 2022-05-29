@@ -15,7 +15,7 @@ const HeaderTooltip = ({ openMenu }: { openMenu: (e: React.MouseEvent<HTMLElemen
     <Tooltip title={t('HEADER.OPEN_SETTINGS')}>
       <IconButton
         onClick={(e) => {
-          isLoggedIn ? navigate('/edit-profile') : openMenu(e);
+          isLoggedIn ? navigate('/boards') : openMenu(e);
         }}
         sx={{ p: 0 }}
       >
