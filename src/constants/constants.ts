@@ -7,3 +7,6 @@ export const DEVELOPERS_GH = [
   { name: 'EVG777-prog', lingGH: 'https://github.com/EVG777-prog' },
   { name: 'VolhaBukhal', lingGH: 'https://github.com/VolhaBukhal' },
 ];
+
+export const mainBgColor = 'rgb(34 46 168)';
+export const mainGrey = '#484b68';

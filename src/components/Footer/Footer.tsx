@@ -2,27 +2,27 @@ import {
   Container,
   Typography,
   BottomNavigation,
-  Box,
   BottomNavigationAction,
   Link,
   Grid,
+  Box,
 } from '@mui/material';
-import { useLocation } from 'react-router-dom';
+// import { useLocation } from 'react-router-dom';
 import rsLogo from '../../assets/svg/rs_school.svg';
 import { DEVELOPERS_GH } from '../../constants/constants';
 
 const Footer = () => {
-  const location = useLocation();
-  const isMainPage = location.pathname === '/';
+  /*   const location = useLocation();
+  const isMainPage = location.pathname === '/'; */
   return (
     <footer>
-      <Box bgcolor={isMainPage ? 'primary.dark' : 'primary.main'} color="white">
-        <Container maxWidth="xl">
+      <Box bgcolor="primary.main" color="white">
+        <Container maxWidth="xl" sx={{ color: 'white' }}>
           <Grid container justifyContent="space-between">
             <Grid container item xs={12} md={6} lg={4} p={0}>
               <BottomNavigation
                 sx={{
-                  backgroundColor: isMainPage ? 'primary.dark' : 'primary.main',
+                  backgroundColor: 'primary.main',
                   width: '50rem',
                   display: 'flex',
                   justifyContent: 'start',

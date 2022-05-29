@@ -33,6 +33,7 @@ const BoardsPage = () => {
     <Container
       maxWidth="xl"
       sx={{
+        height: 'calc(100vh - 170px)',
         mb: 2,
         display: 'flex',
         flexDirection: 'row',
@@ -45,7 +46,6 @@ const BoardsPage = () => {
         alignContent: 'flex-start',
         gap: 5,
         p: 3,
-        height: 'calc(100vh - 148px)',
         overflowY: 'auto',
         '&::-webkit-scrollbar': {
           width: '.7rem',

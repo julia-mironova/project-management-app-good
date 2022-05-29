@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import {
   AppBar,
   Container,
@@ -7,7 +7,6 @@ import {
   Typography,
   Box,
   Menu,
-  Button,
   MenuItem,
   IconButton,
 } from '@mui/material';
@@ -15,16 +14,16 @@ import MenuIcon from '@mui/icons-material/Menu';
 import LanguageMenu from '../../components/LanguageMenu';
 import { useTranslation, TFuncKey } from 'react-i18next';
 import { LOGO } from '../../constants/constants';
-import { LoginMenu } from './LoginMenu';
+import LoginMenu from './LoginMenu';
+import AwesomeLink from './AwesomeLink';
 
 const Header = () => {
   const { t } = useTranslation();
-  const location = useLocation();
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [isSticky, setIsSticky] = useState<boolean>(false);
 
   const setStickyHeader = () => {
-    if (window.scrollY >= 60) {
+    if (window.scrollY > 90) {
       setIsSticky(true);
     } else {
       setIsSticky(false);
@@ -32,11 +31,11 @@ const Header = () => {
   };
 
   useEffect(() => {
-    window.addEventListener('scroll', setStickyHeader);
+    window.document.addEventListener('scroll', setStickyHeader);
     return () => {
-      window.removeEventListener('scroll', setStickyHeader);
+      window.document.removeEventListener('scroll', setStickyHeader);
     };
-  }, [isSticky]);
+  }, []);
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
@@ -58,8 +57,8 @@ const Header = () => {
       sx={{
         position: 'sticky',
         top: 0,
-        height: isSticky ? '65px' : '',
-        backgroundColor: isSticky ? '#0F23F5' : '',
+        height: isSticky ? 'auto' : '64px',
+        backgroundColor: isSticky ? '#484b68' : 'primary.main',
       }}
     >
       <Container
@@ -67,7 +66,8 @@ const Header = () => {
         sx={{
           px: {
             xs: 0,
-            sm: 1,
+            sm: 2,
+            xl: 4,
           },
         }}
       >
@@ -123,22 +123,7 @@ const Header = () => {
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map(({ page, path }) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{
-                  my: 2,
-                  color: 'white',
-                  display: 'block',
-                  textDecoration: location.pathname === path ? 'underline' : '',
-                  transition: '.4s',
-                  '&:hover': { color: 'primary.contrastText' },
-                }}
-                component={NavLink}
-                to={path}
-              >
-                {t(`${page}`)}
-              </Button>
+              <AwesomeLink key={page} path={path} text={t(`${page}`)} />
             ))}
           </Box>
           <LanguageMenu />

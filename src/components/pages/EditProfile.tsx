@@ -67,14 +67,13 @@ const EditProfile = () => {
       <CssBaseline />
       <Box
         sx={{
-          height: 'calc(100vh - 132px)',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
         }}
       >
-        <Typography component="h1" variant="h4">
+        <Typography component="h2" variant="h5">
           {t('EDIT_PROFILE')}
         </Typography>
         <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate sx={{ mt: 1 }}>
@@ -102,6 +101,7 @@ const EditProfile = () => {
             margin="normal"
             required
             fullWidth
+            autoComplete="username"
             id="email"
             label={t('FORM.EMAIL')}
             defaultValue={() => localStorageGetUser().id}
@@ -123,6 +123,7 @@ const EditProfile = () => {
             label={t('FORM.PASSWORD')}
             type={showPassword ? 'text' : 'password'}
             id="password"
+            autoComplete="current-password"
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">

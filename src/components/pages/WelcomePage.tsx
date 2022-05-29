@@ -6,6 +6,7 @@ import victorImg from '../../assets/images/victor.jpg';
 import evgeniyImg from '../../assets/images/eugen.jpg';
 
 import { useTranslation } from 'react-i18next';
+import { mainBgColor } from '../../constants/constants';
 
 const WelcomePage = () => {
   const { t } = useTranslation();
@@ -50,7 +51,7 @@ const WelcomePage = () => {
               <Typography
                 variant="h3"
                 component="h1"
-                color="primary.dark"
+                color={mainBgColor}
                 sx={{
                   fontWeight: '700',
                   marginBlock: '2rem',
@@ -90,7 +91,7 @@ const WelcomePage = () => {
               align="center"
               mt={2}
               mb={2}
-              color="primary.dark"
+              color={mainBgColor}
               sx={{
                 '@media only screen and (max-width: 600px)': {
                   fontSize: '2rem',

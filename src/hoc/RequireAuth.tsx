@@ -10,7 +10,7 @@ const RequireAuth = ({ children }: RequireAuthProps) => {
   const { isLoggedIn } = useAppSelector((store) => store.auth);
 
   if (!isLoggedIn) {
-    return <Navigate to="/login" state={location.pathname} />;
+    return <Navigate to="/signin" state={location.pathname} />;
   }
 
   return children;
