@@ -1,3 +1,4 @@
+import { Typography } from '@mui/material';
 import { FC } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import './link.css';
@@ -9,7 +10,7 @@ const AwesomeLink: FC<{
   const location = useLocation();
   return (
     <NavLink to={path} className="awesomeLink">
-      {text}
+      <Typography>{text}</Typography>
       <svg viewBox="0 0 70 36" className="svgLink">
         <path
           stroke={path === location.pathname ? '#bbc1e1' : ''}

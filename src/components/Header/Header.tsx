@@ -13,7 +13,7 @@ import {
 import MenuIcon from '@mui/icons-material/Menu';
 import LanguageMenu from '../../components/LanguageMenu';
 import { useTranslation, TFuncKey } from 'react-i18next';
-import { LOGO, mainBgColor } from '../../constants/constants';
+import { LOGO } from '../../constants/constants';
 import LoginMenu from './LoginMenu';
 import AwesomeLink from './AwesomeLink';
 
@@ -58,7 +58,7 @@ const Header = () => {
         position: 'sticky',
         top: 0,
         height: isSticky ? 'auto' : '64px',
-        backgroundColor: isSticky ? '#484b68' : mainBgColor,
+        backgroundColor: isSticky ? '#484b68' : 'primary.main',
       }}
     >
       <Container

@@ -4,7 +4,7 @@
     position: relative;
     text-decoration: none;
     color: inherit;
-    padding: 0 10px;
+    padding: 0 15px;
     margin: 0 var(--space, 2px);
     transition: margin 0.25s;
 }
@@ -26,7 +26,7 @@
 }
 
 .awesomeLink:hover {
-    --space: 10px;
+    --space: 2px;
     --stroke: #1de7bb;
     --stroke-delay: 0.1s;
     --offset: 180px;

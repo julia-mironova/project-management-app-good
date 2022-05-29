@@ -9,3 +9,4 @@ export const DEVELOPERS_GH = [
 ];
 
 export const mainBgColor = 'rgb(34 46 168)';
+export const mainGrey = '#484b68';
