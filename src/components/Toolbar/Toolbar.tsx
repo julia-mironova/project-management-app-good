@@ -62,6 +62,7 @@ const Toolbar = ({ filters, setFilters, usersIdCreatedTasks }: IProps) => {
   }));
 
   const WhiteBorderTextField = styled(OutlinedInput)(({ theme }) => ({
+    textAlign: 'left',
     '& .MuiSelect-select': {
       padding: theme.spacing(1.2, 1, 1.2, 1),
       transition: theme.transitions.create('width'),
@@ -81,7 +82,13 @@ const Toolbar = ({ filters, setFilters, usersIdCreatedTasks }: IProps) => {
 
   const usersCreatedTasks = usersIdCreatedTasks.map((id) => {
     const user = usersAll.find((user) => user.id === id);
-    return user;
+    const resultUser = {
+      ...user,
+      name: user?.name || `${t('FILTER.UNKNOWN_USER')}`,
+      id: user?.id || 'deleted',
+    };
+
+    return resultUser;
   });
 
   const [personName, setPersonName] = React.useState<string[]>([]);

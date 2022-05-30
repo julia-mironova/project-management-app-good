@@ -78,7 +78,8 @@
   "FILTER": {
     "SELECT": "Select users",
     "NO_TASKS": "No tasks",
-    "SEARCH": "Search…"
+    "SEARCH": "Search…",
+    "UNKNOWN_USER": "Unknown user"
   },
   "TITLE": "Title",
   "DESCR": "Description",

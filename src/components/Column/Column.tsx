@@ -242,7 +242,9 @@ const Column = ({ column, filters }: { column: IColumn; filters: IFilters }) => 
                           (filters.searchText === '' ||
                             task.title.includes(filters.searchText) ||
                             task.description.includes(filters.searchText)) &&
-                          (filters.usersId.length === 0 || filters.usersId.includes(task.userId))
+                          (filters.usersId.length === 0 ||
+                            filters.usersId.includes(task.userId) ||
+                            (filters.usersId.includes('deleted') && task.userId == null))
                       )
                       .map((task, index) => <Task key={task.id} task={task} index={index} />)}
                   {dropProvided.placeholder}

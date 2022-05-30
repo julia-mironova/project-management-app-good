@@ -59,7 +59,7 @@ const TaskFull = ({ onClose, task }: IPropsTaskFull) => {
   const { usersAll } = useAppSelector((state) => state.boards);
 
   const currentUser =
-    usersAll?.find((user) => user.id === task.userId)?.name || 'Неизвестный пользователь';
+    usersAll?.find((user) => user.id === task.userId)?.name || `${t('FILTER.UNKNOWN_USER')}`;
 
   const onSubmit = (data: IFormTaskData) => {
     const userId = localStorageGetUser()?.id;
@@ -128,7 +128,7 @@ const TaskFull = ({ onClose, task }: IPropsTaskFull) => {
             variant="body1"
             sx={{
               m: 0,
-              p: 0,
+              px: 1,
             }}
           >
             {t('TASK.CREATE_BY')} <span style={{ color: 'blue' }}>{currentUser}</span>
