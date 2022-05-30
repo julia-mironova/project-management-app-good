@@ -55,12 +55,15 @@ const Task = ({ task, index }: { task: ITask; index: number }) => {
   }
 
   function stringAvatar(name: string) {
+    const curName = name ? name : 'd';
     return {
       sx: {
-        bgcolor: stringToColor(name),
+        bgcolor: stringToColor(curName),
       },
       children: `${
-        name.split(' ').length > 1 ? name.split(' ')[0][0] + name.split(' ')[1][0] : name[0]
+        curName.split(' ').length > 1
+          ? curName.split(' ')[0][0] + curName.split(' ')[1][0]
+          : curName[0]
       }`,
     };
   }
