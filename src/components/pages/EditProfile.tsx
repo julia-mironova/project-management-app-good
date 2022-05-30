@@ -20,7 +20,7 @@ import {
   localStorageSetUserToken,
 } from '../../utils/localStorage';
 import SendIcon from '@mui/icons-material/Send';
-import { deleteCurrentUser, logOut, updateUser } from '../../store/slices/authSlice';
+import { deleteCurrentUser, getSingleUser, logOut, updateUser } from '../../store/slices/authSlice';
 import ConformModal from '../ConformModal';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -35,7 +35,7 @@ const EditProfile = () => {
 
   const [showPassword, setShowPassword] = useState(false);
   const [isOpenConformModal, setIsOpenConformModal] = useState(false);
-  const { id, name, token, pending, rejectMsg } = useAppSelector((state) => state.auth);
+  const { id, name, token, pending, rejectMsg, login } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -58,9 +58,13 @@ const EditProfile = () => {
   };
 
   useEffect(() => {
+    async function getEmail() {
+      await dispatch(getSingleUser({ id, token }));
+    }
+    getEmail();
     localStorageSetUser({ id: id, name: name });
     localStorageSetUserToken(token);
-  }, [id, name, token]);
+  }, [dispatch, id, name, token]);
 
   return (
     <Container maxWidth="xs">
@@ -101,6 +105,7 @@ const EditProfile = () => {
             margin="normal"
             required
             fullWidth
+            placeholder={login}
             autoComplete="username"
             id="email"
             label={t('FORM.EMAIL')}
@@ -146,9 +151,15 @@ const EditProfile = () => {
             fullWidth
             variant="contained"
             endIcon={<SendIcon />}
-            sx={{ mt: 3, mb: 2 }}
             loading={pending}
             loadingPosition="end"
+            sx={{
+              mt: 3,
+              mb: 2,
+              ':hover': {
+                color: 'white',
+              },
+            }}
           >
             {t('UPDATE_BTN')}
           </LoadingButton>

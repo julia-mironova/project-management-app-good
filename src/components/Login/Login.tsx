@@ -126,10 +126,16 @@ const Login = () => {
             type="submit"
             fullWidth
             variant="contained"
-            sx={{ mt: 3, mb: 2 }}
             endIcon={<SendIcon />}
             loading={state.pending}
             loadingPosition="end"
+            sx={{
+              mt: 3,
+              mb: 2,
+              ':hover': {
+                color: 'white',
+              },
+            }}
           >
             {t('LOGIN.HEADER')}
           </LoadingButton>
