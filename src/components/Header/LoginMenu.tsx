@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { IconButton, Button, ButtonGroup, useMediaQuery } from '@mui/material';
+import { IconButton, Button, useMediaQuery } from '@mui/material';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { logOut } from '../../store/slices/authSlice';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux.hooks';
@@ -35,48 +35,51 @@ const LoginMenu = () => {
           />
         )}
       </IconButton>
-      <ButtonGroup variant="outlined" color="secondary" aria-label="large contained button group">
-        {isLoggedIn ? (
-          <>
-            <Button
-              onClick={() => navigate('/boards')}
-              sx={{
-                '@media only screen and (max-width: 450px)': {
-                  p: 0,
-                  m: 0.5,
-                },
-              }}
-            >
-              {t('GO_TO_MAIN')}
-            </Button>
-          </>
-        ) : (
-          <>
-            <Button
-              onClick={() => navigate('/signin')}
-              sx={{
-                '@media only screen and (max-width: 450px)': {
-                  p: 0,
-                  ml: 0.5,
-                },
-              }}
-            >
-              {t('LOGIN.HEADER')}
-            </Button>
-            <Button
-              onClick={() => navigate('/signup')}
-              sx={{
-                '@media only screen and (max-width: 450px)': {
-                  p: 0,
-                  mr: 0.5,
-                },
-              }}
-            >
-              {t('SIGNUP.HEADER')}
-            </Button>
-          </>
-        )}
-      </ButtonGroup>
+      {isLoggedIn ? (
+        <Button
+          onClick={() => navigate('/boards')}
+          sx={{
+            '@media only screen and (max-width: 450px)': {
+              p: 0,
+              m: 0.5,
+            },
+          }}
+        >
+          {t('GO_TO_MAIN')}
+        </Button>
+      ) : (
+        <>
+          <Button
+            onClick={() => navigate('/signin')}
+            variant="contained"
+            sx={{
+              mr: 1,
+              backgroundColor: '#5c6bc0',
+              color: 'white',
+              '@media only screen and (max-width: 450px)': {
+                p: 0,
+                ml: 0.5,
+              },
+            }}
+          >
+            {t('LOGIN.HEADER')}
+          </Button>
+          <Button
+            variant="contained"
+            onClick={() => navigate('/signup')}
+            sx={{
+              backgroundColor: '#5c6bc0',
+              color: 'white',
+              '@media only screen and (max-width: 450px)': {
+                p: 0,
+                mr: 0.5,
+              },
+            }}
+          >
+            {t('SIGNUP.HEADER')}
+          </Button>
+        </>
+      )}
     </div>
   );
 };

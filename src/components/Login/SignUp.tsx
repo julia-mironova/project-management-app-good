@@ -147,10 +147,16 @@ const SignUp = () => {
             type="submit"
             fullWidth
             variant="contained"
-            sx={{ mt: 3, mb: 2 }}
             endIcon={<SendIcon />}
             loading={pending}
             loadingPosition="end"
+            sx={{
+              mt: 3,
+              mb: 2,
+              ':hover': {
+                color: 'white',
+              },
+            }}
           >
             {t('SIGNUP.HEADER')}
           </LoadingButton>
