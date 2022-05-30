@@ -52,7 +52,7 @@ const Toolbar = ({ filters, setFilters, usersIdCreatedTasks }: IProps) => {
   }));
 
   const StyledInputBase = styled(InputBase)(({ theme }) => ({
-    color: '#6585F3',
+    color: 'rgb(34 46 168)',
     fontWeight: 700,
     '& .MuiInputBase-input': {
       padding: theme.spacing(1, 1, 1, 0),
@@ -66,7 +66,7 @@ const Toolbar = ({ filters, setFilters, usersIdCreatedTasks }: IProps) => {
       padding: theme.spacing(1.2, 1, 1.2, 1),
       transition: theme.transitions.create('width'),
     },
-    color: '#6585F3',
+    color: 'rgb(34 46 168)',
     fontWeight: 700,
     '& fieldset': {
       borderColor: '#3f51b5',
