@@ -161,7 +161,11 @@ const TaskFull = ({ onClose, task }: IPropsTaskFull) => {
             variant="outlined"
             multiline={true}
             rows={4}
-            {...register('description', { required: false })}
+            error={Boolean(errors.description)}
+            helperText={errors.description ? errors.description.message : ''}
+            {...register('description', {
+              required: { value: true, message: `${t('FORM.REQUIRE_MSG')}` },
+            })}
           />
           {downloadFiles.length > 0 && (
             <TableContainer component={Paper}>
