@@ -76,8 +76,8 @@ const FormNewTask = ({
           multiline={true}
           rows={4}
           variant="outlined"
-          error={errors.title ? true : false}
-          helperText={errors.title ? errors.title.message : ''}
+          error={errors.description ? true : false}
+          helperText={errors.description ? errors.description.message : ''}
           {...register('description', {
             required: { value: true, message: `${t('FORM.REQUIRE_MSG')}` },
           })}
