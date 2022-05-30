@@ -30,7 +30,7 @@ const SignUp = () => {
 
   const { t } = useTranslation();
   const [showPassword, setShowPassword] = useState(false);
-  const { id, name, token, rejectMsg, pending, isLoggedIn } = useAppSelector((state) => state.auth);
+  const { id, name, token, pending, isLoggedIn } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -41,14 +41,15 @@ const SignUp = () => {
   }, [navigate, isLoggedIn]);
 
   const onSubmit = async (data: propsSubmitSignUp) => {
-    await dispatch(
+    const rejectMsg = await dispatch(
       createUser({
         login: data.email,
         password: data.password,
         name: data.name,
       })
     );
-    if (rejectMsg) {
+
+    if (rejectMsg.meta.requestStatus !== 'rejected') {
       await dispatch(createToken({ login: data.email, password: data.password }));
       navigate('/boards');
     }

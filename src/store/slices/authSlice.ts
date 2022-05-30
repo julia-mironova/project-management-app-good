@@ -44,6 +44,7 @@ export const createUser = createAsyncThunk(
 
       const result: ICreateUserResponse = await response.json();
       dispatch(setUser(result));
+      return result;
     } catch (err) {
       const msg = (err as Error).message;
       return rejectWithValue(msg);
